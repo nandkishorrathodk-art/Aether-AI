@@ -126,7 +126,7 @@ Aether AI is a **JARVIS-level virtual assistant** that runs locally on your Wind
 
 ### Recommended
 - **CPU**: Intel Core Ultra 7 or AMD Ryzen 9
-- **RAM**: 16-32GB DDR5
+-- **RAM**: 16-32GB DDR5
 - **Storage**: 512GB SSD
 - **Internet**: High-speed broadband
 
@@ -411,7 +411,7 @@ Aether AI includes powerful bug bounty automation with **BurpSuite integration**
 
 ```bash
 # Test bug bounty features
-test-bugbounty.bat
+test-bounty.bat
 
 # Configure BurpSuite (requires BurpSuite Pro running)
 # Then use API endpoints or Python scripts
@@ -518,5 +518,4 @@ For issues, questions, or feature requests:
 ---
 
 **Note**: This is an MVP (v0.1.0) release. Advanced features like SWOT analysis, quantum integration, and self-evolution will be added in future phases.
-#   A e t h e r - A I  
- 
+# this one push on this repo https://github.com/nandkishorrathodk-art/Aether-AI
