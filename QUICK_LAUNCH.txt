@@ -1,0 +1,63 @@
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║          🚀 AETHER AI - QUICK LAUNCH GUIDE          ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+
+📌 TO RUN AETHER AI NOW:
+
+   Double-click:  RUN_AETHER.bat
+
+   ✅ This will:
+   1. Kill old processes
+   2. Start backend (port 8000)
+   3. Launch voice UI
+   4. Greet you with "Hello sir, at your service"
+
+---
+
+📌 TO BUILD INSTALLER:
+
+   Double-click:  BUILD_APP.bat
+
+   ✅ This creates:
+   - Aether AI Setup.exe (installer)
+   - Portable executable
+   - Output: ui\dist\
+
+   ⏱️ Takes: 5-10 minutes
+
+---
+
+📌 FEATURES:
+
+   🎤 Voice-Only (NO typing!)
+   🤖 Auto-greeting on startup
+   🌍 30+ languages (Hindi, English, etc.)
+   🐛 Bug bounty automation
+   📊 Business analytics
+   💾 Memory system
+   🎨 Beautiful modern UI
+
+---
+
+📌 YOUR SYSTEM (Perfect!):
+
+   ✅ Intel Core Ultra 5
+   ✅ 16GB RAM
+   ✅ 512GB SSD
+   ✅ Ideal for Aether AI!
+
+---
+
+📌 NEED HELP?
+
+   📖 Read: APP_READY.md
+   📖 Read: VOICE_MODE_README.md
+   📖 Read: QUICKSTART.md
+
+---
+
+🎯 STATUS: ✅ PRODUCTION READY
+
+Just run RUN_AETHER.bat and enjoy! 🚀

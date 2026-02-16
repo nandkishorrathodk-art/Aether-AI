@@ -1,0 +1,70 @@
+========================================
+AETHER AI - QUICK START GUIDE
+========================================
+
+Your Fireworks AI key is configured: fw_21U3tFvDSUuJhbW8CXpsNs
+
+HOW TO START:
+============
+
+OPTION 1: Test Fireworks AI First (Recommended)
+------------------------------------------------
+Double-click: test-fireworks.py
+OR run: venv\Scripts\activate.bat && python test-fireworks.py
+
+This will verify your API key is working before starting the full system.
+
+
+OPTION 2: Start Backend Only (No UI)
+-------------------------------------
+Double-click: start-backend.bat
+
+Backend will run at: http://127.0.0.1:8000
+API docs at: http://127.0.0.1:8000/docs
+
+
+OPTION 3: Start UI (Electron App)
+----------------------------------
+Double-click: ui\start-ui.bat
+
+First time will take 5-10 minutes to build.
+Subsequent starts will be faster.
+
+
+OPTION 4: Full System (Backend + UI)
+-------------------------------------
+Terminal 1: start-backend.bat
+Terminal 2: ui\start-ui.bat
+
+
+TROUBLESHOOTING:
+===============
+
+Problem: "ModuleNotFoundError"
+Solution: Run install.bat or: venv\Scripts\activate.bat && pip install -r requirements.txt
+
+Problem: UI shows "ERR_FILE_NOT_FOUND"
+Solution: cd ui && npm run build
+
+Problem: "API key not working"
+Solution: Check .env file has: FIREWORKS_API_KEY=fw_21U3tFvDSUuJhbW8CXpsNs
+
+Problem: Network timeout during install
+Solution: Retry or install packages individually
+
+
+USEFUL COMMANDS:
+===============
+
+Test API: python test-fireworks.py
+Run tests: pytest tests/ -v
+Check coverage: pytest --cov=src tests/
+Lint code: flake8 src/
+
+
+SUPPORT:
+========
+
+Logs: logs/aether.log
+Documentation: README.md, MULTI_PROVIDER_SETUP.md
+Issues: Check KNOWN_ISSUES.md

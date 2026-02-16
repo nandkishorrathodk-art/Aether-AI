@@ -1,0 +1,52 @@
+[package]
+name = "aether-rust"
+version = "0.3.0"
+edition = "2021"
+authors = ["Aether AI Team"]
+
+[lib]
+name = "aether_rust"
+crate-type = ["cdylib", "rlib"]  # For Python FFI and Rust library
+
+[dependencies]
+# Cryptography
+ring = "0.17"
+aes-gcm = "0.10"
+rsa = "0.9"
+sha2 = "0.10"
+blake3 = "1.5"
+getrandom = "0.2"
+
+# Secure storage
+sled = "0.34"          # Embedded database
+zeroize = "1.7"        # Clear sensitive data from memory
+
+# Networking
+tokio = { version = "1.35", features = ["full"] }
+reqwest = { version = "0.11", features = ["rustls-tls"] }
+rustls = "0.22"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# FFI
+pyo3 = { version = "0.20", features = ["extension-module"], optional = true }
+neon = { version = "0.10", optional = true }
+
+# Utilities
+thiserror = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+
+[features]
+default = ["python"]
+python = ["pyo3"]
+nodejs = ["neon"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

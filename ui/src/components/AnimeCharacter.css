@@ -1,0 +1,454 @@
+.anime-character {
+  position: fixed;
+  width: 200px;
+  height: 300px;
+  z-index: 999;
+  cursor: move;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.anime-character:hover {
+  transform: scale(1.05);
+}
+
+.character-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.3));
+}
+
+.character-head {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(145deg, #ffb3d9, #ff8dc7);
+  border-radius: 50% 50% 45% 45%;
+  border: 3px solid #00ffff;
+  box-shadow: 
+    inset 0 -20px 30px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(0, 255, 255, 0.5);
+  animation: head-idle 3s ease-in-out infinite;
+}
+
+@keyframes head-idle {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  50% { transform: translateX(-50%) translateY(-5px) rotate(2deg); }
+}
+
+.anime-character.listening .character-head {
+  animation: head-listening 0.5s ease-in-out infinite;
+}
+
+@keyframes head-listening {
+  0%, 100% { transform: translateX(-50%) rotate(-5deg); }
+  50% { transform: translateX(-50%) rotate(5deg); }
+}
+
+.anime-character.speaking .character-head {
+  animation: head-speaking 0.3s ease-in-out infinite;
+}
+
+@keyframes head-speaking {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.02); }
+}
+
+.character-eyes {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eye {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 50%;
+  border: 2px solid #333;
+  overflow: hidden;
+}
+
+.pupil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  background: radial-gradient(circle, #00ffff, #0088ff);
+  border-radius: 50%;
+  animation: pupil-move 4s ease-in-out infinite;
+}
+
+@keyframes pupil-move {
+  0%, 100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(-40%, -50%); }
+  50% { transform: translate(-50%, -40%); }
+  75% { transform: translate(-60%, -50%); }
+}
+
+.character-eyes.closed .eye {
+  height: 3px;
+  background: #333;
+  border-radius: 50%;
+  animation: blink 0.15s ease-in-out;
+}
+
+@keyframes blink {
+  0%, 100% { height: 30px; }
+  50% { height: 3px; }
+}
+
+.character-eyes.focused .pupil {
+  width: 18px;
+  height: 18px;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+.character-eyes.happy {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.character-mouth {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 20px;
+  border-bottom: 3px solid #ff69b4;
+  border-radius: 0 0 40px 40px;
+  transition: all 0.3s ease;
+}
+
+.character-mouth.smile {
+  width: 50px;
+  height: 25px;
+  border-bottom-width: 4px;
+}
+
+.character-mouth.talking {
+  animation: mouth-talking 0.2s ease-in-out infinite;
+}
+
+@keyframes mouth-talking {
+  0%, 100% {
+    width: 40px;
+    height: 20px;
+    border-radius: 0 0 40px 40px;
+  }
+  50% {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+}
+
+.character-hair {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+}
+
+.hair-strand {
+  position: absolute;
+  width: 40px;
+  height: 60px;
+  background: linear-gradient(145deg, #00ffff, #00ccff);
+  border-radius: 50% 50% 40% 40%;
+  animation: hair-sway 2s ease-in-out infinite;
+}
+
+.hair-strand.left {
+  top: 10px;
+  left: -15px;
+  transform: rotate(-20deg);
+}
+
+.hair-strand.right {
+  top: 10px;
+  right: -15px;
+  transform: rotate(20deg);
+}
+
+@keyframes hair-sway {
+  0%, 100% { transform: rotate(var(--base-rotation, 0deg)); }
+  50% { transform: rotate(calc(var(--base-rotation, 0deg) + 5deg)); }
+}
+
+.hair-bangs {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 40px;
+  background: linear-gradient(145deg, #00ffff, #00ccff);
+  border-radius: 50% 50% 40% 40%;
+}
+
+.character-accessories .accessory {
+  position: absolute;
+}
+
+.accessory.headphones {
+  top: 30px;
+  left: -5px;
+  width: 110px;
+  height: 80px;
+  border: 4px solid #00ffff;
+  border-radius: 50%;
+  border-top: none;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.accessory.ribbon {
+  top: -5px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  background: #ff69b4;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+}
+
+.character-torso {
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 120px;
+}
+
+.outfit {
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(145deg, #ff69b4, #ff1493);
+  border-radius: 20px 20px 50% 50%;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.arms {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  height: 80px;
+}
+
+.arm {
+  position: absolute;
+  width: 25px;
+  height: 70px;
+  background: linear-gradient(145deg, #ffb3d9, #ff8dc7);
+  border-radius: 30px;
+  border: 2px solid #00ffff;
+  transition: transform 0.3s ease;
+}
+
+.arm.left {
+  left: -20px;
+  transform: rotate(-15deg);
+  animation: arm-left-idle 3s ease-in-out infinite;
+}
+
+.arm.right {
+  right: -20px;
+  transform: rotate(15deg);
+  animation: arm-right-idle 3s ease-in-out infinite;
+}
+
+@keyframes arm-left-idle {
+  0%, 100% { transform: rotate(-15deg) translateY(0); }
+  50% { transform: rotate(-10deg) translateY(-5px); }
+}
+
+@keyframes arm-right-idle {
+  0%, 100% { transform: rotate(15deg) translateY(0); }
+  50% { transform: rotate(10deg) translateY(-5px); }
+}
+
+.anime-character.listening .arm.left {
+  animation: arm-listening 0.5s ease-in-out infinite;
+}
+
+@keyframes arm-listening {
+  0%, 100% { transform: rotate(-30deg) translateY(-10px); }
+  50% { transform: rotate(-20deg) translateY(-15px); }
+}
+
+.anime-character.speaking .arm {
+  animation: arm-speaking 0.4s ease-in-out infinite;
+}
+
+@keyframes arm-speaking {
+  0%, 100% { transform: rotate(var(--base-arm-rotation, 0deg)) translateY(0); }
+  50% { transform: rotate(var(--base-arm-rotation, 0deg)) translateY(-5px); }
+}
+
+.floating-heart {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float-up 1s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px) scale(1.5);
+  }
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 20, 20, 0.9);
+  border: 2px solid #00ffff;
+  border-radius: 20px;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #00ffff;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.status-indicator.listening {
+  animation: pulse-listening 1s ease-in-out infinite;
+}
+
+@keyframes pulse-listening {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+  }
+}
+
+.status-indicator.speaking {
+  animation: pulse-speaking 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-speaking {
+  0%, 100% {
+    border-color: #00ffff;
+  }
+  50% {
+    border-color: #ff69b4;
+  }
+}
+
+.personality-badge {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  background: rgba(0, 255, 255, 0.2);
+  border: 2px solid #00ffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.personality-badge:hover {
+  background: rgba(0, 255, 255, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+}
+
+.sound-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 2px solid #00ffff;
+  border-radius: 50%;
+  animation: sound-wave-pulse 1s ease-out infinite;
+}
+
+@keyframes sound-wave-pulse {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
+
+.anime-character.playful .character-head {
+  animation: head-bounce 1s ease-in-out infinite;
+}
+
+@keyframes head-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.anime-character.professional .outfit {
+  background: linear-gradient(145deg, #333, #555);
+}
+
+.anime-character.kawaii .character-mouth {
+  border-bottom-color: #ffb3d9;
+}
+
+.anime-character.kawaii .character-head {
+  background: linear-gradient(145deg, #ffccff, #ffaaee);
+}
+
+.anime-character.tsundere .character-eyes {
+  transform: translateX(-50%) rotate(-10deg);
+}
+
+@media (max-width: 768px) {
+  .anime-character {
+    width: 150px;
+    height: 225px;
+  }
+
+  .character-head {
+    width: 90px;
+    height: 90px;
+  }
+
+  .character-torso {
+    width: 75px;
+    height: 90px;
+  }
+}

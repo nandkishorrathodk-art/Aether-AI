@@ -1,0 +1,270 @@
+========================================
+  AETHER AI - COMPLETE FILE GUIDE
+========================================
+
+ALL .BAT FILES AT A GLANCE
+
+========================================
+  🎯 EASIEST FILES (PICK ONE!)
+========================================
+
+CLICK-ME.bat          [★★★★★ ABSOLUTE EASIEST]
+├─ Auto-installs if needed
+├─ Auto-starts server
+├─ Auto-opens browser
+├─ Zero configuration needed
+└─ 🥇 BEST FOR: First-time users
+
+START.bat             [★★★★ BEGINNER FRIENDLY]
+├─ Simple 5-option menu
+├─ Start, Test, Install, Help, Exit
+├─ Easy to navigate
+└─ 🥇 BEST FOR: New users who want control
+
+RUN.bat               [★★★★ QUICK LAUNCH]
+├─ Instant start
+├─ No menus, just runs
+├─ Cool ASCII art
+└─ 🥇 BEST FOR: Daily use
+
+AETHER.bat            [★★★ POWER USERS]
+├─ 16 advanced options
+├─ Full control center
+├─ All features accessible
+└─ 🥇 BEST FOR: Advanced users
+
+========================================
+  📋 COMPLETE FILE LIST
+========================================
+
+🎛️ ALL-IN-ONE MENUS (NEW!)
+──────────────────────────
+CLICK-ME.bat          → Auto-everything (easiest!)
+START.bat             → Simple menu (5 options)
+AETHER.bat            → Advanced menu (16 options)
+
+🚀 DIRECT LAUNCHERS
+──────────────────────────
+RUN.bat               → Instant launch
+quick-start.bat       → Launch with details
+start-api-only.bat    → API server only
+start-backend.bat     → Backend with checks
+start-aether.bat      → Full app (API + UI)
+
+🔧 INSTALLATION
+──────────────────────────
+install.bat           → Main installation
+install-openclaw.bat  → Add web scraping
+uninstall.bat         → Remove Aether AI
+
+🧪 TESTING
+──────────────────────────
+quick-test.bat        → Run tests quickly
+test-voice-pipeline.bat → Test voice features
+test-installer.bat    → Test installer
+test_setup.bat        → Test setup
+
+🛠️ UTILITIES
+──────────────────────────
+build-installer.bat   → Create installer package
+
+========================================
+  📖 DOCUMENTATION FILES
+========================================
+
+QUICK-START.txt       → Quick reference guide
+WHICH-FILE.txt        → Which .bat to use?
+ALL-FILES-GUIDE.txt   → This file
+README.md             → Main documentation
+OPENCLAW_QUICKSTART.md → OpenClaw guide
+
+========================================
+  🎯 USAGE SCENARIOS
+========================================
+
+"I just want it to work!"
+├─ File: CLICK-ME.bat
+└─ Just double-click, it does everything
+
+"I'm new and want a menu"
+├─ File: START.bat
+└─ Choose from 5 simple options
+
+"I use it daily"
+├─ File: RUN.bat
+└─ Quick start, no fuss
+
+"I need to install something"
+├─ File: AETHER.bat
+└─ Option 4, 5, or 6
+
+"I want to run tests"
+├─ File: AETHER.bat or START.bat
+└─ Testing options available
+
+"I need to check status"
+├─ File: AETHER.bat
+└─ Option 13
+
+"I want to see all options"
+├─ File: AETHER.bat
+└─ 16 options to choose from
+
+"Something's wrong, need logs"
+├─ File: AETHER.bat
+└─ Option 12
+
+========================================
+  🏆 TOP RECOMMENDATIONS
+========================================
+
+RANK  FILE           WHY
+────────────────────────────────────────
+#1    CLICK-ME.bat   Literally zero effort
+#2    START.bat      Simple menu, helpful
+#3    RUN.bat        Quick daily use
+#4    AETHER.bat     Power users only
+
+========================================
+  📊 FEATURE COMPARISON
+========================================
+
+Feature             CLICK-ME  START  RUN  AETHER
+─────────────────────────────────────────────────
+Auto-install        ✓         ✗      ✗    ✗
+Auto-start          ✓         ✗      ✓    ✗
+Auto-open browser   ✓         ✗      ✗    ✗
+Menu system         ✗         ✓      ✗    ✓
+Simple (5 opts)     N/A       ✓      N/A  ✗
+Advanced (16 opts)  N/A       ✗      N/A  ✓
+Testing options     ✗         ✓      ✗    ✓
+Install options     Auto      ✓      ✗    ✓
+Status checking     ✗         ✗      ✗    ✓
+Log viewing         ✗         ✗      ✗    ✓
+Cache cleaning      ✗         ✗      ✗    ✓
+
+========================================
+  🎓 LEARNING PATH
+========================================
+
+WEEK 1: Use CLICK-ME.bat
+├─ Learn how Aether AI works
+├─ Explore the API docs
+└─ Get comfortable
+
+WEEK 2: Use START.bat
+├─ Learn the menu options
+├─ Try running tests
+└─ Understand the structure
+
+WEEK 3: Use RUN.bat
+├─ Quick daily launches
+├─ No menu needed
+└─ You're a pro now!
+
+ADVANCED: Use AETHER.bat
+├─ When you need specific features
+├─ Testing, building, debugging
+└─ Full control
+
+========================================
+  ⚡ QUICK DECISION TREE
+========================================
+
+START HERE
+│
+├─ Never used Aether AI before?
+│  └─ YES → CLICK-ME.bat ✓
+│
+├─ Want a simple menu?
+│  └─ YES → START.bat ✓
+│
+├─ Just want to run it fast?
+│  └─ YES → RUN.bat ✓
+│
+└─ Need advanced features?
+   └─ YES → AETHER.bat ✓
+
+========================================
+  🎨 FILE CHARACTERISTICS
+========================================
+
+CLICK-ME.bat
+  Color: Green
+  Speed: Auto (3 sec)
+  Style: Fully automated
+  Target: Absolute beginners
+
+START.bat
+  Color: Cyan
+  Options: 5
+  Style: Guided menu
+  Target: New users
+
+RUN.bat
+  Color: Green
+  Speed: Instant
+  Style: ASCII art + launch
+  Target: Regular users
+
+AETHER.bat
+  Color: Green
+  Options: 16
+  Style: Professional control panel
+  Target: Power users
+
+========================================
+  💡 PRO TIPS
+========================================
+
+1. First time? Use CLICK-ME.bat
+   It handles everything automatically
+
+2. Learning? Use START.bat
+   The help option is very useful
+
+3. Daily use? Use RUN.bat
+   Fastest way to get started
+
+4. Troubleshooting? Use AETHER.bat
+   Check status, view logs, clean cache
+
+5. Read WHICH-FILE.txt if confused
+   Detailed explanation of each file
+
+========================================
+  🔗 RELATED FILES
+========================================
+
+After using any .bat file, you can:
+
+📖 Read docs:
+   - README.md
+   - docs\OPENCLAW.md
+   - OPENCLAW_QUICKSTART.md
+
+🌐 Visit URLs:
+   - http://127.0.0.1:8000
+   - http://127.0.0.1:8000/docs
+   - http://127.0.0.1:8000/api/v1/openclaw/status
+
+📊 Check logs:
+   - logs\aether.log
+   - logs\backend.log
+
+⚙️ Edit config:
+   - .env (API keys, settings)
+
+========================================
+  ✅ FINAL ANSWER
+========================================
+
+"Which file should I use?"
+
+90% of users: CLICK-ME.bat or START.bat
+9% of users:  RUN.bat
+1% of users:  AETHER.bat
+
+Simple as that! 🚀
+
+========================================

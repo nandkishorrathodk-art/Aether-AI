@@ -1,0 +1,159 @@
+========================================
+  WHICH FILE SHOULD I USE?
+========================================
+
+Not sure which .bat file to run? Here's the guide:
+
+========================================
+  RECOMMENDED FOR YOU
+========================================
+
+🔰 FIRST TIME USER?
+   ➜ Double-click: START.bat
+   Simple menu with 5 options
+   Guides you through everything
+
+⚡ JUST WANT TO RUN IT?
+   ➜ Double-click: RUN.bat
+   Starts immediately, no questions
+
+🎛️ WANT FULL CONTROL?
+   ➜ Double-click: AETHER.bat
+   Advanced menu with 16 options
+   Install, test, build, everything!
+
+========================================
+  FILE COMPARISON
+========================================
+
+START.bat        [★★★ RECOMMENDED FOR BEGINNERS]
+├─ 5 simple options
+├─ Start, Test, Install, Help, Exit
+├─ Easy to understand
+└─ Perfect for new users
+
+RUN.bat          [★★★ RECOMMENDED FOR QUICK USE]
+├─ No menu, starts instantly
+├─ Just launches the server
+├─ Clean ASCII art
+└─ For when you know what you're doing
+
+AETHER.bat       [★★★ RECOMMENDED FOR ADVANCED]
+├─ 16 powerful options
+├─ Install, test, build, clean, status
+├─ Full control center
+└─ For power users
+
+========================================
+  OTHER FILES (SPECIFIC TASKS)
+========================================
+
+install.bat              → First-time installation
+install-openclaw.bat     → Add web scraping
+quick-start.bat          → Detailed startup
+quick-test.bat           → Run tests only
+start-api-only.bat       → API server only
+start-backend.bat        → Backend with checks
+start-aether.bat         → Full app (API + UI)
+uninstall.bat            → Remove Aether AI
+build-installer.bat      → Create installer
+
+========================================
+  DECISION TREE
+========================================
+
+First time using Aether AI?
+├─ YES → START.bat (will guide you)
+└─ NO  → Already installed?
+         ├─ YES → Just want to run?
+         │        ├─ YES → RUN.bat
+         │        └─ NO  → Want options?
+         │                 ├─ SIMPLE → START.bat
+         │                 └─ ADVANCED → AETHER.bat
+         └─ NO  → install.bat
+
+========================================
+  WHAT EACH MENU SHOWS
+========================================
+
+START.bat Menu:
+  [1] Start Aether AI
+  [2] Run Tests
+  [3] Install/Setup
+  [4] Help
+  [5] Exit
+
+AETHER.bat Menu:
+  [LAUNCH]
+    1. Start Server
+    2. Start Full App
+    3. Start API Only
+  
+  [INSTALL]
+    4. Install Aether AI
+    5. Install OpenClaw
+    6. Update Dependencies
+  
+  [TESTING]
+    7. Run Integration Tests
+    8. Test OpenClaw
+    9. Test Voice Pipeline
+    10. Verify Installation
+  
+  [TOOLS]
+    11. Open API Docs
+    12. View Logs
+    13. Check Status
+    14. Clean Cache
+  
+  [ADVANCED]
+    15. Build Installer
+    16. Uninstall
+
+========================================
+  QUICK REFERENCE
+========================================
+
+SCENARIO                          FILE TO USE
+─────────────────────────────────────────────
+First time setup                  START.bat → Option 3
+Daily usage                       RUN.bat
+Run tests                         START.bat → Option 2
+Need help                         START.bat → Option 4
+Install web scraping              AETHER.bat → Option 5
+Check if working                  AETHER.bat → Option 13
+View logs                         AETHER.bat → Option 12
+Clean cache                       AETHER.bat → Option 14
+Advanced tasks                    AETHER.bat
+Emergency uninstall               uninstall.bat
+
+========================================
+  STILL CONFUSED?
+========================================
+
+👉 Just use START.bat
+
+It's the simplest and will help you:
+  ✓ Install if needed
+  ✓ Start the server
+  ✓ Run tests
+  ✓ Get help
+
+Can't go wrong!
+
+========================================
+  FINAL RECOMMENDATION
+========================================
+
+90% of users should use:
+
+  🥇 START.bat (if you want a menu)
+  🥇 RUN.bat   (if you just want to run it)
+
+Use AETHER.bat only if you need:
+  - Multiple install options
+  - Advanced testing
+  - System maintenance
+  - Building installers
+
+========================================

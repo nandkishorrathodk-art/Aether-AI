@@ -1,0 +1,87 @@
+========================================
+  AETHER AI - QUICK START GUIDE
+========================================
+
+EASIEST WAY TO RUN:
+-------------------
+🎯 ULTIMATE:          GO.bat         (Auto-everything + chat!) ← NEW! BEST!
+⚡ ALL-IN-ONE:        ALL-IN-ONE.bat (Complete with tests + menu)
+🚀 ULTIMATE FULL:     ULTIMATE.bat   (Full auto launcher)
+💫 ZERO EFFORT:       CLICK-ME.bat   (Auto-installs, auto-starts)
+📋 BEGINNER MENU:     START.bat      (Simple 5-option menu)
+⚡ QUICK START:       RUN.bat        (Instant launch)
+💎 ADVANCED:          AETHER.bat     (Full 16-option menu)
+
+
+ALL BATCH FILES:
+-------------------
+
+🎛️ ALL-IN-ONE MENUS:
+
+  START.bat             ← Beginner-friendly (5 options)
+  AETHER.bat            ← Full control center (16 options)
+
+🚀 DIRECT LAUNCH:
+
+  RUN.bat               ← Instant start (recommended)
+  quick-start.bat       ← Same as RUN.bat with more info
+  start-api-only.bat    ← API server only
+  start-backend.bat     ← Backend with dependency check
+  start-aether.bat      ← Full app (backend + UI)
+
+
+🧪 TESTING:
+
+  quick-test.bat        ← Run integration tests quickly
+  test_setup.bat        ← Test installation setup
+
+
+🛠️ SETUP/MAINTENANCE:
+
+  install.bat           ← Install Aether AI
+  uninstall.bat         ← Uninstall Aether AI
+  build-installer.bat   ← Create installer package
+
+
+AFTER STARTING:
+-------------------
+1. Server runs at:     http://127.0.0.1:8000
+2. API Docs at:        http://127.0.0.1:8000/docs
+3. OpenClaw API:       http://127.0.0.1:8000/api/v1/openclaw/status
+4. Press Ctrl+C to stop
+
+
+CURRENT STATUS:
+-------------------
+✅ Chat API - Working
+✅ Task Management - Working
+✅ Settings - Working
+✅ OpenClaw (Web Scraping) - Working (NEW!)
+✅ 4 AI Providers - Working (OpenAI, Anthropic, Fireworks, OpenRouter)
+⚠️  Voice - Disabled (pending ChromaDB fix)
+⚠️  Memory - Disabled (pending ChromaDB fix)
+
+
+TROUBLESHOOTING:
+-------------------
+If you see errors:
+1. Make sure you ran: install.bat
+2. Check .env file has API keys
+3. Check logs\aether.log for details
+
+
+API KEY SETUP:
+-------------------
+Edit .env file and add your API keys:
+  OPENAI_API_KEY=sk-...
+  ANTHROPIC_API_KEY=sk-...
+  FIREWORKS_API_KEY=fw_...
+  OPENROUTER_API_KEY=sk-...
+
+Currently configured: Fireworks (fw_21U3tFvDSUuJhbW8CXpsNs)
+
+
+NEED HELP?
+-------------------
+Check: http://127.0.0.1:8000/docs
+Logs:  logs\aether.log

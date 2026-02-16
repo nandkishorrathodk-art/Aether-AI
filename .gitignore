@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+env/
+ENV/
+.venv
+
+# AI Models
+models/
+*.bin
+*.gguf
+*.pt
+*.pth
+*.safetensors
+
+# Data
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+
+# Node/Electron
+ui/node_modules/
+ui/dist/
+ui/build/
+ui/.cache/
+ui/package-lock.json
+ui/yarn.lock
+ui-ts/node_modules/
+ui-ts/dist/
+ui-ts/build/
+node_modules/
+package-lock.json
+
+# Rust
+aether-rust/target/
+AetherCPP/build/
+*.exe
+*.dll
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Temp & Media
+*.tmp
+*.temp
+*.wav
+*.mp3
+*.mp4
+temp_tts.*

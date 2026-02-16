@@ -1,0 +1,650 @@
+{
+  "metadata": {
+    "target": "Aether AI Virtual Assistant",
+    "scan_date": "2026-02-16T19:33:05.364626",
+    "duration_seconds": 78.314527,
+    "files_scanned": 235,
+    "lines_scanned": 53216
+  },
+  "summary": {
+    "total_findings": 35,
+    "critical": 2,
+    "high": 7,
+    "medium": 20,
+    "low": 6,
+    "info": 0
+  },
+  "findings": [
+    {
+      "id": "AETHER-0001",
+      "title": "Exposed Anthropic API Key in Source Code",
+      "severity": "CRITICAL",
+      "cwe": "CWE-798",
+      "cvss_score": 9.0,
+      "description": "Hardcoded Anthropic API Key found in source code at line 217",
+      "impact": "Attackers can extract Anthropic API Key and gain unauthorized access to systems/APIs",
+      "affected_files": [
+        "auto_fix_security.py:217"
+      ],
+      "proof_of_concept": "File: auto_fix_security.py\nLine 217: ANTHROPIC_API_KEY=sk-ant-your-anthropic-key-here",
+      "recommendation": "Remove hardcoded Anthropic API Key, use environment variables (.env), add to .gitignore, revoke and regenerate key",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-community/vulnerabilities/Use_of_hard-coded_credentials",
+        "https://cwe.mitre.org/data/definitions/798.html"
+      ]
+    },
+    {
+      "id": "AETHER-0002",
+      "title": "Command Injection Vulnerability",
+      "severity": "CRITICAL",
+      "cwe": "CWE-78",
+      "cvss_score": 9.0,
+      "description": "Shell command injection detected at line 29",
+      "impact": "Attackers can execute arbitrary command commands",
+      "affected_files": [
+        "src\\action\\tasks\\burpsuite_tasks.py:29"
+      ],
+      "proof_of_concept": "Code: subprocess.Popen(['burpsuite'], shell=True)",
+      "recommendation": "Use subprocess with shell=False and validate inputs",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/78.html"
+      ]
+    },
+    {
+      "id": "AETHER-0003",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 7.5,
+      "description": "Dynamic module import detected at line 184",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\professional\\business_plan_generator.py:184"
+      ],
+      "proof_of_concept": "Code: **Generated**: {__import__('datetime').datetime.now().strftime('%Y-%m-%d')}",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0004",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 7.5,
+      "description": "Dynamic module import detected at line 149",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\professional\\swot_analyzer.py:149"
+      ],
+      "proof_of_concept": "Code: **Generated**: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0005",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 8.5,
+      "description": "Use of eval() function detected at line 252",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\action\\code\\code_generator.py:252"
+      ],
+      "proof_of_concept": "Code: if 'eval(' in code:",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0006",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 8.5,
+      "description": "Use of eval() function detected at line 256",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\action\\code\\code_generator.py:256"
+      ],
+      "proof_of_concept": "Code: 'message': 'Use of eval() is dangerous - consider alternatives'",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0007",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 8.5,
+      "description": "Use of exec() function detected at line 259",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\action\\code\\code_generator.py:259"
+      ],
+      "proof_of_concept": "Code: if 'exec(' in code:",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0008",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 8.5,
+      "description": "Use of exec() function detected at line 263",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\action\\code\\code_generator.py:263"
+      ],
+      "proof_of_concept": "Code: 'message': 'Use of exec() is dangerous - avoid if possible'",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0009",
+      "title": "Code Injection Vulnerability",
+      "severity": "HIGH",
+      "cwe": "CWE-95",
+      "cvss_score": 8.5,
+      "description": "Use of eval() function detected at line 133",
+      "impact": "Attackers can execute arbitrary code commands",
+      "affected_files": [
+        "src\\security\\bugbounty\\vulnerability_analyzer.py:133"
+      ],
+      "proof_of_concept": "Code: \"eval(\", \"alert(\", \"prompt(\", \"confirm(\"",
+      "recommendation": "Replace eval() with ast.literal_eval(), avoid exec()",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/95.html"
+      ]
+    },
+    {
+      "id": "AETHER-0010",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\bugbounty.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0011",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\chat.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0012",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\developer.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0013",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\discord.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0014",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\memory.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0015",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\openclaw.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0016",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\plugins.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0017",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\security.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0018",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\settings.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0019",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\tasks.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0020",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\voice.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0021",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\voice_commands.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0022",
+      "title": "Missing Authentication on API Endpoints",
+      "severity": "MEDIUM",
+      "cwe": "CWE-306",
+      "cvss_score": 7.0,
+      "description": "API endpoints exposed without authentication middleware",
+      "impact": "Unauthorized users can access sensitive API functionality and data",
+      "affected_files": [
+        "src\\api\\routes\\workflows.py"
+      ],
+      "proof_of_concept": "curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+      "recommendation": "Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-api-security/"
+      ]
+    },
+    {
+      "id": "AETHER-0023",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-327",
+      "cvss_score": 5.0,
+      "description": "MD5 is cryptographically broken",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\action\\automation\\file_operations.py:448"
+      ],
+      "proof_of_concept": "Line 448: file_hash = hashlib.md5(f.read()).hexdigest()",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/327.html"
+      ]
+    },
+    {
+      "id": "AETHER-0024",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-327",
+      "cvss_score": 5.0,
+      "description": "MD5 is cryptographically broken",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\action\\documents\\document_processor.py:293"
+      ],
+      "proof_of_concept": "Line 293: path_hash = hashlib.md5(filepath.encode()).hexdigest()[:12]",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/327.html"
+      ]
+    },
+    {
+      "id": "AETHER-0025",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-338",
+      "cvss_score": 6.0,
+      "description": "Use secrets module for cryptographic randomness",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\cognitive\\quantum\\quantum_brain.py:40"
+      ],
+      "proof_of_concept": "Line 40: if delta_cost < 0 or random.random() < np.exp(-delta_cost / temperature):",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/338.html"
+      ]
+    },
+    {
+      "id": "AETHER-0026",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-338",
+      "cvss_score": 6.0,
+      "description": "Use secrets module for cryptographic randomness",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\cognitive\\quantum\\quantum_brain.py:108"
+      ],
+      "proof_of_concept": "Line 108: return 0 if random.random() < probability_zero else 1",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/338.html"
+      ]
+    },
+    {
+      "id": "AETHER-0027",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-338",
+      "cvss_score": 6.0,
+      "description": "Use secrets module for cryptographic randomness",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\cognitive\\quantum\\quantum_brain.py:147"
+      ],
+      "proof_of_concept": "Line 147: score += random.random() * 0.3",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/338.html"
+      ]
+    },
+    {
+      "id": "AETHER-0028",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-338",
+      "cvss_score": 6.0,
+      "description": "Use secrets module for cryptographic randomness",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\perception\\vision\\object_detector.py:34"
+      ],
+      "proof_of_concept": "Line 34: confidence=0.7 + np.random.random() * 0.2,",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/338.html"
+      ]
+    },
+    {
+      "id": "AETHER-0029",
+      "title": "Weak Cryptographic Algorithm",
+      "severity": "MEDIUM",
+      "cwe": "CWE-327",
+      "cvss_score": 5.0,
+      "description": "MD5 is cryptographically broken",
+      "impact": "Cryptographic weaknesses can lead to data compromise",
+      "affected_files": [
+        "src\\perception\\voice\\tts.py:66"
+      ],
+      "proof_of_concept": "Line 66: return hashlib.md5(key_input.encode()).hexdigest()",
+      "recommendation": "Use SHA-256 or stronger, use secrets module for random values",
+      "status": "Open",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/327.html"
+      ]
+    },
+    {
+      "id": "AETHER-0030",
+      "title": "Potential Sensitive Data in Logs",
+      "severity": "LOW",
+      "cwe": "CWE-532",
+      "cvss_score": 4.0,
+      "description": "Possible logging of sensitive data (token)",
+      "impact": "Sensitive information may be exposed in log files",
+      "affected_files": [
+        "src\\cognitive\\llm\\context_manager.py:42"
+      ],
+      "proof_of_concept": "Line 42: logger.info(f\"Context Manager initialized: session={self.session_id}, max_messages={self.max_message",
+      "recommendation": "Sanitize logs, redact sensitive data, use structured logging",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure"
+      ]
+    },
+    {
+      "id": "AETHER-0031",
+      "title": "Potential Sensitive Data in Logs",
+      "severity": "LOW",
+      "cwe": "CWE-532",
+      "cvss_score": 4.0,
+      "description": "Possible logging of sensitive data (token)",
+      "impact": "Sensitive information may be exposed in log files",
+      "affected_files": [
+        "src\\cognitive\\llm\\context_manager.py:73"
+      ],
+      "proof_of_concept": "Line 73: logger.warning(f\"Token count ({self.token_count}) exceeds max ({self.max_tokens}), truncating...\")",
+      "recommendation": "Sanitize logs, redact sensitive data, use structured logging",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure"
+      ]
+    },
+    {
+      "id": "AETHER-0032",
+      "title": "Potential Sensitive Data in Logs",
+      "severity": "LOW",
+      "cwe": "CWE-532",
+      "cvss_score": 4.0,
+      "description": "Possible logging of sensitive data (token)",
+      "impact": "Sensitive information may be exposed in log files",
+      "affected_files": [
+        "src\\cognitive\\llm\\context_manager.py:76"
+      ],
+      "proof_of_concept": "Line 76: logger.debug(f\"Added {role} message: {message_tokens} tokens, total={self.token_count}\")",
+      "recommendation": "Sanitize logs, redact sensitive data, use structured logging",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure"
+      ]
+    },
+    {
+      "id": "AETHER-0033",
+      "title": "Potential Sensitive Data in Logs",
+      "severity": "LOW",
+      "cwe": "CWE-532",
+      "cvss_score": 4.0,
+      "description": "Possible logging of sensitive data (token)",
+      "impact": "Sensitive information may be exposed in log files",
+      "affected_files": [
+        "src\\cognitive\\llm\\context_manager.py:112"
+      ],
+      "proof_of_concept": "Line 112: logger.error(f\"Error counting tokens: {e}\")",
+      "recommendation": "Sanitize logs, redact sensitive data, use structured logging",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure"
+      ]
+    },
+    {
+      "id": "AETHER-0034",
+      "title": "Potential Sensitive Data in Logs",
+      "severity": "LOW",
+      "cwe": "CWE-532",
+      "cvss_score": 4.0,
+      "description": "Possible logging of sensitive data (token)",
+      "impact": "Sensitive information may be exposed in log files",
+      "affected_files": [
+        "src\\cognitive\\llm\\context_manager.py:125"
+      ],
+      "proof_of_concept": "Line 125: logger.debug(f\"Removed message to fit token limit: {removed.get('token_count', 0)} tokens\")",
+      "recommendation": "Sanitize logs, redact sensitive data, use structured logging",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure"
+      ]
+    },
+    {
+      "id": "AETHER-0035",
+      "title": "Potential Sensitive Data in Logs",
+      "severity": "LOW",
+      "cwe": "CWE-532",
+      "cvss_score": 4.0,
+      "description": "Possible logging of sensitive data (token)",
+      "impact": "Sensitive information may be exposed in log files",
+      "affected_files": [
+        "src\\cognitive\\llm\\context_manager.py:170"
+      ],
+      "proof_of_concept": "Line 170: logger.info(f\"Compressed context: {len(compressed)} messages, {current_tokens} tokens\")",
+      "recommendation": "Sanitize logs, redact sensitive data, use structured logging",
+      "status": "Open",
+      "references": [
+        "https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure"
+      ]
+    }
+  ]
+}

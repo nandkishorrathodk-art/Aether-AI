@@ -1,0 +1,215 @@
+.jarvis-dashboard {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000000;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+}
+
+.jarvis-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.jarvis-header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.jarvis-title {
+  color: #00ffff;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+  font-family: 'Courier New', monospace;
+}
+
+.jarvis-subtitle {
+  color: #00cccc;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+
+.voice-control {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.voice-button {
+  width: 60px !important;
+  height: 60px !important;
+  background: rgba(0, 255, 255, 0.1) !important;
+  border: 2px solid #00ffff !important;
+  color: #00ffff !important;
+  transition: all 0.3s ease !important;
+}
+
+.voice-button:hover {
+  background: rgba(0, 255, 255, 0.2) !important;
+  box-shadow: 0 0 20px #00ffff !important;
+}
+
+.voice-button.active {
+  background: rgba(0, 255, 255, 0.3) !important;
+  box-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff !important;
+  animation: voice-pulse 1.5s infinite;
+}
+
+@keyframes voice-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.voice-status {
+  color: #00ffff !important;
+  margin-top: 8px !important;
+  display: block;
+  letter-spacing: 2px;
+  font-size: 0.7rem !important;
+}
+
+.stats-panel {
+  position: absolute;
+  padding: 15px 20px;
+  background: rgba(0, 50, 50, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  min-width: 150px;
+  z-index: 10;
+}
+
+.stats-panel.top-left {
+  top: 100px;
+  left: 40px;
+}
+
+.stats-panel.top-right {
+  top: 100px;
+  right: 40px;
+}
+
+.stats-panel.bottom-left {
+  bottom: 100px;
+  left: 40px;
+}
+
+.stats-panel.bottom-right {
+  bottom: 100px;
+  right: 40px;
+}
+
+.stat-label {
+  color: #00cccc !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 5px !important;
+}
+
+.stat-value {
+  color: #00ffff !important;
+  font-family: 'Courier New', monospace !important;
+  font-weight: bold !important;
+  text-shadow: 0 0 5px #00ffff;
+  margin: 0 !important;
+}
+
+.status-online {
+  color: #00ff00 !important;
+  text-shadow: 0 0 5px #00ff00 !important;
+}
+
+.stat-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffff, #00ff00);
+  box-shadow: 0 0 10px #00ffff;
+  transition: width 0.5s ease;
+}
+
+.audio-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.audio-pulse {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #00ffff;
+  border-radius: 50%;
+  animation: audio-ripple 2s infinite;
+  box-shadow: 0 0 20px #00ffff, inset 0 0 20px #00ffff;
+}
+
+@keyframes audio-ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-panel {
+    min-width: 100px;
+    padding: 10px;
+  }
+
+  .stats-panel.top-left,
+  .stats-panel.top-right {
+    top: 70px;
+  }
+
+  .stats-panel.top-left,
+  .stats-panel.bottom-left {
+    left: 10px;
+  }
+
+  .stats-panel.top-right,
+  .stats-panel.bottom-right {
+    right: 10px;
+  }
+
+  .jarvis-canvas {
+    width: 100%;
+    height: auto;
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "feedback_history": [
+    {
+      "timestamp": "2026-02-13T08:36:50.799834",
+      "prompt": "Test prompt",
+      "response": "Test response",
+      "task_type": "test",
+      "feedback": null,
+      "success": true
+    },
+    {
+      "timestamp": "2026-02-13T08:42:28.471297",
+      "prompt": "Test prompt",
+      "response": "Test response",
+      "task_type": "test",
+      "feedback": null,
+      "success": true
+    },
+    {
+      "timestamp": "2026-02-13T08:43:05.038338",
+      "prompt": "Test prompt",
+      "response": "Test response",
+      "task_type": "test",
+      "feedback": null,
+      "success": true
+    }
+  ],
+  "prompt_performance": {
+    "test prompt": {
+      "total": 3,
+      "successful": 3,
+      "avg_quality": 0.0
+    }
+  },
+  "user_corrections": [],
+  "success_patterns": []
+}

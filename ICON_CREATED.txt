@@ -1,0 +1,28 @@
+✅ AETHER AI ICON BAN GAYA!
+
+📍 Icon Locations:
+
+1. Windows Installer Icon:
+   ui\assets\icon.ico
+   
+2. PNG Icons (Various Sizes):
+   ui\public\icon_16x16.png    (Small - System tray)
+   ui\public\icon_32x32.png    (Small - Taskbar)
+   ui\public\icon_48x48.png    (Medium - Desktop)
+   ui\public\icon_64x64.png    (Medium - Desktop HD)
+   ui\public\icon_128x128.png  (Large - Retina)
+   ui\public\icon_256x256.png  (Large - High-res)
+   ui\public\icon_512x512.png  (Extra Large - 4K displays)
+
+🎨 Icon Design:
+   - Purple/Indigo circle (#6366f1)
+   - White audio wave bars (5 bars)
+   - Center bar tallest
+   - Clean, modern, minimal
+   - Based on your app's voice UI
+
+📦 Ready to Use!
+
+Icon ab app mein automatically show hoga!
+
+🚀 Next: RUN_AETHER.bat chalao aur dekho!

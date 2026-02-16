@@ -1,0 +1,108 @@
+.compact-taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: rgba(0, 20, 20, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  z-index: 1000;
+  font-family: 'Courier New', monospace;
+}
+
+.taskbar-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+.taskbar-label {
+  color: #00ffff !important;
+  font-weight: bold !important;
+  letter-spacing: 2px;
+  font-size: 0.75rem !important;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.tasks {
+  flex: 1;
+  justify-content: center;
+  gap: 8px;
+}
+
+.task-indicator {
+  display: flex;
+  align-items: center;
+  padding: 2px 6px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.task-indicator:hover {
+  background: rgba(0, 255, 255, 0.15);
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+@keyframes task-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.stats {
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+
+.stat-item .MuiTypography-root {
+  font-family: 'Courier New', monospace !important;
+  font-weight: bold;
+  text-shadow: 0 0 3px currentColor;
+}
+
+.time-display {
+  color: #00ffff !important;
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+@media (max-width: 768px) {
+  .compact-taskbar {
+    height: 30px;
+    padding: 0 10px;
+  }
+
+  .taskbar-section {
+    gap: 5px;
+  }
+
+  .stats {
+    display: none;
+  }
+
+  .tasks {
+    gap: 5px;
+  }
+}

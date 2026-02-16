@@ -1,0 +1,187 @@
+========================================
+  AETHER AI - HOW TO USE
+========================================
+
+IMPORTANT: Aether AI is an API-only system right now!
+It doesn't have a chat window - you interact via:
+  1. Web Browser (API Docs)
+  2. Command Line Scripts
+  3. API Calls
+
+========================================
+  METHOD 1: USE WEB BROWSER (EASIEST)
+========================================
+
+1. Make sure server is running (CLICK-ME.bat or RUN.bat)
+
+2. Open browser and go to:
+   http://127.0.0.1:8000/docs
+
+3. You'll see ALL available endpoints
+
+4. To chat:
+   - Find: POST /api/v1/chat/conversation
+   - Click "Try it out"
+   - Edit the JSON:
+     {
+       "message": "Hello! Who are you?",
+       "session_id": "test123",
+       "stream": false
+     }
+   - Click "Execute"
+   - See response below!
+
+========================================
+  METHOD 2: USE COMMAND LINE CHAT
+========================================
+
+1. Make sure server is running
+
+2. Double-click: CHAT.bat
+
+3. Type your messages and press Enter
+
+4. Aether AI will respond!
+
+========================================
+ METHOD 3: USE OPENCLAW (WEB SCRAPING)
+========================================
+
+1. Server running? Good!
+
+2. Open browser: http://127.0.0.1:8000/docs
+
+3. Find: POST /api/v1/openclaw/scrape
+
+4. Try it with:
+   {
+     "url": "https://example.com"
+   }
+
+5. Get scraped content!
+
+========================================
+  WHY NO CHAT WINDOW?
+========================================
+
+Aether AI is a BACKEND system (API server).
+It provides services that OTHER apps use.
+
+Think of it like:
+  - Google Maps API (backend)
+  - vs Google Maps App (frontend)
+
+Aether AI = Backend (what you have)
+Chat UI = Frontend (not built yet)
+
+You CAN use it through:
+  ✓ API Docs (browser)
+  ✓ CHAT.bat (command line)
+  ✓ Python scripts
+  ✓ Any HTTP client (Postman, curl, etc.)
+
+========================================
+  CURRENT ISSUE: AI PROVIDERS
+========================================
+
+Problem: No valid API keys configured!
+
+Your .env file:
+  OPENAI_API_KEY=        (empty)
+  ANTHROPIC_API_KEY=     (empty)
+  FIREWORKS_API_KEY=fw_21U3tFvDSUuJhbW8CXpsNs (set)
+  
+But Fireworks API might have issues.
+
+SOLUTION:
+
+Option 1: Add OpenAI API key
+  1. Get key from: https://platform.openai.com/api-keys
+  2. Edit .env file
+  3. Add: OPENAI_API_KEY=sk-your-key-here
+  4. Restart server
+
+Option 2: Add Anthropic API key  
+  1. Get key from: https://console.anthropic.com/
+  2. Edit .env file
+  3. Add: ANTHROPIC_API_KEY=sk-ant-your-key
+  4. Restart server
+
+Option 3: Test without AI (use other features)
+  - OpenClaw scraping works WITHOUT API keys!
+  - Task management works
+  - Settings work
+
+========================================
+  QUICK TESTS (NO AI NEEDED)
+========================================
+
+Test 1: OpenClaw Scraping
+  Browser: http://127.0.0.1:8000/docs
+  Endpoint: POST /api/v1/openclaw/scrape
+  Input: {"url": "https://example.com"}
+  Result: You'll get page text, links, images!
+
+Test 2: Check Status
+  Browser: http://127.0.0.1:8000/health
+  Result: {"status":"healthy","version":"0.1.0"}
+
+Test 3: List Providers
+  Browser: http://127.0.0.1:8000/api/v1/chat/providers
+  Result: List of all AI providers
+
+========================================
+  SIMPLE DEMO SCRIPT
+========================================
+
+Run this (NO AI KEYS NEEDED):
+
+  python quick-openclaw-test.py
+
+This will show you web scraping in action!
+
+========================================
+  SUMMARY
+========================================
+
+What's Working:
+  ✓ API Server
+  ✓ All endpoints
+  ✓ OpenClaw (web scraping)
+  ✓ Task management
+  ✓ Settings
+  ✓ Provider detection
+
+What's NOT Working:
+  ✗ AI Chat (no valid API keys)
+  ✗ Conversation (needs API keys)
+
+What You Need:
+  → Add API keys to .env file
+  → Restart server
+  → Then AI chat will work!
+
+========================================
+  NEXT STEPS
+========================================
+
+1. Get API key from OpenAI or Anthropic
+
+2. Edit .env file:
+   notepad .env
+
+3. Add your key:
+   OPENAI_API_KEY=sk-your-actual-key-here
+
+4. Save file
+
+5. Restart server:
+   Ctrl+C (stop server)
+   CLICK-ME.bat (start again)
+
+6. Test chat:
+   CHAT.bat
+
+7. It works! 🎉
+
+========================================

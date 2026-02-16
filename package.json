@@ -1,0 +1,33 @@
+{
+  "name": "aether-ai",
+  "version": "0.5.0",
+  "description": "Voice-First AI Assistant - Android & Desktop",
+  "main": "index.android.js",
+  "scripts": {
+    "android": "react-native run-android",
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:install": "cd android && ./gradlew installRelease",
+    "android:clean": "cd android && ./gradlew clean",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-native": "0.73.2",
+    "@react-native-voice/voice": "^3.2.4",
+    "react-native-tts": "^4.1.0",
+    "react-native-vector-icons": "^10.0.3",
+    "axios": "^1.6.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/preset-env": "^7.23.7",
+    "@babel/runtime": "^7.23.7",
+    "@react-native/babel-preset": "^0.73.19",
+    "@react-native/metro-config": "^0.73.3",
+    "metro-react-native-babel-preset": "^0.77.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
