@@ -1,0 +1,42 @@
+{
+  "user_id": "default",
+  "created_at": "2026-02-13T03:06:50.795312",
+  "updated_at": "2026-02-13T03:13:05.009869",
+  "preferences": {
+    "language": "en",
+    "voice_gender": "female",
+    "response_style": "balanced",
+    "verbosity": "normal",
+    "timezone": "UTC",
+    "theme": "dark"
+  },
+  "personal_info": {
+    "name": null,
+    "occupation": null,
+    "interests": [],
+    "skills": []
+  },
+  "habits": {
+    "active_hours": [],
+    "frequent_tasks": [],
+    "communication_style": "professional"
+  },
+  "learned_patterns": {
+    "favorite_topics": [],
+    "disliked_topics": [],
+    "common_queries": [],
+    "shortcuts": {}
+  },
+  "settings": {
+    "enable_proactive_suggestions": true,
+    "enable_memory_recall": true,
+    "privacy_mode": false,
+    "data_retention_days": 365
+  },
+  "statistics": {
+    "total_conversations": 0,
+    "total_messages": 0,
+    "favorite_features": [],
+    "last_active": "2026-02-13T03:13:05.009869"
+  }
+}

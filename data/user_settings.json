@@ -1,0 +1,35 @@
+{
+  "settings": {
+    "voice": {
+      "wake_word": "jarvis",
+      "stt_provider": "local",
+      "stt_model": "base",
+      "stt_language": null,
+      "tts_provider": "pyttsx3",
+      "tts_voice": "female",
+      "tts_rate": 175,
+      "tts_volume": 1.0
+    },
+    "ai": {
+      "default_provider": null,
+      "default_model": null,
+      "temperature": 0.7,
+      "max_tokens": 1000,
+      "context_window": 10
+    },
+    "memory": {
+      "enable_memory": true,
+      "auto_embed": true,
+      "memory_retention_days": 90
+    },
+    "system": {
+      "auto_launch": false,
+      "minimize_to_tray": true,
+      "log_level": "INFO",
+      "api_host": "127.0.0.1",
+      "api_port": 8000
+    },
+    "custom": {}
+  },
+  "last_updated": "2026-02-15T13:47:14.395891"
+}

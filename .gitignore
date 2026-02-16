@@ -34,7 +34,8 @@ models/
 *.safetensors
 
 # Data
-data/
+data/chromadb/
+data/tts_cache/
 *.db
 *.sqlite
 *.sqlite3
@@ -74,9 +75,16 @@ package-lock.json
 
 # Rust
 aether-rust/target/
+*.rlib
+*.rmeta
 AetherCPP/build/
 *.exe
 *.dll
+
+# Extracted/temporary
+openclaw_source/
+vy_extracted/
+security_backups/
 
 # Testing
 .coverage

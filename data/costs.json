@@ -1,0 +1,1190 @@
+[
+  {
+    "timestamp": "2026-02-14T08:57:29.420338",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 340,
+    "cost_usd": 0.00023460000000000004,
+    "task_type": "conversation",
+    "latency_ms": 3490.481376647949
+  },
+  {
+    "timestamp": "2026-02-14T08:58:19.568903",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 625,
+    "cost_usd": 0.00043125000000000005,
+    "task_type": "conversation",
+    "latency_ms": 1151.4577865600586
+  },
+  {
+    "timestamp": "2026-02-14T08:59:18.895354",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 929,
+    "cost_usd": 0.0006410100000000001,
+    "task_type": "conversation",
+    "latency_ms": 10260.868072509766
+  },
+  {
+    "timestamp": "2026-02-14T09:00:12.632983",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1203,
+    "cost_usd": 0.0008300700000000001,
+    "task_type": "conversation",
+    "latency_ms": 7702.092170715332
+  },
+  {
+    "timestamp": "2026-02-14T09:01:00.092207",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1496,
+    "cost_usd": 0.00103224,
+    "task_type": "conversation",
+    "latency_ms": 1814.222812652588
+  },
+  {
+    "timestamp": "2026-02-14T09:44:35.382251",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1786,
+    "cost_usd": 0.0012323400000000002,
+    "task_type": "conversation",
+    "latency_ms": 984.600305557251
+  },
+  {
+    "timestamp": "2026-02-14T10:59:20.293492",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1794,
+    "cost_usd": 0.0012378600000000001,
+    "task_type": "conversation",
+    "latency_ms": 1191.4377212524414
+  },
+  {
+    "timestamp": "2026-02-14T11:00:14.547010",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1805,
+    "cost_usd": 0.0012454500000000002,
+    "task_type": "conversation",
+    "latency_ms": 1053.790807723999
+  },
+  {
+    "timestamp": "2026-02-14T11:01:07.584730",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1811,
+    "cost_usd": 0.00124959,
+    "task_type": "conversation",
+    "latency_ms": 1068.9215660095215
+  },
+  {
+    "timestamp": "2026-02-14T11:01:59.953216",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1832,
+    "cost_usd": 0.00126408,
+    "task_type": "conversation",
+    "latency_ms": 1082.5269222259521
+  },
+  {
+    "timestamp": "2026-02-14T11:02:51.716072",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1840,
+    "cost_usd": 0.0012696000000000003,
+    "task_type": "conversation",
+    "latency_ms": 1015.52414894104
+  },
+  {
+    "timestamp": "2026-02-14T11:03:43.970220",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1858,
+    "cost_usd": 0.0012820200000000003,
+    "task_type": "conversation",
+    "latency_ms": 1029.536247253418
+  },
+  {
+    "timestamp": "2026-02-14T11:05:13.067247",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 348,
+    "cost_usd": 0.00024012,
+    "task_type": "conversation",
+    "latency_ms": 856.2362194061279
+  },
+  {
+    "timestamp": "2026-02-14T11:06:04.450003",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 635,
+    "cost_usd": 0.00043815000000000005,
+    "task_type": "conversation",
+    "latency_ms": 1734.7326278686523
+  },
+  {
+    "timestamp": "2026-02-14T11:06:51.893406",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 918,
+    "cost_usd": 0.0006334200000000001,
+    "task_type": "conversation",
+    "latency_ms": 1011.9998455047607
+  },
+  {
+    "timestamp": "2026-02-14T11:11:15.238906",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 354,
+    "cost_usd": 0.00024426,
+    "task_type": "conversation",
+    "latency_ms": 647.0727920532227
+  },
+  {
+    "timestamp": "2026-02-14T11:11:53.027824",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 641,
+    "cost_usd": 0.0004422900000000001,
+    "task_type": "conversation",
+    "latency_ms": 1025.5708694458008
+  },
+  {
+    "timestamp": "2026-02-15T07:20:16.281740",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 241,
+    "cost_usd": 0.000241,
+    "task_type": "fast",
+    "latency_ms": 5332.630157470703
+  },
+  {
+    "timestamp": "2026-02-15T07:21:01.755389",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 444,
+    "cost_usd": 0.000444,
+    "task_type": "fast",
+    "latency_ms": 26316.447257995605
+  },
+  {
+    "timestamp": "2026-02-15T07:21:41.277885",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 567,
+    "cost_usd": 0.000567,
+    "task_type": "fast",
+    "latency_ms": 26237.192153930664
+  },
+  {
+    "timestamp": "2026-02-15T07:24:37.319602",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 289,
+    "cost_usd": 0.000289,
+    "task_type": "conversation",
+    "latency_ms": 8697.21245765686
+  },
+  {
+    "timestamp": "2026-02-15T07:24:55.224185",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 418,
+    "cost_usd": 0.00041799999999999997,
+    "task_type": "fast",
+    "latency_ms": 8063.242435455322
+  },
+  {
+    "timestamp": "2026-02-15T07:25:20.646782",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 675,
+    "cost_usd": 0.000675,
+    "task_type": "fast",
+    "latency_ms": 11523.800611495972
+  },
+  {
+    "timestamp": "2026-02-15T07:26:24.252088",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 992,
+    "cost_usd": 0.000992,
+    "task_type": "fast",
+    "latency_ms": 25559.04722213745
+  },
+  {
+    "timestamp": "2026-02-15T07:26:43.233358",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 1048,
+    "cost_usd": 0.001048,
+    "task_type": "conversation",
+    "latency_ms": 8540.654420852661
+  },
+  {
+    "timestamp": "2026-02-15T07:26:58.722569",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 1264,
+    "cost_usd": 0.001264,
+    "task_type": "code",
+    "latency_ms": 10380.375623703003
+  },
+  {
+    "timestamp": "2026-02-15T07:27:15.776791",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 1433,
+    "cost_usd": 0.001433,
+    "task_type": "fast",
+    "latency_ms": 11062.799453735352
+  },
+  {
+    "timestamp": "2026-02-15T07:28:00.338252",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 1630,
+    "cost_usd": 0.00163,
+    "task_type": "conversation",
+    "latency_ms": 18386.58380508423
+  },
+  {
+    "timestamp": "2026-02-15T07:29:04.088438",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 1531,
+    "cost_usd": 0.001531,
+    "task_type": "conversation",
+    "latency_ms": 22399.463653564453
+  },
+  {
+    "timestamp": "2026-02-15T07:30:10.140097",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 1728,
+    "cost_usd": 0.001728,
+    "task_type": "fast",
+    "latency_ms": 26578.362703323364
+  },
+  {
+    "timestamp": "2026-02-15T07:30:59.882051",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 2109,
+    "cost_usd": 0.002109,
+    "task_type": "fast",
+    "latency_ms": 17381.147384643555
+  },
+  {
+    "timestamp": "2026-02-15T07:31:55.337574",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 2282,
+    "cost_usd": 0.002282,
+    "task_type": "fast",
+    "latency_ms": 20749.131441116333
+  },
+  {
+    "timestamp": "2026-02-15T07:32:50.521051",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 2422,
+    "cost_usd": 0.002422,
+    "task_type": "fast",
+    "latency_ms": 40635.57195663452
+  },
+  {
+    "timestamp": "2026-02-15T07:34:05.365074",
+    "provider": "openrouter",
+    "model": "minimax/minimax-m2.5",
+    "tokens_used": 2586,
+    "cost_usd": 0.0025859999999999998,
+    "task_type": "conversation",
+    "latency_ms": 30937.448024749756
+  },
+  {
+    "timestamp": "2026-02-15T08:41:30.079875",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1532,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 16961.23242378235
+  },
+  {
+    "timestamp": "2026-02-15T08:41:59.311372",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1308,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 11802.731275558472
+  },
+  {
+    "timestamp": "2026-02-15T08:42:25.898502",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1354,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 10881.83331489563
+  },
+  {
+    "timestamp": "2026-02-15T08:43:05.161083",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1337,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 9663.226842880249
+  },
+  {
+    "timestamp": "2026-02-15T08:43:44.675178",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1421,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 9688.795804977417
+  },
+  {
+    "timestamp": "2026-02-15T12:16:34.400184",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 411,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 6318.186283111572
+  },
+  {
+    "timestamp": "2026-02-15T12:16:46.648937",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 867,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 12227.689504623413
+  },
+  {
+    "timestamp": "2026-02-15T12:16:52.584311",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 881,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 5927.185297012329
+  },
+  {
+    "timestamp": "2026-02-15T12:17:04.053380",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 915,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 11375.719547271729
+  },
+  {
+    "timestamp": "2026-02-15T12:17:11.737454",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 765,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 7675.792694091797
+  },
+  {
+    "timestamp": "2026-02-15T12:17:39.223515",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2281,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 27450.63042640686
+  },
+  {
+    "timestamp": "2026-02-15T12:18:45.181520",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2911,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 65943.84908676147
+  },
+  {
+    "timestamp": "2026-02-15T12:19:10.196233",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2451,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 25004.717111587524
+  },
+  {
+    "timestamp": "2026-02-15T12:19:33.460397",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2549,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 23257.167100906372
+  },
+  {
+    "timestamp": "2026-02-15T12:19:54.553901",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2800,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 21081.154823303223
+  },
+  {
+    "timestamp": "2026-02-15T12:20:46.360693",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2800,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 51792.75178909302
+  },
+  {
+    "timestamp": "2026-02-15T12:21:39.322807",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2451,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 52950.95205307007
+  },
+  {
+    "timestamp": "2026-02-15T12:22:40.954317",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2621,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 61622.51615524292
+  },
+  {
+    "timestamp": "2026-02-15T12:23:05.701030",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2791,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 24739.734172821045
+  },
+  {
+    "timestamp": "2026-02-15T12:24:06.693277",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2703,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 60983.283281326294
+  },
+  {
+    "timestamp": "2026-02-15T13:20:01.437939",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 448,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 10409.424304962158
+  },
+  {
+    "timestamp": "2026-02-15T13:20:07.403861",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 382,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 5433.058023452759
+  },
+  {
+    "timestamp": "2026-02-15T13:20:46.992713",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 336,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 5155.970811843872
+  },
+  {
+    "timestamp": "2026-02-15T13:20:56.036843",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 442,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 9020.098209381104
+  },
+  {
+    "timestamp": "2026-02-15T13:21:00.813873",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 621,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 4771.693468093872
+  },
+  {
+    "timestamp": "2026-02-15T13:21:10.086443",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 922,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 9182.814359664917
+  },
+  {
+    "timestamp": "2026-02-15T13:21:16.514418",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 719,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 6420.457363128662
+  },
+  {
+    "timestamp": "2026-02-15T13:22:04.468663",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2281,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 47929.447650909424
+  },
+  {
+    "timestamp": "2026-02-15T13:22:23.594162",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2451,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 19117.440462112427
+  },
+  {
+    "timestamp": "2026-02-15T13:24:38.160728",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1157,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 20588.432550430298
+  },
+  {
+    "timestamp": "2026-02-15T13:28:02.053759",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 819,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 9448.607206344604
+  },
+  {
+    "timestamp": "2026-02-15T13:40:41.767820",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1167,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 16062.567710876465
+  },
+  {
+    "timestamp": "2026-02-15T13:40:59.771606",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 318,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 5867.65193939209
+  },
+  {
+    "timestamp": "2026-02-15T13:41:17.469970",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1807,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 11857.092380523682
+  },
+  {
+    "timestamp": "2026-02-15T13:41:45.190322",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2147,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 10403.74493598938
+  },
+  {
+    "timestamp": "2026-02-15T13:42:12.959844",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1932,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 8097.782611846924
+  },
+  {
+    "timestamp": "2026-02-15T13:42:39.567605",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2656,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 12661.96870803833
+  },
+  {
+    "timestamp": "2026-02-15T13:43:02.808049",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2516,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 10449.973583221436
+  },
+  {
+    "timestamp": "2026-02-15T13:44:14.917551",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2921,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 13155.831098556519
+  },
+  {
+    "timestamp": "2026-02-15T13:46:57.427434",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 376,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 11917.852401733398
+  },
+  {
+    "timestamp": "2026-02-15T13:47:07.335860",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 391,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 9279.148578643799
+  },
+  {
+    "timestamp": "2026-02-15T13:47:46.019362",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 527,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 5231.972217559814
+  },
+  {
+    "timestamp": "2026-02-15T13:47:54.360217",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1046,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 8147.202253341675
+  },
+  {
+    "timestamp": "2026-02-15T13:47:59.657609",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1007,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 5134.557485580444
+  },
+  {
+    "timestamp": "2026-02-15T13:48:08.830041",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1451,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 8786.687135696411
+  },
+  {
+    "timestamp": "2026-02-15T13:48:13.969298",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 390,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 4927.710294723511
+  },
+  {
+    "timestamp": "2026-02-15T13:49:08.387625",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2579,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 53811.77878379822
+  },
+  {
+    "timestamp": "2026-02-15T13:49:27.297891",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2685,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 18635.321855545044
+  },
+  {
+    "timestamp": "2026-02-15T13:50:13.399767",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2761,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 45675.93598365784
+  },
+  {
+    "timestamp": "2026-02-15T13:50:52.791945",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2767,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 39224.52521324158
+  },
+  {
+    "timestamp": "2026-02-15T13:51:46.089673",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2767,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 53102.261781692505
+  },
+  {
+    "timestamp": "2026-02-15T13:52:34.091801",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2791,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 47774.71208572388
+  },
+  {
+    "timestamp": "2026-02-15T13:56:52.375285",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1820,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 13208.372354507446
+  },
+  {
+    "timestamp": "2026-02-15T13:57:36.880201",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1851,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 9603.736639022827
+  },
+  {
+    "timestamp": "2026-02-15T13:58:07.690228",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1850,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 11549.776315689087
+  },
+  {
+    "timestamp": "2026-02-15T13:58:27.563508",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1380,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 7592.747926712036
+  },
+  {
+    "timestamp": "2026-02-15T13:58:51.885646",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1389,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 6478.591680526733
+  },
+  {
+    "timestamp": "2026-02-15T13:59:23.720498",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1930,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 18427.249431610107
+  },
+  {
+    "timestamp": "2026-02-15T14:00:24.363167",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2699,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 14481.460571289062
+  },
+  {
+    "timestamp": "2026-02-15T14:01:10.686977",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2599,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 20939.992666244507
+  },
+  {
+    "timestamp": "2026-02-15T14:23:39.917992",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1846,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 28150.471448898315
+  },
+  {
+    "timestamp": "2026-02-15T14:34:50.690155",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1840,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 22123.518466949463
+  },
+  {
+    "timestamp": "2026-02-15T15:13:02.295398",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 842,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 9167.629957199097
+  },
+  {
+    "timestamp": "2026-02-15T15:18:50.693350",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 717,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 16949.831247329712
+  },
+  {
+    "timestamp": "2026-02-15T15:43:41.688583",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2265,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 14843.72091293335
+  },
+  {
+    "timestamp": "2026-02-15T15:46:49.651061",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2917,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 53802.57773399353
+  },
+  {
+    "timestamp": "2026-02-15T15:51:01.019363",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1011,
+    "cost_usd": 0.0,
+    "task_type": "conversation",
+    "latency_ms": 30922.239780426025
+  },
+  {
+    "timestamp": "2026-02-16T18:13:17.730268",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 567,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 10715.633869171143
+  },
+  {
+    "timestamp": "2026-02-16T18:25:53.742109",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1942,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 15813.239812850952
+  },
+  {
+    "timestamp": "2026-02-16T18:32:54.098644",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2580,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 25596.965551376343
+  },
+  {
+    "timestamp": "2026-02-16T18:37:20.129207",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2448,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 39211.17973327637
+  },
+  {
+    "timestamp": "2026-02-16T18:42:41.864840",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 1774,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 11163.28239440918
+  },
+  {
+    "timestamp": "2026-02-16T18:43:27.765730",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 3124,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 22895.262241363525
+  },
+  {
+    "timestamp": "2026-02-16T18:44:34.337724",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 3559,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 23898.97584915161
+  },
+  {
+    "timestamp": "2026-02-16T18:45:59.618803",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 3269,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 11947.405099868774
+  },
+  {
+    "timestamp": "2026-02-16T18:50:43.692903",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 2468,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 204945.31655311584
+  },
+  {
+    "timestamp": "2026-02-16T18:53:22.308071",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 3992,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 87072.89981842041
+  },
+  {
+    "timestamp": "2026-02-16T18:54:05.889138",
+    "provider": "openrouter",
+    "model": "openrouter/auto",
+    "tokens_used": 3132,
+    "cost_usd": 0.0,
+    "task_type": "fast",
+    "latency_ms": 22037.741661071777
+  },
+  {
+    "timestamp": "2026-02-16T18:56:23.989866",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 2544,
+    "cost_usd": 0.0017553600000000003,
+    "task_type": "fast",
+    "latency_ms": 3728.79695892334
+  },
+  {
+    "timestamp": "2026-02-16T18:56:39.237218",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1677,
+    "cost_usd": 0.0011571300000000001,
+    "task_type": "fast",
+    "latency_ms": 1824.5599269866943
+  },
+  {
+    "timestamp": "2026-02-16T18:59:51.849373",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 2088,
+    "cost_usd": 0.0014407200000000002,
+    "task_type": "fast",
+    "latency_ms": 1909.2419147491455
+  },
+  {
+    "timestamp": "2026-02-16T19:02:40.791594",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1876,
+    "cost_usd": 0.00129444,
+    "task_type": "fast",
+    "latency_ms": 1827.5463581085205
+  },
+  {
+    "timestamp": "2026-02-16T19:03:54.438239",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 2180,
+    "cost_usd": 0.0015042000000000002,
+    "task_type": "fast",
+    "latency_ms": 1713.5539054870605
+  },
+  {
+    "timestamp": "2026-02-16T19:04:42.670722",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 2084,
+    "cost_usd": 0.0014379600000000003,
+    "task_type": "fast",
+    "latency_ms": 1665.085792541504
+  },
+  {
+    "timestamp": "2026-02-16T19:21:34.009808",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1813,
+    "cost_usd": 0.0012509700000000001,
+    "task_type": "fast",
+    "latency_ms": 9152.233362197876
+  },
+  {
+    "timestamp": "2026-02-16T19:22:35.068319",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1883,
+    "cost_usd": 0.0012992700000000002,
+    "task_type": "fast",
+    "latency_ms": 6608.844757080078
+  },
+  {
+    "timestamp": "2026-02-16T19:26:02.482892",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1832,
+    "cost_usd": 0.00126408,
+    "task_type": "fast",
+    "latency_ms": 1770.8320617675781
+  },
+  {
+    "timestamp": "2026-02-16T19:42:38.234449",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1866,
+    "cost_usd": 0.0012875400000000002,
+    "task_type": "fast",
+    "latency_ms": 1922.8856563568115
+  },
+  {
+    "timestamp": "2026-02-16T19:53:07.102595",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1780,
+    "cost_usd": 0.0012282000000000003,
+    "task_type": "fast",
+    "latency_ms": 1105.886459350586
+  },
+  {
+    "timestamp": "2026-02-16T19:54:11.414453",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1631,
+    "cost_usd": 0.0011253900000000002,
+    "task_type": "fast",
+    "latency_ms": 871.6094493865967
+  },
+  {
+    "timestamp": "2026-02-16T19:54:37.377108",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1680,
+    "cost_usd": 0.0011592,
+    "task_type": "fast",
+    "latency_ms": 845.407247543335
+  },
+  {
+    "timestamp": "2026-02-16T19:55:03.388071",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1773,
+    "cost_usd": 0.00122337,
+    "task_type": "fast",
+    "latency_ms": 1268.9874172210693
+  },
+  {
+    "timestamp": "2026-02-16T19:56:55.243578",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1539,
+    "cost_usd": 0.0010619100000000001,
+    "task_type": "fast",
+    "latency_ms": 928.1232357025146
+  },
+  {
+    "timestamp": "2026-02-16T19:57:23.203664",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1616,
+    "cost_usd": 0.00111504,
+    "task_type": "fast",
+    "latency_ms": 1072.1302032470703
+  },
+  {
+    "timestamp": "2026-02-16T19:57:44.284597",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1683,
+    "cost_usd": 0.00116127,
+    "task_type": "fast",
+    "latency_ms": 1179.1486740112305
+  },
+  {
+    "timestamp": "2026-02-16T19:58:04.765686",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1709,
+    "cost_usd": 0.0011792100000000002,
+    "task_type": "fast",
+    "latency_ms": 986.114501953125
+  },
+  {
+    "timestamp": "2026-02-16T19:58:37.508930",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 2148,
+    "cost_usd": 0.0014821200000000002,
+    "task_type": "fast",
+    "latency_ms": 1119.8441982269287
+  },
+  {
+    "timestamp": "2026-02-16T19:59:31.423747",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 1447,
+    "cost_usd": 0.0009984300000000002,
+    "task_type": "fast",
+    "latency_ms": 931.6673278808594
+  }
+]
