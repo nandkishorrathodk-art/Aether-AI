@@ -3,62 +3,143 @@
 
 import os
 from pathlib import Path
+from collections import defaultdict
 
-def count_files(directory="."):
-    """Count files excluding certain directories"""
-    exclude_dirs = {'.git', 'venv', 'node_modules', '__pycache__', '.pytest_cache'}
+def count_files():
+    project_root = Path.cwd()
+    
+    # Exclude directories
+    exclude_dirs = {'venv', 'node_modules', '.git', '__pycache__', 'dist', 'build', 'htmlcov', '.pytest_cache', 'security_backups'}
     
     total_files = 0
-    file_counts = {}
+    total_size = 0
+    by_extension = defaultdict(lambda: {'count': 0, 'size': 0})
     
-    for root, dirs, files in os.walk(directory):
+    print("=" * 70)
+    print("AETHER AI - FILE COUNT ANALYSIS")
+    print("=" * 70)
+    
+    for root, dirs, files in os.walk(project_root):
         # Remove excluded directories
         dirs[:] = [d for d in dirs if d not in exclude_dirs]
         
-        # Count files
-        total_files += len(files)
-        
-        # Count by directory
-        rel_path = os.path.relpath(root, directory)
-        if rel_path == '.':
-            rel_path = 'root'
-        file_counts[rel_path] = file_counts.get(rel_path, 0) + len(files)
-    
-    return total_files, file_counts
-
-def main():
-    print("Aether AI - File Count Report")
-    print("=" * 60)
-    
-    total, counts = count_files()
+        for file in files:
+            file_path = Path(root) / file
+            try:
+                size = file_path.stat().st_size
+                ext = file_path.suffix.lower() or 'no extension'
+                
+                total_files += 1
+                total_size += size
+                by_extension[ext]['count'] += 1
+                by_extension[ext]['size'] += size
+            except:
+                pass
     
     # Sort by count
-    sorted_counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+    sorted_exts = sorted(by_extension.items(), key=lambda x: x[1]['count'], reverse=True)
     
-    print(f"\nTotal files (excluding venv, node_modules, .git): {total}")
-    print(f"\nTop 20 directories by file count:")
-    print("-" * 60)
+    print(f"\n[+] Total Files: {total_files:,}")
+    print(f"[+] Total Size: {total_size / (1024*1024):.2f} MB")
     
-    for i, (path, count) in enumerate(sorted_counts[:20], 1):
-        print(f"{i:2}. {path:40} {count:5} files")
+    print("\n" + "=" * 70)
+    print("FILE BREAKDOWN BY TYPE")
+    print("=" * 70)
+    print(f"{'Extension':<20} {'Count':<10} {'Size (MB)':<15} {'%':<10}")
+    print("-" * 70)
     
-    # File type analysis
-    print(f"\n" + "=" * 60)
-    print("File type breakdown:")
-    print("-" * 60)
+    for ext, data in sorted_exts[:20]:  # Top 20
+        count = data['count']
+        size_mb = data['size'] / (1024*1024)
+        percentage = (count / total_files) * 100
+        print(f"{ext:<20} {count:<10} {size_mb:<15.2f} {percentage:<10.1f}%")
     
-    extensions = {}
-    for root, dirs, files in os.walk("."):
-        dirs[:] = [d for d in dirs if d not in {'.git', 'venv', 'node_modules', '__pycache__'}]
+    # Key categories
+    print("\n" + "=" * 70)
+    print("KEY CATEGORIES")
+    print("=" * 70)
+    
+    categories = {
+        'Python Files': ['.py'],
+        'JavaScript/TypeScript': ['.js', '.jsx', '.ts', '.tsx'],
+        'Documentation': ['.md', '.txt'],
+        'Configuration': ['.json', '.yaml', '.yml', '.toml', '.ini', '.env'],
+        'C/C++': ['.c', '.cpp', '.h', '.hpp'],
+        'C#': ['.cs'],
+        'Swift': ['.swift'],
+        'Rust': ['.rs'],
+        'Images': ['.png', '.jpg', '.jpeg', '.gif', '.ico', '.svg'],
+        'Web': ['.html', '.css', '.scss'],
+        'Data': ['.csv', '.db', '.sqlite', '.sqlite3'],
+        'Archives': ['.zip', '.tar', '.gz'],
+    }
+    
+    for category, extensions in categories.items():
+        cat_count = sum(by_extension[ext]['count'] for ext in extensions)
+        cat_size = sum(by_extension[ext]['size'] for ext in extensions)
+        
+        if cat_count > 0:
+            print(f"\n{category}:")
+            print(f"  Files: {cat_count:,}")
+            print(f"  Size: {cat_size / (1024*1024):.2f} MB")
+            
+            for ext in extensions:
+                if by_extension[ext]['count'] > 0:
+                    print(f"    {ext}: {by_extension[ext]['count']} files")
+    
+    # Largest files
+    print("\n" + "=" * 70)
+    print("LARGEST FILES (Top 10)")
+    print("=" * 70)
+    
+    all_files = []
+    for root, dirs, files in os.walk(project_root):
+        dirs[:] = [d for d in dirs if d not in exclude_dirs]
         for file in files:
-            ext = Path(file).suffix or 'no extension'
-            extensions[ext] = extensions.get(ext, 0) + 1
+            file_path = Path(root) / file
+            try:
+                size = file_path.stat().st_size
+                all_files.append((file_path, size))
+            except:
+                pass
     
-    sorted_ext = sorted(extensions.items(), key=lambda x: x[1], reverse=True)
-    for ext, count in sorted_ext[:15]:
-        print(f"  {ext:15} {count:5} files")
+    all_files.sort(key=lambda x: x[1], reverse=True)
     
-    print("\n" + "=" * 60)
+    for i, (fpath, size) in enumerate(all_files[:10], 1):
+        rel_path = fpath.relative_to(project_root)
+        size_mb = size / (1024*1024)
+        print(f"{i:2}. {size_mb:8.2f} MB - {rel_path}")
+    
+    print("\n" + "=" * 70)
+    print("PROJECT STATISTICS")
+    print("=" * 70)
+    
+    # Count lines of code
+    code_extensions = {'.py', '.js', '.jsx', '.ts', '.tsx', '.c', '.cpp', '.cs', '.rs', '.swift'}
+    total_lines = 0
+    code_files = 0
+    
+    for root, dirs, files in os.walk(project_root):
+        dirs[:] = [d for d in dirs if d not in exclude_dirs]
+        for file in files:
+            if Path(file).suffix.lower() in code_extensions:
+                try:
+                    with open(Path(root) / file, 'r', encoding='utf-8', errors='ignore') as f:
+                        lines = len(f.readlines())
+                        total_lines += lines
+                        code_files += 1
+                except:
+                    pass
+    
+    print(f"\n[+] Code Files: {code_files:,}")
+    print(f"[+] Total Lines of Code: {total_lines:,}")
+    print(f"[+] Average Lines per File: {total_lines // code_files if code_files > 0 else 0:,}")
+    
+    # Documentation
+    doc_files = by_extension['.md']['count']
+    print(f"\n[+] Documentation Files (.md): {doc_files}")
+    
+    print("\n" + "=" * 70)
 
 if __name__ == "__main__":
-    main()
+    count_files()
