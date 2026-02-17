@@ -11,6 +11,7 @@ from datetime import datetime
 
 from src.bugbounty.auto_hunter import AutoHunter
 from src.bugbounty.models import ScanStatus, VulnerabilitySeverity
+from src.bugbounty.auto_submitter import AutoSubmitter
 from src.security.bugbounty.scope_validator import ScopeValidator, Program
 import logging
 
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/bugbounty/auto", tags=["Bug Bounty Autopilot"])
 
 auto_hunter = AutoHunter()
+auto_submitter = AutoSubmitter()
 
 programs: Dict[str, ScopeValidator] = {}
 
@@ -346,7 +348,291 @@ async def health_check():
             "scanner_manager": True,
             "poc_generator": True,
             "report_builder": True,
-            "auto_hunter": True
+            "auto_hunter": True,
+            "auto_submitter": True
         },
         "active_hunts": len(auto_hunter.get_active_hunts())
     }
+
+
+# === NEW: Platform Submission Endpoints ===
+
+class SubmissionRequest(BaseModel):
+    """Universal submission request for any platform"""
+    platform: str
+    program: str
+    report_data: Dict[str, Any]
+
+
+class BatchSubmissionRequest(BaseModel):
+    """Batch submission request"""
+    submissions: List[Dict[str, Any]]
+
+
+@router.get("/platforms")
+async def get_available_platforms():
+    """
+    Get list of configured bug bounty platforms.
+    
+    Returns platforms that have valid API credentials configured.
+    """
+    try:
+        platforms = auto_submitter.get_available_platforms()
+        
+        return {
+            "platforms": platforms,
+            "count": len(platforms),
+            "supported": ["hackerone", "bugcrowd", "intigriti", "yeswehack"]
+        }
+    except Exception as e:
+        logger.error(f"Failed to get platforms: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/platforms/{platform}/programs")
+async def get_platform_programs(platform: str):
+    """
+    Get list of programs for a specific platform.
+    
+    Args:
+        platform: Platform name (hackerone, bugcrowd, intigriti, yeswehack)
+    """
+    try:
+        if not auto_submitter.is_platform_configured(platform):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Platform {platform} is not configured. Add API credentials to .env"
+            )
+        
+        client = auto_submitter.clients[platform.lower()]
+        programs = client.get_programs()
+        
+        return {
+            "platform": platform,
+            "programs": programs,
+            "count": len(programs)
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get programs for {platform}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/submit")
+async def submit_report(request: SubmissionRequest):
+    """
+    Submit bug bounty report to specified platform.
+    
+    This endpoint handles the complete submission workflow:
+    1. Validates platform configuration
+    2. Formats report data according to platform requirements
+    3. Submits report with attachments
+    4. Returns submission confirmation with ID
+    
+    Example request for HackerOne:
+    ```json
+    {
+        "platform": "hackerone",
+        "program": "security",
+        "report_data": {
+            "title": "SQL Injection in Login",
+            "vulnerability_type": "sql_injection",
+            "severity": "critical",
+            "description": "...",
+            "steps_to_reproduce": "...",
+            "impact": "...",
+            "proof_of_concept": "...",
+            "attachments": ["/path/to/screenshot.png"]
+        }
+    }
+    ```
+    """
+    try:
+        if not auto_submitter.is_platform_configured(request.platform):
+            available = auto_submitter.get_available_platforms()
+            raise HTTPException(
+                status_code=400,
+                detail=f"Platform {request.platform} is not configured. Available: {available}"
+            )
+        
+        result = auto_submitter.submit(
+            platform=request.platform,
+            program=request.program,
+            report_data=request.report_data
+        )
+        
+        logger.info(f"Successfully submitted report to {request.platform}: {result}")
+        
+        return {
+            "success": True,
+            "platform": request.platform,
+            "submission": result
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to submit report: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/submit-batch")
+async def submit_batch_reports(request: BatchSubmissionRequest):
+    """
+    Submit multiple reports to different platforms in batch.
+    
+    Useful for submitting the same vulnerability to multiple programs
+    or submitting multiple vulnerabilities at once.
+    
+    Example:
+    ```json
+    {
+        "submissions": [
+            {
+                "platform": "hackerone",
+                "program": "security",
+                "report_data": {...}
+            },
+            {
+                "platform": "bugcrowd",
+                "program": "uber",
+                "report_data": {...}
+            }
+        ]
+    }
+    ```
+    """
+    try:
+        results = auto_submitter.submit_batch(request.submissions)
+        
+        success_count = sum(1 for r in results if r.get('success'))
+        failed_count = len(results) - success_count
+        
+        return {
+            "total": len(results),
+            "successful": success_count,
+            "failed": failed_count,
+            "results": results
+        }
+        
+    except Exception as e:
+        logger.error(f"Batch submission failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/submissions/{submission_id}/status")
+async def get_submission_status(
+    submission_id: str,
+    platform: str
+):
+    """
+    Get status of a submitted report.
+    
+    Args:
+        submission_id: Report/Submission ID from platform
+        platform: Platform name
+        
+    Returns status including:
+    - Current state (new, triaged, resolved, etc.)
+    - Bounty amount if awarded
+    - Timeline information
+    """
+    try:
+        if not auto_submitter.is_platform_configured(platform):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Platform {platform} is not configured"
+            )
+        
+        status = auto_submitter.get_submission_status(platform, submission_id)
+        
+        return {
+            "platform": platform,
+            "submission_id": submission_id,
+            "status": status
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get submission status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/estimate-payout")
+async def estimate_payout(
+    platform: str,
+    program: str,
+    severity: str,
+    vulnerability_type: str
+):
+    """
+    Estimate potential payout for a vulnerability.
+    
+    Provides min, max, and average payout estimates based on:
+    - Platform bounty tables
+    - Program history
+    - Severity rating
+    - Vulnerability type
+    
+    Note: These are estimates only. Actual payout depends on many factors.
+    """
+    try:
+        if not auto_submitter.is_platform_configured(platform):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Platform {platform} is not configured"
+            )
+        
+        estimate = auto_submitter.estimate_payout(
+            platform=platform,
+            program=program,
+            severity=severity,
+            vulnerability_type=vulnerability_type
+        )
+        
+        return {
+            "platform": platform,
+            "program": program,
+            "severity": severity,
+            "vulnerability_type": vulnerability_type,
+            "estimate": estimate,
+            "note": "Estimates only. Actual payout may vary significantly."
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to estimate payout: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/auto-format-report")
+async def auto_format_report(
+    platform: str,
+    vulnerability: Dict[str, Any]
+):
+    """
+    Auto-format vulnerability data for specific platform requirements.
+    
+    Takes raw vulnerability data from scanner and formats it
+    according to the target platform's API requirements.
+    
+    Useful when you have scan results and want to quickly
+    format them for submission without manual data mapping.
+    """
+    try:
+        formatted = auto_submitter.format_report_for_platform(
+            platform=platform,
+            vulnerability=vulnerability
+        )
+        
+        return {
+            "platform": platform,
+            "formatted_report": formatted
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to format report: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

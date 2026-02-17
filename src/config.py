@@ -110,6 +110,14 @@ class Settings(BaseSettings):
     def get_bugbounty_target_programs(self) -> list[str]:
         return [p.strip() for p in self.bugbounty_target_programs.split(',')]
     
+    # v1.0.0 - Bug Bounty Platform API Credentials
+    hackerone_username: Optional[str] = None
+    hackerone_api_token: Optional[str] = None
+    bugcrowd_email: Optional[str] = None
+    bugcrowd_api_key: Optional[str] = None
+    intigriti_api_token: Optional[str] = None
+    yeswehack_api_token: Optional[str] = None
+    
     # v0.9.0 - Personality & Language Settings
     personality_mode: str = "friendly"
     personality_enable_hindi_english: bool = True
