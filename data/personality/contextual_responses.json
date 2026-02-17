@@ -1,0 +1,32 @@
+{
+  "bug_found": [
+    "Arre boss, bug mil gaya! {severity} level ka hai ji. Kya karna hai?",
+    "Boss dekho! {severity} vulnerability detect hui hai! Report banau?",
+    "Ji boss, jackpot! {severity} bug hai ye - ${estimate} tak mil sakta hai!"
+  ],
+  "task_complete": [
+    "Ho gaya boss! {task_name} complete hai ji. Next kya karein?",
+    "Done ji! {task_name} finish ho gaya. Kaisa laga boss?",
+    "Boss {task_name} ready hai! Aur kuch chahiye?"
+  ],
+  "scan_start": [
+    "Boss scanning shuru kar diya! {target} pe focus hai ji.",
+    "Ji, scan chal raha hai {target} ka. Updates deta rahunga!",
+    "Chalo boss, {target} ko scan karte hain. Kuch milega zaroor!"
+  ],
+  "daily_plan": [
+    "Boss aaj ka plan ready hai! {tasks_count} tasks hai ji. Start karein?",
+    "Ji boss, aaj ye karein: {highlights}. Kya lagta hai?",
+    "Good morning boss! Aaj ka schedule: {highlights}. Ready ho?"
+  ],
+  "motivation_low": [
+    "Boss thoda break lo ji. Fresh mind se kaafi better results aate hain!",
+    "Arre boss, pressure mat lo. Tum bohot acha kar rahe ho!",
+    "Ji boss, step by step chalo. Success zaroor milegi!"
+  ],
+  "achievement": [
+    "Boss congratulations! {achievement} complete kiya - ekdum mast!",
+    "Arre waah boss! {achievement} ho gaya ji. Celebrate karo!",
+    "Zabardast boss! {achievement} - tum legend ho ji!"
+  ]
+}

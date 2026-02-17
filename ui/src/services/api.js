@@ -239,6 +239,210 @@ class APIClient {
     }
   }
 
+  async getMonitoringStatus() {
+    try {
+      const response = await axiosInstance.get('/api/v1/monitor/status');
+      return response.data;
+    } catch (error) {
+      console.error('Get monitoring status error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async startMonitoring() {
+    try {
+      const response = await axiosInstance.post('/api/v1/monitor/start');
+      return response.data;
+    } catch (error) {
+      console.error('Start monitoring error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async stopMonitoring() {
+    try {
+      const response = await axiosInstance.post('/api/v1/monitor/stop');
+      return response.data;
+    } catch (error) {
+      console.error('Stop monitoring error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getCurrentContext() {
+    try {
+      const response = await axiosInstance.get('/api/v1/monitor/current-context');
+      return response.data;
+    } catch (error) {
+      console.error('Get current context error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async takeScreenshot() {
+    try {
+      const response = await axiosInstance.get('/api/v1/monitor/screenshot');
+      return response.data;
+    } catch (error) {
+      console.error('Take screenshot error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getProactiveSuggestions() {
+    try {
+      const response = await axiosInstance.get('/api/v1/proactive/suggestions');
+      return response.data;
+    } catch (error) {
+      console.error('Get proactive suggestions error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async executeProactiveSuggestion(suggestionId) {
+    try {
+      const response = await axiosInstance.post('/api/v1/proactive/execute-suggestion', {
+        suggestion_id: suggestionId,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Execute proactive suggestion error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getDailyPlan() {
+    try {
+      const response = await axiosInstance.get('/api/v1/proactive/daily-plan');
+      return response.data;
+    } catch (error) {
+      console.error('Get daily plan error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getControlPermissions() {
+    try {
+      const response = await axiosInstance.get('/api/v1/control/permissions');
+      return response.data;
+    } catch (error) {
+      console.error('Get control permissions error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async controlMouseClick(x, y) {
+    try {
+      const response = await axiosInstance.post('/api/v1/control/mouse/click', { x, y });
+      return response.data;
+    } catch (error) {
+      console.error('Control mouse click error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async controlKeyboardType(text) {
+    try {
+      const response = await axiosInstance.post('/api/v1/control/keyboard/type', { text });
+      return response.data;
+    } catch (error) {
+      console.error('Control keyboard type error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async controlLaunchApp(appName) {
+    try {
+      const response = await axiosInstance.post('/api/v1/control/app/launch', {
+        app_name: appName,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Control launch app error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getBugBountyStatus() {
+    try {
+      const response = await axiosInstance.get('/api/v1/bugbounty/auto/status');
+      return response.data;
+    } catch (error) {
+      console.error('Get bug bounty status error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async startBugBountyScan() {
+    try {
+      const response = await axiosInstance.post('/api/v1/bugbounty/auto/start');
+      return response.data;
+    } catch (error) {
+      console.error('Start bug bounty scan error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async stopBugBountyScan() {
+    try {
+      const response = await axiosInstance.post('/api/v1/bugbounty/auto/stop');
+      return response.data;
+    } catch (error) {
+      console.error('Stop bug bounty scan error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async generateBugBountyReport() {
+    try {
+      const response = await axiosInstance.post('/api/v1/bugbounty/auto/generate-report');
+      return response.data;
+    } catch (error) {
+      console.error('Generate bug bounty report error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getDailyReport() {
+    try {
+      const response = await axiosInstance.get('/api/v1/intelligence/daily-report');
+      return response.data;
+    } catch (error) {
+      console.error('Get daily report error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getTrends() {
+    try {
+      const response = await axiosInstance.get('/api/v1/intelligence/trends');
+      return response.data;
+    } catch (error) {
+      console.error('Get trends error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getPersonalitySettings() {
+    try {
+      const response = await axiosInstance.get('/api/v1/personality/settings');
+      return response.data;
+    } catch (error) {
+      console.error('Get personality settings error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async updatePersonalitySettings(settings) {
+    try {
+      const response = await axiosInstance.put('/api/v1/personality/settings', settings);
+      return response.data;
+    } catch (error) {
+      console.error('Update personality settings error:', error);
+      throw this._handleError(error);
+    }
+  }
+
   _handleError(error) {
     if (error.response) {
       const { status, data } = error.response;

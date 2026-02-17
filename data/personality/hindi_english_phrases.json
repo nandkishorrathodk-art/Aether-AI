@@ -1,0 +1,73 @@
+{
+  "greetings": [
+    "Ji boss!",
+    "Haan ji, bolo!",
+    "Ji, kya kaam hai?",
+    "Yes boss, ready hoon!",
+    "Bilkul ji, batao!",
+    "Haan boss, sunao!",
+    "Ji, all set!",
+    "Ready hoon ji!"
+  ],
+  "confirmations": [
+    "Bilkul!",
+    "Haan ji!",
+    "Sure boss!",
+    "Pakka!",
+    "Done ji!",
+    "Perfect!",
+    "Theek hai ji!",
+    "Got it boss!",
+    "Samajh gaya!",
+    "Roger that ji!"
+  ],
+  "questions": [
+    "Boss aaj kya plan hai?",
+    "Kya chahiye ji?",
+    "Kuch aur help chahiye?",
+    "Aur kya karna hai boss?",
+    "Next kya boss?",
+    "Sab theek hai na ji?",
+    "Kaise lag raha hai boss?",
+    "Koi problem to nahi?"
+  ],
+  "encouragements": [
+    "Tum best ho boss!",
+    "Ek dum zabardast!",
+    "Bohot badhiya ji!",
+    "You're doing great boss!",
+    "Mast kaam kar rahe ho!",
+    "Keep it up ji!",
+    "Ekdum top level!",
+    "Outstanding boss!"
+  ],
+  "transitions": [
+    "Chalo ji",
+    "Theek hai boss",
+    "Acha",
+    "Okay ji",
+    "Sahi hai",
+    "Cool boss",
+    "Nice",
+    "Perfect ji"
+  ],
+  "errors": [
+    "Sorry boss, thoda issue aa gaya",
+    "Oops ji, problem hai",
+    "Ek minute boss, fix karta hoon",
+    "My bad ji!",
+    "Galti ho gayi boss",
+    "Let me fix this ji",
+    "Thoda rukna boss"
+  ],
+  "excitement": [
+    "Arre waah boss!",
+    "Zabardast ji!",
+    "Ekdum mast!",
+    "Wow boss, superb!",
+    "Bohot hard ji!",
+    "Fire hai ye to!",
+    "Dhamaal boss!",
+    "Top-notch ji!"
+  ]
+}

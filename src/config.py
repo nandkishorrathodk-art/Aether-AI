@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "Aether AI"
-    app_version: str = "0.1.0"
+    app_version: str = "0.9.0"
     environment: str = "development"
 
     api_host: str = "127.0.0.1"
@@ -74,6 +74,56 @@ class Settings(BaseSettings):
     enable_analytics: bool = True
     enable_telemetry: bool = False
 
+    # v0.9.0 - Screen Monitoring Settings
+    enable_screen_monitoring: bool = False
+    screen_capture_interval: int = 30
+    screen_monitor_save_screenshots: bool = False
+    screen_monitor_data_path: Path = Path("./data/monitoring")
+    
+    # v0.9.0 - Proactive AI Settings
+    enable_proactive_mode: bool = True
+    proactive_check_interval: int = 1800
+    proactive_morning_greeting: bool = True
+    proactive_daily_planning: bool = True
+    proactive_suggestion_types: str = "bug_bounty,youtube,breaks,learning"
+    
+    def get_proactive_suggestion_types(self) -> list[str]:
+        return [s.strip() for s in self.proactive_suggestion_types.split(',')]
+    
+    # v0.9.0 - PC Control Settings
+    enable_pc_control: bool = False
+    pc_control_require_confirmation: bool = True
+    pc_control_allowed_actions: str = "mouse_click,keyboard_type,app_launch"
+    pc_control_audit_log: Path = Path("./data/control_audit.log")
+    
+    def get_pc_control_allowed_actions(self) -> list[str]:
+        return [a.strip() for a in self.pc_control_allowed_actions.split(',')]
+    
+    # v0.9.0 - Bug Bounty Autopilot Settings
+    enable_bugbounty_autopilot: bool = False
+    burpsuite_api_url: str = "http://127.0.0.1:1337"
+    burpsuite_api_key: Optional[str] = None
+    bugbounty_auto_scan: bool = False
+    bugbounty_target_programs: str = "apple,google,microsoft"
+    bugbounty_report_path: Path = Path("./data/bugbounty_reports")
+    
+    def get_bugbounty_target_programs(self) -> list[str]:
+        return [p.strip() for p in self.bugbounty_target_programs.split(',')]
+    
+    # v0.9.0 - Personality & Language Settings
+    personality_mode: str = "friendly"
+    personality_enable_hindi_english: bool = True
+    personality_emoji_enabled: bool = True
+    personality_motivational_enabled: bool = True
+    personality_humor_enabled: bool = True
+    
+    # v0.9.0 - Daily Intelligence Settings
+    enable_daily_reports: bool = True
+    daily_report_time: str = "20:00"
+    daily_report_path: Path = Path("./data/daily_reports")
+    enable_trend_analysis: bool = True
+    enable_wealth_tracking: bool = True
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._ensure_directories()
@@ -82,6 +132,10 @@ class Settings(BaseSettings):
         self.chromadb_path.parent.mkdir(parents=True, exist_ok=True)
         self.conversation_history_db.parent.mkdir(parents=True, exist_ok=True)
         self.log_file.parent.mkdir(parents=True, exist_ok=True)
+        self.screen_monitor_data_path.mkdir(parents=True, exist_ok=True)
+        self.pc_control_audit_log.parent.mkdir(parents=True, exist_ok=True)
+        self.bugbounty_report_path.mkdir(parents=True, exist_ok=True)
+        self.daily_report_path.mkdir(parents=True, exist_ok=True)
 
 
 settings = Settings()

@@ -1,0 +1,33 @@
+{
+  "general": [
+    "Boss, tum bohot acha kar rahe ho! Keep pushing! 💪",
+    "Ji boss, har kadam important hai. You're doing great!",
+    "Boss, remember - consistency beats perfection! Keep going ji! 🔥",
+    "Arre boss, thoda patience rakho. Success zaroor milegi! ✨",
+    "Ji boss, progress slow lag raha but you're moving forward! Proud of you! 🌟"
+  ],
+  "task_progress": [
+    "Boss, {completed}/{total} tasks ho gaye! Mast pace hai ji! 📊",
+    "Dekho boss, {completed} tasks done already! You're crushing it! 💯",
+    "Ji boss, {tasks_remaining} aur bachhe hain - almost there! 🎯",
+    "Boss halfway ho gaye! Second half mein aur tez chalenge ji! ⚡"
+  ],
+  "before_break": [
+    "Boss, break lelo ji. Fresh mind se better results aayenge! ☕",
+    "Ji boss, thoda stretch karo. Eyes rest chahiye! 👀",
+    "Boss, 5-minute walk karo ji. Circulation improve hoga! 🚶",
+    "Arre boss, paani piyo aur thoda relax. You deserve it ji! 💧"
+  ],
+  "morning": [
+    "Good morning boss! Aaj ka din ekdum zabardast jayega ji! 🌅",
+    "Namaskar boss! Ready ho? Let's make today awesome! 🔥",
+    "Morning boss ji! Coffee leke shuru karte hain? ☕",
+    "Boss aaj ka plan hai - let's crush it together ji! 💪"
+  ],
+  "evening": [
+    "Boss aaj ka kaam bohot acha tha! Rest karo ji. 🌙",
+    "Ji boss, productive day raha! Kal aur better hoga! ✨",
+    "Boss, well done today! Recharge karo for tomorrow ji! 🔋",
+    "Aaj ke achievements note kar liye boss? Celebrate karo! 🎉"
+  ]
+}

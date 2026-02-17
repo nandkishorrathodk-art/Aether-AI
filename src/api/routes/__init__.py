@@ -14,7 +14,11 @@ from . import (
     voice_commands,
     plugins,
     developer,
-    discord
+    discord,
+    workflows,
+    monitor,
+    proactive,
+    control
 )
 
 __all__ = [
@@ -29,5 +33,9 @@ __all__ = [
     'voice_commands',
     'plugins',
     'developer',
-    'discord'
+    'discord',
+    'workflows',
+    'monitor',
+    'proactive',
+    'control'
 ]

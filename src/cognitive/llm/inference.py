@@ -16,6 +16,11 @@ from src.features.browser import BrowserAutomation
 from src.features.vision import VisionSystem
 from src.features.creation import ImageGenerator
 
+# Personality System
+from src.personality.conversational_style import response_enhancer, ToneType
+from src.personality.motivational_engine import motivational_engine, MoodLevel
+from src.personality.humor_generator import humor_generator
+
 logger = get_logger(__name__)
 
 
@@ -226,10 +231,21 @@ class ConversationEngine:
                 intent
             )
 
+            # Apply Personality Enhancement (v0.9.0)
+            personality_context = {
+                "intent": intent.value,
+                "session_id": request.session_id,
+            }
+            enhanced_content = self._apply_personality_layer(
+                formatted_content,
+                intent,
+                personality_context
+            )
+
             context_mgr.add_message("assistant", ai_response.content)
 
             response = ConversationResponse(
-                content=formatted_content,
+                content=enhanced_content,
                 intent=intent,
                 session_id=request.session_id,
                 ai_response=ai_response,
@@ -237,7 +253,8 @@ class ConversationEngine:
                 metadata={
                     "task_type": task_type.value,
                     "system_prompt_type": system_prompt_type,
-                    "original_content": ai_response.content
+                    "original_content": ai_response.content,
+                    "personality_enhanced": True
                 }
             )
 
@@ -247,6 +264,36 @@ class ConversationEngine:
         except Exception as e:
             logger.error(f"Error processing conversation: {e}")
             raise
+
+    def _apply_personality_layer(
+        self,
+        content: str,
+        intent: IntentType,
+        context: Dict[str, Any]
+    ) -> str:
+        tone_mapping = {
+            IntentType.CHAT: ToneType.FRIENDLY,
+            IntentType.QUERY: ToneType.PROFESSIONAL,
+            IntentType.COMMAND: ToneType.CASUAL,
+            IntentType.ANALYSIS: ToneType.PROFESSIONAL,
+            IntentType.CODE: ToneType.PROFESSIONAL,
+            IntentType.AUTOMATION: ToneType.CASUAL,
+            IntentType.CREATIVE: ToneType.FRIENDLY,
+            IntentType.SECURITY: ToneType.PROFESSIONAL,
+        }
+        
+        tone = tone_mapping.get(intent, ToneType.FRIENDLY)
+        
+        enhanced = response_enhancer.enhance_response(
+            content,
+            tone=tone,
+            add_personality=True,
+            context=context
+        )
+        
+        enhanced = humor_generator.add_humor_to_response(enhanced, context.get("humor_context"))
+        
+        return enhanced
 
     async def _execute_detected_actions(self, text: str):
         """Execute actions embedded in text like `Action: [OPEN: notepad]`"""

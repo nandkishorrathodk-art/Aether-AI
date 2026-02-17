@@ -1,0 +1,45 @@
+[
+  {
+    "action_id": "3a8a2acd-ac75-4b09-9cc3-d62403bbbbe2",
+    "action_command": "start_bugbounty_autopilot",
+    "status": "completed",
+    "started_at": "2026-02-17T18:47:46.395746",
+    "completed_at": "2026-02-17T18:47:46.395746",
+    "output": "Bug bounty autopilot started. Monitoring for Burp Suite integration.",
+    "error": null,
+    "rollback_info": null
+  },
+  {
+    "action_id": "test-rollback",
+    "action_command": "test_failing_action",
+    "status": "rolled_back",
+    "started_at": "2026-02-17T18:47:46.440746",
+    "completed_at": "2026-02-17T18:47:46.441746",
+    "output": null,
+    "error": "Simulated failure",
+    "rollback_info": {
+      "attempted_at": "2026-02-17T18:47:46.441746",
+      "status": "completed"
+    }
+  },
+  {
+    "action_id": "test-multi-0",
+    "action_command": "start_bugbounty_autopilot",
+    "status": "completed",
+    "started_at": "2026-02-17T18:47:46.461748",
+    "completed_at": "2026-02-17T18:47:46.461748",
+    "output": "Bug bounty autopilot started. Monitoring for Burp Suite integration.",
+    "error": null,
+    "rollback_info": null
+  },
+  {
+    "action_id": "test-multi-1",
+    "action_command": "start_bugbounty_autopilot",
+    "status": "rejected",
+    "started_at": null,
+    "completed_at": "2026-02-17T18:47:46.462747",
+    "output": null,
+    "error": "Rejected by user",
+    "rollback_info": null
+  }
+]

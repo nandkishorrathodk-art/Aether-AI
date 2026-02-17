@@ -1,0 +1,100 @@
+[
+  {
+    "id": "95343eca-f52f-41e0-a80f-fd8c24398cf9",
+    "timestamp": "2026-02-17T18:47:06.477875",
+    "context": "Time: evening, Apps: Burp Suite",
+    "suggestion_type": "bug_bounty",
+    "title": "Boss! Burp Suite detected - Continue bug hunting?",
+    "description": "Burp Suite active hai. Apple Security Bounty pe focus karein? $2M tak ka potential hai advanced chains mein.",
+    "action_command": "start_bugbounty_autopilot",
+    "confidence": 0.9,
+    "requires_approval": true,
+    "priority": 10,
+    "metadata": {
+      "detected_apps": [
+        "Burp Suite"
+      ]
+    }
+  },
+  {
+    "id": "9bf065dc-6076-47a2-b073-fa7a06f32cfd",
+    "timestamp": "2026-02-17T18:47:06.503871",
+    "context": "Time: evening, Apps: ",
+    "suggestion_type": "bug_bounty",
+    "title": "Evening productive session?",
+    "description": "Bug bounty automation run karein? Burp Suite auto-scan se quick wins mil sakte hain.",
+    "action_command": null,
+    "confidence": 0.6,
+    "requires_approval": true,
+    "priority": 6,
+    "metadata": {
+      "detected_apps": []
+    }
+  },
+  {
+    "id": "fea44d1a-1ca5-46ef-abb9-614bba6efce2",
+    "timestamp": "2026-02-17T18:47:07.565225",
+    "context": "Time: evening, Apps: Burp Suite",
+    "suggestion_type": "bug_bounty",
+    "title": "Boss! Burp Suite detected - Continue bug hunting?",
+    "description": "Burp Suite active hai. Apple Security Bounty pe focus karein? $2M tak ka potential hai advanced chains mein.",
+    "action_command": "start_bugbounty_autopilot",
+    "confidence": 0.9,
+    "requires_approval": true,
+    "priority": 10,
+    "metadata": {
+      "detected_apps": [
+        "Burp Suite"
+      ]
+    }
+  },
+  {
+    "id": "3a8a2acd-ac75-4b09-9cc3-d62403bbbbe2",
+    "timestamp": "2026-02-17T18:47:46.393743",
+    "context": "Time: evening, Apps: Burp Suite",
+    "suggestion_type": "bug_bounty",
+    "title": "Boss! Burp Suite detected - Continue bug hunting?",
+    "description": "Burp Suite active hai. Apple Security Bounty pe focus karein? $2M tak ka potential hai advanced chains mein.",
+    "action_command": "start_bugbounty_autopilot",
+    "confidence": 0.9,
+    "requires_approval": true,
+    "priority": 10,
+    "metadata": {
+      "detected_apps": [
+        "Burp Suite"
+      ]
+    }
+  },
+  {
+    "id": "4745c1a2-2376-49fb-a616-380f62308f8e",
+    "timestamp": "2026-02-17T18:47:46.421748",
+    "context": "Time: evening, Apps: ",
+    "suggestion_type": "bug_bounty",
+    "title": "Evening productive session?",
+    "description": "Bug bounty automation run karein? Burp Suite auto-scan se quick wins mil sakte hain.",
+    "action_command": null,
+    "confidence": 0.6,
+    "requires_approval": true,
+    "priority": 6,
+    "metadata": {
+      "detected_apps": []
+    }
+  },
+  {
+    "id": "95bfe5c7-9e5d-44fd-a418-c43e284d3965",
+    "timestamp": "2026-02-17T18:47:46.451744",
+    "context": "Time: evening, Apps: Burp Suite",
+    "suggestion_type": "bug_bounty",
+    "title": "Boss! Burp Suite detected - Continue bug hunting?",
+    "description": "Burp Suite active hai. Apple Security Bounty pe focus karein? $2M tak ka potential hai advanced chains mein.",
+    "action_command": "start_bugbounty_autopilot",
+    "confidence": 0.9,
+    "requires_approval": true,
+    "priority": 10,
+    "metadata": {
+      "detected_apps": [
+        "Burp Suite"
+      ]
+    }
+  }
+]

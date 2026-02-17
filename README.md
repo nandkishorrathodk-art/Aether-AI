@@ -50,6 +50,171 @@ Aether AI is a **JARVIS-level virtual assistant** that runs locally on your Wind
 
 ---
 
+## ✨ Features (v0.9.0 - ULTIMATE PERSONAL OMEGA JARVIS 🚀)
+
+### 🖥️ NEW: Real-Time Screen Monitoring & Context Awareness ⭐
+
+**Screen Intelligence**
+- Real-time screen capture and analysis with configurable intervals
+- Automatic application detection (Burp Suite, browsers, IDEs, terminals)
+- Active window tracking for contextual awareness
+- LLM-powered context analysis and insights generation
+- Privacy-first design with local storage and user control
+- In-memory processing with optional persistence
+
+**API Endpoints**: `/api/v1/monitor/*` - Control monitoring, capture screenshots, get context
+
+### 🧠 NEW: Proactive AI Brain & Autonomous Planning ⭐
+
+**Proactive Intelligence**
+- Time-aware suggestion generation (morning, afternoon, evening contexts)
+- Autonomous task initiation with user permission
+- Context-driven recommendations from screen awareness
+- Proactive conversations: "Boss, aaj kya karein?" (What should we do today?)
+
+**Daily Planning**
+- Automatic daily plan generation with goals and time-blocking
+- Goal-based task scheduling and prioritization
+- Weekly planning with trend analysis
+- Achievement tracking and milestone recognition
+
+**Suggestion Engine**
+- Multi-domain suggestions (bug bounty hunting, YouTube content, learning, breaks)
+- Confidence scoring for each recommendation
+- Suggestion history and learning from user preferences
+- Integration with trend analysis for timely suggestions
+
+**API Endpoints**: `/api/v1/proactive/*` - Get suggestions, execute actions, view daily plans
+
+### 🎮 NEW: PC Control Hub with Military-Grade Safety ⭐
+
+**Safe System Control**
+- Mouse control: click, move, drag with coordinate validation
+- Keyboard simulation: type text, send keystrokes safely
+- Application launcher: open/close apps with process management
+- Permission system: whitelist/blacklist with user confirmation prompts
+- Comprehensive audit logging to `data/control_audit.log`
+- Rollback capabilities for all actions
+
+**Common Shortcuts**
+- Launch Burp Suite, browsers, IDEs, terminals
+- Automated workflows with safety checks
+- Emergency stop functionality
+
+**API Endpoints**: `/api/v1/control/*` - Execute PC control actions with permissions
+
+### 🐛 NEW: Bug Bounty Autopilot - Full Automation ⭐
+
+**Burp Suite Professional Integration**
+- REST API client for Burp Suite automation
+- Automatic proxy configuration and target setup
+- Scan orchestration: passive, active, crawl with intelligent sequencing
+- Progress tracking with live updates
+- Issue retrieval and AI-powered analysis
+
+**Auto Hunter Workflow**
+- Detects Burp Suite running automatically from screen monitoring
+- Auto-configures proxy settings for target domains
+- Executes complete scan workflow without manual intervention
+- Monitors progress and notifies on findings
+- Generates professional reports instantly
+
+**PoC Generator**
+- LLM-powered proof-of-concept exploit generation
+- Multi-language support (Python, Bash, JavaScript, cURL)
+- WAF bypass techniques and obfuscation
+- Safe exploitation code with comments and warnings
+
+**Report Builder**
+- Professional reports in Markdown, HTML, and JSON formats
+- Screenshot integration for visual proof
+- CVSS scoring for accurate severity assessment
+- Payout estimation based on program rules
+- Templates for HackerOne, Bugcrowd, Intigriti, YesWeHack
+
+**ROI**: 5x more targets scanned, 24/7 capability, professional reports in seconds
+
+**API Endpoints**: `/api/v1/bugbounty/auto/*` - Start/stop auto hunting, view findings, generate reports
+
+### 🎭 NEW: Enhanced Personality - Best Friend Mode ⭐
+
+**Hindi-English Mixing (Hinglish)**
+- Natural code-switching between Hindi and English
+- Cultural references and idioms
+- Regional slang and colloquial expressions
+- "Ji boss! Aaj kya plan hai?" style conversations
+
+**Motivational Engine**
+- Context-aware encouragement and support
+- Achievement celebrations with personalized messages
+- Failure recovery support and alternative strategies
+- Progress tracking and milestone recognition
+- Personalized motivation based on user profile
+
+**Humor Generator**
+- Contextual jokes and tech humor
+- Appropriate timing based on sentiment analysis
+- Puns, wordplay, and witty comebacks
+- Meme references and pop culture jokes
+
+**Tone Modes**: Friendly (default), Professional, Casual, Motivational
+
+**Emoji Support**: Contextual emoji insertion for enhanced expression
+
+### 📊 NEW: Daily Intelligence & Wealth Tracking ⭐
+
+**Daily Reporter**
+- Comprehensive end-of-day summaries
+- Activity tracking: tasks completed, time spent, achievements
+- Suggestions for next day based on trends
+- Weekly and monthly aggregates
+- Auto-generated reports at configurable time (default: 8 PM)
+
+**Trend Analyzer**
+- Bug bounty program updates from major platforms (HackerOne, Bugcrowd, Intigriti, YesWeHack)
+- YouTube trending topics and high CPM niches
+- Tech job market trends and salary data
+- Intelligent caching to avoid redundant scraping
+- Trend prediction using historical data
+
+**Wealth Tracker**
+- Bug bounty earnings tracking with payout predictions
+- Report submission status monitoring
+- Monthly and yearly statistics
+- ROI calculations for time invested
+- Goal tracking for income targets
+
+**Intelligence Scheduler**
+- Background task execution using `schedule` library
+- Graceful startup/shutdown with lifespan events
+- Configurable report times
+
+**API Endpoints**: `/api/v1/intelligence/*` - Get reports, trends, earnings stats, plan your day
+
+### 🔧 System Integration
+
+- **All modules integrated** into FastAPI app with lifespan management
+- **40+ new configuration options** in `.env` for fine-tuned control
+- **5 new dependencies**: mss, pynput, schedule, aiofiles, watchdog
+- **Full backward compatibility** with v0.2.0 - all existing features work unchanged
+- **Opt-in features**: Screen monitoring, PC control, bug bounty autopilot disabled by default for safety
+
+### 🎯 v0.9.0 vs Previous Versions
+
+| Capability | v0.2.0 | v0.9.0 |
+|------------|--------|--------|
+| **Autonomy** | Reactive only | Proactive + Autonomous |
+| **Screen Awareness** | ❌ | ✅ Real-time monitoring |
+| **PC Control** | ❌ | ✅ Full safe control |
+| **Bug Bounty** | Manual tools | ✅ Full automation |
+| **Personality** | Generic AI | ✅ Best friend (Hinglish) |
+| **Planning** | None | ✅ Daily/weekly with trends |
+| **Intelligence** | Basic chat | ✅ Context + Trends + Wealth |
+
+**📖 Full Documentation**: See [FEATURES_v0.9.0.md](./FEATURES_v0.9.0.md) for detailed guide
+
+---
+
 ## ✨ Features (v0.3.0 - MEGA POWER UPGRADE 🔥)
 
 ### 🎥 NEW: Computer Vision & AR (Phase 2)

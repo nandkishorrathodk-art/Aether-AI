@@ -1,16 +1,39 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Box, IconButton, Drawer, Switch, FormControlLabel } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ChatIcon from '@mui/icons-material/Chat';
-import FaceIcon from '@mui/icons-material/Face';
+import {
+  Box,
+  IconButton,
+  Drawer,
+  Tabs,
+  Tab,
+  Badge,
+} from '@mui/material';
+import {
+  Settings as SettingsIcon,
+  Chat as ChatIcon,
+  Face as FaceIcon,
+  Visibility as MonitorIcon,
+  Lightbulb as SuggestionsIcon,
+  CalendarToday as PlanIcon,
+  Computer as ControlIcon,
+  BugReport as BugBountyIcon,
+  Assessment as ReportIcon,
+  EmojiEmotions as PersonalityIcon,
+} from '@mui/icons-material';
 import JarvisDashboard from './components/JarvisDashboard';
 import ChatInterface from './components/ChatInterface';
 import Settings from './components/Settings';
 import Notifications from './components/Notifications';
 import CompactTaskBar from './components/CompactTaskBar';
 import AnimeCharacter from './components/AnimeCharacter';
+import MonitoringPanel from './components/v090/MonitoringPanel';
+import ProactiveSuggestions from './components/v090/ProactiveSuggestions';
+import DailyPlan from './components/v090/DailyPlan';
+import PCControlPanel from './components/v090/PCControlPanel';
+import BugBountyAutopilot from './components/v090/BugBountyAutopilot';
+import DailyReport from './components/v090/DailyReport';
+import PersonalitySettings from './components/v090/PersonalitySettings';
 
 const darkTheme = createTheme({
   palette: {
@@ -39,9 +62,12 @@ function App() {
   const [showChat, setShowChat] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showAnimeCharacter, setShowAnimeCharacter] = useState(false);
+  const [showV090Panel, setShowV090Panel] = useState(false);
+  const [v090Tab, setV090Tab] = useState(0);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [newSuggestions, setNewSuggestions] = useState(0);
   const [activeTasks, setActiveTasks] = useState([
     { name: 'Voice Recognition', status: 'idle' },
     { name: 'LLM Processing', status: 'idle' },
@@ -74,6 +100,16 @@ function App() {
     }, 5000);
   };
 
+  const v090Panels = [
+    { label: 'Monitor', icon: <MonitorIcon />, component: <MonitoringPanel /> },
+    { label: 'Suggestions', icon: <SuggestionsIcon />, component: <ProactiveSuggestions />, badge: newSuggestions },
+    { label: 'Daily Plan', icon: <PlanIcon />, component: <DailyPlan /> },
+    { label: 'PC Control', icon: <ControlIcon />, component: <PCControlPanel /> },
+    { label: 'Bug Bounty', icon: <BugBountyIcon />, component: <BugBountyAutopilot /> },
+    { label: 'Report', icon: <ReportIcon />, component: <DailyReport /> },
+    { label: 'Personality', icon: <PersonalityIcon />, component: <PersonalitySettings /> },
+  ];
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -90,6 +126,23 @@ function App() {
             zIndex: 100,
           }}
         >
+          <IconButton
+            onClick={() => setShowV090Panel(!showV090Panel)}
+            sx={{
+              backgroundColor: showV090Panel ? 'rgba(156, 39, 176, 0.2)' : 'rgba(0, 255, 255, 0.1)',
+              border: showV090Panel ? '1px solid rgba(156, 39, 176, 0.5)' : '1px solid rgba(0, 255, 255, 0.3)',
+              color: showV090Panel ? '#9c27b0' : '#00ffff',
+              '&:hover': {
+                backgroundColor: showV090Panel ? 'rgba(156, 39, 176, 0.3)' : 'rgba(0, 255, 255, 0.2)',
+                boxShadow: showV090Panel ? '0 0 10px #9c27b0' : '0 0 10px #00ffff',
+              },
+            }}
+          >
+            <Badge badgeContent={newSuggestions} color="error">
+              <SuggestionsIcon />
+            </Badge>
+          </IconButton>
+
           <IconButton
             onClick={() => setShowChat(!showChat)}
             sx={{
@@ -135,6 +188,64 @@ function App() {
             <FaceIcon />
           </IconButton>
         </Box>
+
+        <Drawer
+          anchor="left"
+          open={showV090Panel}
+          onClose={() => setShowV090Panel(false)}
+          PaperProps={{
+            sx={{
+              width: { xs: '100%', sm: 500, md: 600 },
+              backgroundColor: 'rgba(0, 10, 20, 0.95)',
+              backdropFilter: 'blur(10px)',
+              borderRight: '1px solid rgba(156, 39, 176, 0.3)',
+            },
+          }}
+        >
+          <Box sx={{ p: 2 }}>
+            <Tabs
+              value={v090Tab}
+              onChange={(e, newValue) => setV090Tab(newValue)}
+              variant="scrollable"
+              scrollButtons="auto"
+              sx={{
+                mb: 2,
+                '& .MuiTab-root': {
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  minWidth: 'auto',
+                  px: 2,
+                },
+                '& .Mui-selected': {
+                  color: '#9c27b0',
+                },
+                '& .MuiTabs-indicator': {
+                  backgroundColor: '#9c27b0',
+                  boxShadow: '0 0 10px #9c27b0',
+                },
+              }}
+            >
+              {v090Panels.map((panel, index) => (
+                <Tab
+                  key={index}
+                  icon={
+                    panel.badge ? (
+                      <Badge badgeContent={panel.badge} color="error">
+                        {panel.icon}
+                      </Badge>
+                    ) : (
+                      panel.icon
+                    )
+                  }
+                  label={panel.label}
+                  iconPosition="start"
+                />
+              ))}
+            </Tabs>
+            <Box sx={{ maxHeight: 'calc(100vh - 120px)', overflow: 'auto' }}>
+              {v090Panels[v090Tab]?.component}
+            </Box>
+          </Box>
+        </Drawer>
 
         <Drawer
           anchor="right"
