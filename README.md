@@ -50,6 +50,73 @@ Aether AI is a **JARVIS-level virtual assistant** that runs locally on your Wind
 
 ---
 
+## ✨ Features (v0.3.0 - MEGA POWER UPGRADE 🔥)
+
+### 🎥 NEW: Computer Vision & AR (Phase 2)
+
+6. **Screen Vision & Auto-Navigation** ⭐ NEW
+   - Screenshot capture with OCR text extraction
+   - Button & element detection using OpenCV
+   - Natural language element clicking ("click OK button")
+   - Auto-navigation towards goals with step tracking
+   - Multi-language OCR support (eng, spa, fra, deu, etc.)
+   - Visual debugging with annotated screenshots
+
+7. **Object Detection & Image Understanding** ⭐ NEW
+   - YOLO v8 object detection (80+ object classes)
+   - Face recognition with known face management
+   - Scene understanding with natural language descriptions
+   - Image annotation with bounding boxes and labels
+   - OpenCV fallback for environments without YOLO
+   - Support for multiple model sizes (nano to extra-large)
+
+8. **Gesture Recognition & Touchless Control** ⭐ NEW
+   - MediaPipe hand tracking (2 hands simultaneously)
+   - 11 recognized gestures (thumbs up, peace, fist, etc.)
+   - Air mouse control with cursor movement
+   - Swipe detection (left, right, up, down)
+   - Custom gesture commands with callbacks
+   - Interactive webcam mode with visual feedback
+
+9. **Augmented Reality Overlay** ⭐ NEW
+   - Real-time AR annotations on video feed
+   - Object detection and labeling in live video
+   - Text translation overlay (point camera at foreign text)
+   - Distance/size measurement using reference objects
+   - Navigation arrows to guide towards targets
+   - Configurable overlays (labels, bboxes, measurements)
+
+### 💼 NEW: Job Automation & Professional Tools (Phase 3)
+
+10. **Full Code Generation from Description** ⭐ NEW
+    - Multi-framework support (Python, React, Node.js, FastAPI, Flask, Next.js)
+    - Complete project scaffolding with best practices
+    - Auto-generated tests, docs, deployment configs (Dockerfile)
+    - Code analysis and bug detection
+    - Intelligent dependency management
+    - .gitignore, .env, and configuration files included
+
+11. **Document Intelligence** ⭐ NEW
+    - Advanced PDF processing (text extraction, metadata, splitting)
+    - OCR for scanned PDFs and images
+    - Excel file read/write with data analysis
+    - Word document processing (read/write/modify)
+    - Invoice data extraction with regex patterns
+    - Resume parsing and contract analysis
+    - Form auto-filling with templates
+
+12. **Email & Business Automation** ⭐ NEW
+    - Intelligent auto-responses based on email content
+    - Smart email categorization (finance, scheduling, urgent, support)
+    - Schedule emails for later sending
+    - Email templates with variable substitution
+    - Bulk personalized email sending
+    - Invoice generation and tracking
+    - Monthly business reports
+    - Task scheduling and management
+
+---
+
 ## ✨ Features (v0.2.0 Hyper-Advanced)
 
 ### 🧠 Phase 1: Super Intelligence (COMPLETE ✅)

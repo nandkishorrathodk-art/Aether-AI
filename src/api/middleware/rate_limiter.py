@@ -157,3 +157,8 @@ auth_rate_limiter = RateLimiter(
     window_seconds=60,
     block_duration_seconds=900  # 15 minutes block
 )
+
+# Middleware function for easy use
+async def rate_limit_middleware(request: Request, call_next):
+    """Rate limiting middleware function"""
+    return await rate_limiter.check_rate_limit(request, call_next)
