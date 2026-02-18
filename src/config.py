@@ -131,6 +131,17 @@ class Settings(BaseSettings):
     daily_report_path: Path = Path("./data/daily_reports")
     enable_trend_analysis: bool = True
     enable_wealth_tracking: bool = True
+    
+    # v1.0.0 - Self-Improvement & Learning Settings
+    enable_self_improvement: bool = True
+    self_improvement_schedule: str = "daily"  # daily, weekly, manual
+    self_improvement_time: str = "03:00"  # 3 AM
+    enable_user_learning: bool = True
+    enable_performance_monitoring: bool = True
+    performance_metrics_interval: int = 300  # seconds (5 minutes)
+    auto_apply_safe_improvements: bool = True
+    require_approval_for_major_changes: bool = True
+    improvement_backup_retention_days: int = 30
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -144,6 +155,9 @@ class Settings(BaseSettings):
         self.pc_control_audit_log.parent.mkdir(parents=True, exist_ok=True)
         self.bugbounty_report_path.mkdir(parents=True, exist_ok=True)
         self.daily_report_path.mkdir(parents=True, exist_ok=True)
+        Path("./data/improvements").mkdir(parents=True, exist_ok=True)
+        Path("./data/backups").mkdir(parents=True, exist_ok=True)
+        Path("./data/user_learning").mkdir(parents=True, exist_ok=True)
 
 
 settings = Settings()

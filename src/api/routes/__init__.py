@@ -9,6 +9,7 @@ from . import (
     openclaw,
     security,
     bugbounty,
+    bugbounty_auto,
     voice,
     memory,
     voice_commands,
@@ -18,7 +19,9 @@ from . import (
     workflows,
     monitor,
     proactive,
-    control
+    control,
+    intelligence,
+    evolution
 )
 
 __all__ = [
@@ -28,6 +31,7 @@ __all__ = [
     'openclaw',
     'security',
     'bugbounty',
+    'bugbounty_auto',
     'voice',
     'memory',
     'voice_commands',
@@ -37,5 +41,7 @@ __all__ = [
     'workflows',
     'monitor',
     'proactive',
-    'control'
+    'control',
+    'intelligence',
+    'evolution'
 ]
