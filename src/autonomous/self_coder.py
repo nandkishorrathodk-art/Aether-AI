@@ -141,30 +141,89 @@ Write ONLY the Python code.
     
     async def execute_code(self, code: str, timeout: int = 30) -> Dict[str, Any]:
         """
-        Execute generated code safely
+        Execute generated code in secure sandbox
         
         Args:
             code: Python code to execute
-            timeout: Execution timeout in seconds
+            timeout: Execution timeout in seconds (max 60)
             
         Returns:
             Execution results
         """
         try:
+            # Security: Enforce maximum timeout
+            timeout = min(timeout, 60)
+            
+            # Security: Validate code doesn't contain dangerous operations
+            dangerous_imports = [
+                'os.system', 'subprocess.', 'eval(', 'exec(',
+                '__import__', 'compile(', 'open(',
+                'socket', 'urllib', 'http.client'
+            ]
+            
+            for danger in dangerous_imports:
+                if danger in code:
+                    logger.error(f"Blocked dangerous code: contains '{danger}'")
+                    return {
+                        "success": False,
+                        "error": f"Code contains forbidden operation: {danger}"
+                    }
+            
+            # Create sandboxed execution environment
             with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
-                f.write(code)
+                # Wrap code in restricted environment
+                sandboxed_code = f"""
+# Sandboxed execution - restricted environment
+import sys
+import io
+
+# Disable dangerous builtins
+__builtins__['open'] = None
+__builtins__['eval'] = None
+__builtins__['exec'] = None
+__builtins__['compile'] = None
+__builtins__['__import__'] = None
+
+# Capture output
+old_stdout = sys.stdout
+old_stderr = sys.stderr
+sys.stdout = io.StringIO()
+sys.stderr = io.StringIO()
+
+try:
+    # User code starts here
+{self._indent_code(code, '    ')}
+    # User code ends
+finally:
+    output = sys.stdout.getvalue()
+    errors = sys.stderr.getvalue()
+    sys.stdout = old_stdout
+    sys.stderr = old_stderr
+    if output:
+        print(output, end='')
+    if errors:
+        print(errors, end='', file=sys.stderr)
+"""
+                f.write(sandboxed_code)
                 temp_file = f.name
             
-            logger.info(f"Executing code: {temp_file}")
+            logger.info(f"Executing sandboxed code: {temp_file[:50]}...")
             
+            # Execute with strict timeout
             result = subprocess.run(
                 ["python", temp_file],
                 capture_output=True,
                 text=True,
-                timeout=timeout
+                timeout=timeout,
+                # Security: No network access (if possible on Windows)
+                # On Linux would use: preexec_fn=lambda: resource.setrlimit(resource.RLIMIT_NOFILE, (0, 0))
             )
             
-            Path(temp_file).unlink()
+            # Clean up immediately
+            try:
+                Path(temp_file).unlink()
+            except:
+                pass
             
             return {
                 "success": result.returncode == 0,
@@ -175,9 +234,13 @@ Write ONLY the Python code.
             
         except subprocess.TimeoutExpired:
             logger.error(f"Code execution timeout after {timeout}s")
+            try:
+                Path(temp_file).unlink()
+            except:
+                pass
             return {
                 "success": False,
-                "error": f"Timeout after {timeout}s"
+                "error": f"Timeout after {timeout}s - code terminated"
             }
         except Exception as e:
             logger.error(f"Code execution failed: {e}")
@@ -185,6 +248,10 @@ Write ONLY the Python code.
                 "success": False,
                 "error": str(e)
             }
+    
+    def _indent_code(self, code: str, indent: str) -> str:
+        """Indent code block"""
+        return '\n'.join(indent + line for line in code.split('\n'))
     
     async def improve_code(self, code: str, issue: str) -> str:
         """

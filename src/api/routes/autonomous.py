@@ -4,14 +4,21 @@ Autonomous Agent API Routes
 API to control fully autonomous bug hunting.
 """
 
-from fastapi import APIRouter, HTTPException, BackgroundTasks
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
+from fastapi.security import HTTPAuthorizationCredentials
+from pydantic import BaseModel, validator
 from typing import Optional, Dict, Any
 import asyncio
 
 from src.autonomous.auto_executor import AutoExecutor
 from src.autonomous.autonomous_brain import AutonomousBrain
+from src.api.middleware.security import (
+    validate_api_key,
+    validate_target_domain,
+    check_autonomous_enabled
+)
 from src.utils.logger import get_logger
+from src.config import settings
 
 logger = get_logger(__name__)
 
@@ -26,6 +33,22 @@ class StartHuntRequest(BaseModel):
     target: str
     platform: str = "hackerone"
     max_duration_hours: int = 4
+    
+    @validator('target')
+    def validate_target(cls, v):
+        # Basic validation here, full validation in endpoint
+        if not v or len(v) < 3:
+            raise ValueError("Target must be a valid domain")
+        return v.strip().lower()
+    
+    @validator('max_duration_hours')
+    def validate_duration(cls, v):
+        max_allowed = getattr(settings, 'autonomous_max_duration', 8)
+        if v > max_allowed:
+            raise ValueError(f"max_duration_hours cannot exceed {max_allowed}")
+        if v < 1:
+            raise ValueError("max_duration_hours must be at least 1")
+        return v
 
 
 class SimpleStartRequest(BaseModel):
@@ -34,7 +57,12 @@ class SimpleStartRequest(BaseModel):
 
 
 @router.post("/start")
-async def start_autonomous_hunt(request: StartHuntRequest, background_tasks: BackgroundTasks):
+async def start_autonomous_hunt(
+    request: StartHuntRequest,
+    background_tasks: BackgroundTasks,
+    _auth: Optional[HTTPAuthorizationCredentials] = Depends(validate_api_key) if settings.autonomous_require_auth else None,
+    _enabled: None = Depends(check_autonomous_enabled)
+):
     """
     🚀 START FULLY AUTONOMOUS BUG HUNT
     
@@ -63,6 +91,9 @@ async def start_autonomous_hunt(request: StartHuntRequest, background_tasks: Bac
     global current_session
     
     try:
+        # Validate target domain for SSRF prevention
+        validated_target = validate_target_domain(request.target)
+        
         if current_session and current_session.get("status") == "running":
             raise HTTPException(
                 status_code=400,
@@ -84,7 +115,7 @@ async def start_autonomous_hunt(request: StartHuntRequest, background_tasks: Bac
             global current_session
             try:
                 result = await auto_executor.run_full_hunt(
-                    target=request.target,
+                    target=validated_target,
                     platform=request.platform,
                     max_duration_hours=request.max_duration_hours
                 )
@@ -171,7 +202,10 @@ async def get_status():
 
 
 @router.post("/stop")
-async def stop_autonomous_hunt():
+async def stop_autonomous_hunt(
+    _auth: Optional[HTTPAuthorizationCredentials] = Depends(validate_api_key) if settings.autonomous_require_auth else None,
+    _enabled: None = Depends(check_autonomous_enabled)
+):
     """
     Stop autonomous hunt gracefully
     """

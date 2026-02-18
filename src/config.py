@@ -59,7 +59,7 @@ class Settings(BaseSettings):
     llm_max_tokens: int = 2048
     llm_top_p: float = 0.9
 
-    secret_key: str = "change-this-in-production"
+    secret_key: Optional[str] = None  # MUST be set in .env for production
     allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
     
     def get_allowed_origins(self) -> list[str]:
@@ -132,6 +132,12 @@ class Settings(BaseSettings):
     enable_trend_analysis: bool = True
     enable_wealth_tracking: bool = True
     
+    # v2.0.0 - Autonomous Mode Security Settings
+    enable_autonomous_mode: bool = False  # MUST explicitly enable
+    autonomous_require_auth: bool = True  # Require API key for autonomous operations
+    autonomous_allowed_targets: str = ""  # Comma-separated whitelist (empty = validate only)
+    autonomous_max_duration: int = 8  # Max hours for autonomous operation
+    
     # v1.0.0 - Self-Improvement & Learning Settings
     enable_self_improvement: bool = True
     self_improvement_schedule: str = "daily"  # daily, weekly, manual
@@ -145,7 +151,33 @@ class Settings(BaseSettings):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self._validate_security()
         self._ensure_directories()
+    
+    def _validate_security(self):
+        """Validate security-critical settings"""
+        import os
+        import secrets
+        
+        # Ensure secret_key is set
+        if not self.secret_key:
+            # Try environment variable first
+            self.secret_key = os.getenv("AETHER_SECRET_KEY")
+            
+            if not self.secret_key:
+                if self.environment == "production":
+                    raise ValueError(
+                        "CRITICAL: AETHER_SECRET_KEY must be set in production! "
+                        "Generate one with: python -c 'import secrets; print(secrets.token_urlsafe(32))'"
+                    )
+                else:
+                    # Development only - generate random key
+                    self.secret_key = secrets.token_urlsafe(32)
+                    print(f"⚠️ WARNING: Using auto-generated secret key for development")
+        
+        # Warn if autonomous mode enabled without auth
+        if self.enable_autonomous_mode and not self.autonomous_require_auth:
+            print("⚠️ WARNING: Autonomous mode enabled without authentication! This is dangerous!")
 
     def _ensure_directories(self):
         self.chromadb_path.parent.mkdir(parents=True, exist_ok=True)
