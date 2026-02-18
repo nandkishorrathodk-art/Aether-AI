@@ -40,7 +40,7 @@ class AutoExecutor:
         self.pc_controller = PCController()
         
         self.session_results = []
-        logger.info("🤖 Auto Executor initialized - FULL AUTONOMOUS MODE")
+        logger.info("Auto Executor initialized - FULL AUTONOMOUS MODE")
     
     async def run_full_hunt(
         self,
@@ -130,7 +130,7 @@ class AutoExecutor:
             session_data["duration_hours"] = round(elapsed, 2)
             
             logger.info("\n" + "="*70)
-            logger.info("✅ AUTONOMOUS HUNT COMPLETE!")
+            logger.info("AUTONOMOUS HUNT COMPLETE!")
             logger.info("="*70)
             logger.info(f"✅ Bugs found: {len(validated_bugs)}")
             logger.info(f"✅ Reports submitted: {len(submission_results)}")
@@ -163,7 +163,7 @@ class AutoExecutor:
             await self.pc_controller.launch_app("Google Chrome")
             await asyncio.sleep(3)
             
-            logger.info("✅ Setup complete")
+            logger.info("Setup complete")
             return {"success": True}
             
         except Exception as e:
@@ -310,7 +310,7 @@ class AutoExecutor:
                 submit_decision = await self.decision_engine.should_submit_report({}, report)
                 
                 if submit_decision.get("should_submit"):
-                    logger.info("✅ Report quality acceptable, submitting...")
+                    logger.info("Report quality acceptable, submitting...")
                     
                     logger.info(f"📋 Report would be submitted to {platform}")
                     logger.info(f"   Title: {report['title']}")

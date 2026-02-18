@@ -48,7 +48,7 @@ class AutonomousBrain:
         self.task_history = []
         self.findings = []
         
-        logger.info("🧠 Autonomous Brain initialized - FULL GOD MODE")
+        logger.info("Autonomous Brain initialized - FULL GOD MODE")
     
     async def start_autonomous_mode(self, goal: str, max_duration_hours: int = 8):
         """
@@ -75,7 +75,7 @@ class AutonomousBrain:
             
             for step_num, step in enumerate(plan["steps"]):
                 if self._should_stop(start_time, max_duration_hours):
-                    logger.info("⏰ Time limit reached, stopping gracefully")
+                    logger.info("Time limit reached, stopping gracefully")
                     break
                 
                 logger.info(f"\n{'='*60}")

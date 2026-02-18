@@ -25,7 +25,7 @@ class VisionSystem:
     
     def __init__(self):
         self.llm = LLMInference()
-        logger.info("👁️ Vision System initialized")
+        logger.info("Vision System initialized")
     
     async def analyze_screen(self, screenshot_path: str) -> Dict[str, Any]:
         """

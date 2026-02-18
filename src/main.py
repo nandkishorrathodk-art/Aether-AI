@@ -20,7 +20,7 @@ def signal_handler(sig, frame):
     if pipeline:
         pipeline.stop()
         pipeline.cleanup()
-    logger.info("✅ Aether AI shut down gracefully")
+    logger.info("Aether AI shut down gracefully")
     sys.exit(0)
 
 
@@ -31,10 +31,10 @@ def main():
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
     
-    logger.info("=" * 60)
+    logger.info("60)
     logger.info(f"Starting {settings.app_name} v{settings.app_version}")
     logger.info(f"Environment: {settings.environment}")
-    logger.info("=" * 60)
+    logger.info("60)
 
     logger.info("Configuration loaded successfully")
     logger.info(f"API Server: {settings.api_host}:{settings.api_port}")
@@ -66,12 +66,12 @@ def main():
         pipeline = get_pipeline(config)
         
         logger.info("\n" + "=" * 60)
-        logger.info("🎤 Voice Pipeline Ready")
-        logger.info("=" * 60)
+        logger.info("Voice Pipeline Ready")
+        logger.info("60)
         logger.info(f"Wake Word: '{settings.wake_word}'")
         logger.info(f"STT Mode: {'Cloud (OpenAI)' if config.stt_use_cloud else 'Local (Whisper)'}")
         logger.info(f"TTS Mode: {config.tts_provider}")
-        logger.info("=" * 60)
+        logger.info("60)
         
         # Start the pipeline
         logger.info("\n🚀 Starting voice interaction pipeline...")
@@ -79,7 +79,7 @@ def main():
         
         logger.info("\n✅ Aether AI is now listening!")
         logger.info(f"💡 Say '{settings.wake_word}' to activate")
-        logger.info("💡 Press Ctrl+C to stop\n")
+        logger.info("Press Ctrl+C to stop\n")
         
         # Keep main thread alive
         import time
@@ -99,7 +99,7 @@ def main():
         if pipeline:
             pipeline.stop()
             pipeline.cleanup()
-        logger.info("✅ Aether AI shut down successfully")
+        logger.info("Aether AI shut down successfully")
 
 
 if __name__ == "__main__":

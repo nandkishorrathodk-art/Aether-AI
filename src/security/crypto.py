@@ -13,10 +13,10 @@ logger = get_logger(__name__)
 try:
     import aether_rust
     RUST_AVAILABLE = True
-    logger.info("🚀 Aether Rust optimization loaded successfully")
+    logger.info("Aether Rust optimization loaded successfully")
 except ImportError:
     RUST_AVAILABLE = False
-    logger.warning("⚠️ aether_rust module not found. Falling back to Python implementation.")
+    logger.warning("aether_rust module not found. Falling back to Python implementation.")
     # Fallback imports
     from cryptography.fernet import Fernet
     from cryptography.hazmat.primitives import hashes

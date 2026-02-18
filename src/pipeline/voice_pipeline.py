@@ -167,7 +167,7 @@ class VoicePipelineOrchestrator:
             # Create default session
             self._create_session(self.current_session_id)
             
-            logger.info("✅ All pipeline components initialized successfully")
+            logger.info("All pipeline components initialized successfully")
             
         except Exception as e:
             logger.error(f"Failed to initialize pipeline: {e}")
@@ -220,7 +220,7 @@ class VoicePipelineOrchestrator:
         
         try:
             # Step 1: Speech-to-Text
-            logger.info("🎤 Processing voice input...")
+            logger.info("Processing voice input...")
             self.broadcast_status("processing", {"phase": "stt"})
             
             stt_result = await self._transcribe_with_retry(audio_data)
@@ -257,7 +257,7 @@ class VoicePipelineOrchestrator:
             self.broadcast_status("processing", {"phase": "llm", "text": transcribed_text})
             
             # Step 2: LLM Processing
-            logger.info("🧠 Generating AI response...")
+            logger.info("Generating AI response...")
             conversation_request = ConversationRequest(
                 user_input=transcribed_text,
                 session_id=session_id
@@ -365,7 +365,7 @@ class VoicePipelineOrchestrator:
     
     def _wake_word_callback(self):
         """Callback when wake word is detected"""
-        logger.info("🎯 Wake word detected! Listening for command...")
+        logger.info("Wake word detected! Listening for command...")
         
         if self.tts:
             self.tts.stop()
@@ -410,14 +410,14 @@ class VoicePipelineOrchestrator:
             
             if self.config.enable_continuous_mode:
                 # Continuous wake word detection mode
-                logger.info("🎧 Continuous listening mode enabled")
+                logger.info("Continuous listening mode enabled")
                 self.wake_word_detector.listen_continuous(
                     on_wake_word=self._wake_word_callback,
                     on_error=lambda e: logger.error(f"Wake word error: {e}")
                 )
             else:
                 # Single detection mode (for testing)
-                logger.info("🎧 Single detection mode")
+                logger.info("Single detection mode")
                 while not self.stop_event.is_set():
                     detected = self.wake_word_detector.listen_for_wake_word(
                         callback=self._wake_word_callback,
@@ -440,9 +440,9 @@ class VoicePipelineOrchestrator:
             logger.warning("Pipeline already running")
             return
         
-        logger.info("=" * 60)
+        logger.info("60)
         logger.info("🚀 Starting Voice Pipeline")
-        logger.info("=" * 60)
+        logger.info("60)
         
         # Initialize components if not already done
         if self.wake_word_detector is None:
@@ -469,7 +469,7 @@ class VoicePipelineOrchestrator:
         if not self.is_running:
             return
         
-        logger.info("🛑 Stopping Voice Pipeline...")
+        logger.info("Stopping Voice Pipeline...")
         
         self.is_running = False
         self.stop_event.set()
@@ -485,7 +485,7 @@ class VoicePipelineOrchestrator:
         if self.tts_thread:
             self.tts_thread.join(timeout=5.0)
         
-        logger.info("✅ Voice Pipeline stopped")
+        logger.info("Voice Pipeline stopped")
     
     def get_stats(self) -> Dict[str, Any]:
         """Get pipeline statistics"""

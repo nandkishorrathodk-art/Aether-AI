@@ -62,7 +62,7 @@ class AetherService(win32serviceutil.ServiceFramework):
     
     def SvcDoRun(self):
         """Main service loop"""
-        logger.info("🚀 Aether AI service starting...")
+        logger.info("Aether AI service starting...")
         servicemanager.LogMsg(
             servicemanager.EVENTLOG_INFORMATION_TYPE,
             servicemanager.PYS_SERVICE_STARTED,

@@ -19,7 +19,7 @@ class DecisionEngine:
     def __init__(self):
         self.llm = LLMInference()
         self.decision_history = []
-        logger.info("🤔 Decision Engine initialized")
+        logger.info("Decision Engine initialized")
     
     async def is_this_a_bug(self, finding: Dict[str, Any]) -> Dict[str, Any]:
         """

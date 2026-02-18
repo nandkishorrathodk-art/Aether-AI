@@ -95,7 +95,7 @@ class OmniTask:
         """
         Proactive mode - suggest and execute tasks without explicit request
         """
-        logger.info("🧠 PROACTIVE MODE: Analyzing situation...")
+        logger.info("PROACTIVE MODE: Analyzing situation...")
         
         # Analyze context to find opportunities
         opportunities = await self._analyze_opportunities(context)

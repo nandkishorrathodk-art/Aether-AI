@@ -26,7 +26,7 @@ class SelfCoder:
     def __init__(self):
         self.llm = LLMInference()
         self.code_history = []
-        logger.info("💻 Self-Coder initialized")
+        logger.info("Self-Coder initialized")
     
     async def write_exploit_code(self, requirements: Dict[str, Any]) -> str:
         """
@@ -290,7 +290,7 @@ Write the improved version. ONLY Python code, no explanations.
             
             improved_code = improved_code.strip()
             
-            logger.info("✅ Code improved")
+            logger.info("Code improved")
             
             return improved_code
             

@@ -79,7 +79,7 @@ class SelfImprover:
         4. Test improvements
         5. Apply successful ones
         """
-        logger.info("🚀 Starting daily improvement cycle")
+        logger.info("Starting daily improvement cycle")
         
         try:
             # Step 1: Analyze performance
