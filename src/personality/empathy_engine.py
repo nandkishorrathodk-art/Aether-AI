@@ -76,7 +76,7 @@ class EmpathyEngine:
                 return UserMood.HAPPY
             
             # Overwhelmed indicators
-            if any(word in input_lower for word in ['too much', 'overwhelmed', 'can\\'t handle', 'stressed']):
+            if any(word in input_lower for word in ['too much', 'overwhelmed', "can't handle", 'stressed']):
                 return UserMood.OVERWHELMED
             
             # Use AI for nuanced detection

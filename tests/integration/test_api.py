@@ -354,10 +354,9 @@ class TestRateLimiting:
     def test_rate_limit_headers(self, client):
         response = client.get("/api/v1/settings/")
         assert response.status_code == 200
-        assert "X-RateLimit-Limit-Minute" in response.headers
-        assert "X-RateLimit-Remaining-Minute" in response.headers
-        assert "X-RateLimit-Limit-Hour" in response.headers
-        assert "X-RateLimit-Remaining-Hour" in response.headers
+        assert "x-ratelimit-limit" in response.headers
+        assert "x-ratelimit-remaining" in response.headers
+        assert "x-ratelimit-reset" in response.headers
 
 
 class TestErrorHandling:
