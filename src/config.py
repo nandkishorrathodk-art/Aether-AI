@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "Aether AI"
-    app_version: str = "0.9.0"
+    app_version: str = "3.0.0"
     environment: str = "development"
 
     api_host: str = "127.0.0.1"
