@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, Callable
+from typing import Optional, Callable, Dict, Any, List
 import asyncio
 
 from src.control.models import (
@@ -179,3 +179,28 @@ class PCController:
             action_type=action.action_type,
             error="Rollback not implemented for this action type"
         )
+    
+    # Convenience methods for autonomous mode
+    async def launch_app(self, app_name: str, args: Optional[List[str]] = None) -> ActionResult:
+        """Convenience method to launch an application"""
+        action = ControlAction(
+            action_type=ActionType.APP_LAUNCH,
+            parameters={"app_name": app_name, "args": args}
+        )
+        return await self.execute_action(action, auto_confirm=True)
+    
+    async def type_text(self, text: str, delay: float = 0.0) -> ActionResult:
+        """Convenience method to type text"""
+        action = ControlAction(
+            action_type=ActionType.KEYBOARD_TYPE,
+            parameters={"text": text, "delay": delay}
+        )
+        return await self.execute_action(action, auto_confirm=True)
+    
+    async def press_key(self, key: str) -> ActionResult:
+        """Convenience method to press a key"""
+        action = ControlAction(
+            action_type=ActionType.KEYBOARD_PRESS,
+            parameters={"key": key}
+        )
+        return await self.execute_action(action, auto_confirm=True)

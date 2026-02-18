@@ -268,8 +268,9 @@ class TestAutoExecutor:
     @pytest.mark.asyncio
     async def test_phase_1_setup(self, executor):
         """Test Phase 1: Setup"""
-        with patch.object(executor.pc_controller, 'launch_app') as mock_launch:
-            mock_launch.return_value = {"success": True}
+        with patch.object(executor.pc_controller, 'execute_action') as mock_execute:
+            from src.control.models import ActionResult, ActionType
+            mock_execute.return_value = ActionResult(success=True, action_type=ActionType.APP_LAUNCH)
             
             result = await executor._phase_1_setup("example.com")
             
@@ -313,7 +314,7 @@ class TestIntegrationAutonomous:
         # This is a dry-run test with all external dependencies mocked
         # Real integration test would require Burp Suite running
         
-        with patch.object(executor.pc_controller, 'launch_app'):
+        with patch.object(executor.pc_controller, 'execute_action'):
             with patch.object(executor.vision, 'analyze_burp_findings') as mock_analyze:
                 mock_analyze.return_value = {
                     "success": True,

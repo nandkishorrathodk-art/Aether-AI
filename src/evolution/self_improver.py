@@ -17,7 +17,7 @@ import shutil
 from dataclasses import dataclass, asdict
 
 from src.utils.logger import get_logger
-from src.cognitive.llm.inference import LLMInference
+from src.cognitive.llm.llm_wrapper import LLMInference
 from src.config import settings
 
 logger = get_logger(__name__)

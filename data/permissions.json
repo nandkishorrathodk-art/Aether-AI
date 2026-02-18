@@ -1,0 +1,32 @@
+{
+  "mouse_click": {
+    "allowed": true,
+    "require_confirmation": true,
+    "reason": "Default permission"
+  },
+  "mouse_move": {
+    "allowed": false,
+    "require_confirmation": true,
+    "reason": "Default permission"
+  },
+  "keyboard_type": {
+    "allowed": true,
+    "require_confirmation": true,
+    "reason": "Default permission"
+  },
+  "keyboard_press": {
+    "allowed": false,
+    "require_confirmation": true,
+    "reason": "Default permission"
+  },
+  "app_launch": {
+    "allowed": true,
+    "require_confirmation": true,
+    "reason": "Default permission"
+  },
+  "app_close": {
+    "allowed": false,
+    "require_confirmation": true,
+    "reason": "Default permission"
+  }
+}

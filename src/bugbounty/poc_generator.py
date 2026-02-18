@@ -12,7 +12,7 @@ from pathlib import Path
 from src.bugbounty.models import (
     Vulnerability, VulnerabilityType, ProofOfConcept
 )
-from src.cognitive.llm.inference import LLMInference
+from src.cognitive.llm.llm_wrapper import LLMInference
 from src.config import settings
 
 logger = logging.getLogger(__name__)

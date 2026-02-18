@@ -24,7 +24,7 @@ class LLMInference:
     """
     
     def __init__(self):
-        self.provider_name = settings.default_provider
+        self.provider_name = settings.ai_provider
         logger.info(f"LLMInference initialized with provider: {self.provider_name}")
     
     async def get_completion(
@@ -63,8 +63,8 @@ class LLMInference:
             # Use existing infrastructure
             response = await provider.generate_response(
                 messages=messages,
-                temperature=temperature or settings.temperature,
-                max_tokens=max_tokens or settings.max_tokens
+                temperature=temperature or settings.llm_temperature,
+                max_tokens=max_tokens or settings.llm_max_tokens
             )
             
             if response.success:
