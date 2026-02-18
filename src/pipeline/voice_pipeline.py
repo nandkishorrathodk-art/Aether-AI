@@ -440,9 +440,9 @@ class VoicePipelineOrchestrator:
             logger.warning("Pipeline already running")
             return
         
-        logger.info("60)
-        logger.info("🚀 Starting Voice Pipeline")
-        logger.info("60)
+        logger.info("=" * 60)
+        logger.info("Starting Voice Pipeline")
+        logger.info("=" * 60)
         
         # Initialize components if not already done
         if self.wake_word_detector is None:
