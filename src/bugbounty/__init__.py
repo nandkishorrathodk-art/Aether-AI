@@ -29,6 +29,8 @@ from src.bugbounty.scanner_manager import ScannerManager
 from src.bugbounty.auto_hunter import AutoHunter
 from src.bugbounty.poc_generator import PoCGenerator
 from src.bugbounty.report_builder import ReportBuilder
+from src.bugbounty.live_crawler import LiveCrawler, get_live_crawler
+from src.bugbounty.payload_engine import PayloadEngine, get_payload_engine, PayloadCategory
 
 __all__ = [
     "AutoHunter",
@@ -36,6 +38,11 @@ __all__ = [
     "ScannerManager",
     "PoCGenerator",
     "ReportBuilder",
+    "LiveCrawler",
+    "get_live_crawler",
+    "PayloadEngine",
+    "get_payload_engine",
+    "PayloadCategory",
     "AutoScanResult",
     "BugReport",
     "Vulnerability",

@@ -19,6 +19,7 @@ import {
   BugReport as BugBountyIcon,
   Assessment as ReportIcon,
   EmojiEmotions as PersonalityIcon,
+  Security as LiveTestingIcon,
 } from '@mui/icons-material';
 import { ThemeProvider } from './themes/ThemeContext';
 import JarvisDashboard from './components/JarvisDashboard';
@@ -36,6 +37,7 @@ import PCControlPanel from './components/v090/PCControlPanel';
 import BugBountyAutopilot from './components/v090/BugBountyAutopilot';
 import DailyReport from './components/v090/DailyReport';
 import PersonalitySettings from './components/v090/PersonalitySettings';
+import LiveTestingPanel from './components/v090/LiveTestingPanel';
 
 function App() {
   const [showChat, setShowChat] = useState(false);
@@ -85,6 +87,7 @@ function App() {
     { label: 'Daily Plan', icon: <PlanIcon />, component: <DailyPlan /> },
     { label: 'PC Control', icon: <ControlIcon />, component: <PCControlPanel /> },
     { label: 'Bug Bounty', icon: <BugBountyIcon />, component: <BugBountyAutopilot /> },
+    { label: 'Live Testing', icon: <LiveTestingIcon />, component: <LiveTestingPanel /> },
     { label: 'Report', icon: <ReportIcon />, component: <DailyReport /> },
     { label: 'Personality', icon: <PersonalityIcon />, component: <PersonalitySettings /> },
   ];

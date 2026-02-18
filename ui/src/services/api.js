@@ -443,6 +443,98 @@ class APIClient {
     }
   }
 
+  async startLiveTesting(config) {
+    try {
+      const response = await axiosInstance.post('/api/v1/live-testing/start', config);
+      return response.data;
+    } catch (error) {
+      console.error('Start live testing error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async stopLiveTesting() {
+    try {
+      const response = await axiosInstance.post('/api/v1/live-testing/stop');
+      return response.data;
+    } catch (error) {
+      console.error('Stop live testing error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getLiveTestingStatus() {
+    try {
+      const response = await axiosInstance.get('/api/v1/live-testing/status');
+      return response.data;
+    } catch (error) {
+      console.error('Get live testing status error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async testPayload(data) {
+    try {
+      const response = await axiosInstance.post('/api/v1/live-testing/test-payload', data);
+      return response.data;
+    } catch (error) {
+      console.error('Test payload error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async browserNavigate(url) {
+    try {
+      const response = await axiosInstance.post('/api/v1/live-testing/browser/navigate', { url });
+      return response.data;
+    } catch (error) {
+      console.error('Browser navigate error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async browserGetInputs() {
+    try {
+      const response = await axiosInstance.get('/api/v1/live-testing/browser/inputs');
+      return response.data;
+    } catch (error) {
+      console.error('Browser get inputs error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async browserScreenshot() {
+    try {
+      const response = await axiosInstance.post('/api/v1/live-testing/browser/screenshot');
+      return response.data;
+    } catch (error) {
+      console.error('Browser screenshot error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getPayloads(category, maxPayloads = 20) {
+    try {
+      const response = await axiosInstance.get(`/api/v1/live-testing/payloads/${category}`, {
+        params: { max_payloads: maxPayloads }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Get payloads error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async detectWaf() {
+    try {
+      const response = await axiosInstance.post('/api/v1/live-testing/detect-waf');
+      return response.data;
+    } catch (error) {
+      console.error('Detect WAF error:', error);
+      throw this._handleError(error);
+    }
+  }
+
   _handleError(error) {
     if (error.response) {
       const { status, data } = error.response;

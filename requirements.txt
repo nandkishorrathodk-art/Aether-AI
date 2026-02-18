@@ -20,6 +20,7 @@ opencv-python==4.9.0.80
 # OpenClaw - Web Scraping & Automation
 beautifulsoup4==4.12.3
 selenium==4.16.0
+playwright==1.41.0
 lxml==5.1.0
 html5lib==1.1
 sounddevice==0.4.6
