@@ -44,7 +44,7 @@ class OmniTask:
     def __init__(self):
         self.llm = LLMInference()
         self.task_history = []
-        logger.info("🌟 OmniTask Handler initialized - Ready for ANYTHING")
+        logger.info("OmniTask Handler initialized - Ready for ANYTHING")
     
     async def handle(self, request: str = None, context: Dict[str, Any] = None) -> Dict[str, Any]:
         """

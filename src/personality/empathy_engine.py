@@ -46,7 +46,7 @@ class EmpathyEngine:
         self.llm = LLMInference()
         self.mood_history = []
         self.interaction_count = 0
-        logger.info("❤️ Empathy Engine initialized - Human-like care activated")
+        logger.info("Empathy Engine initialized - Human-like care activated")
     
     async def detect_mood(self, user_input: str, context: Dict[str, Any] = None) -> UserMood:
         """

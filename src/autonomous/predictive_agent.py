@@ -36,7 +36,7 @@ class PredictiveAgent:
         self.patterns_path = self.data_path / "learned_patterns.json"
         
         self.patterns = self._load_patterns()
-        logger.info("🔮 Predictive Agent initialized - Forecasting needs")
+        logger.info("Predictive Agent initialized - Forecasting needs")
     
     def _load_patterns(self) -> Dict:
         """Load learned patterns from disk"""
