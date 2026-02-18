@@ -1,0 +1,15 @@
+# Additional requirements for Autonomous Mode v2.0
+
+# Vision System (OCR)
+pytesseract>=0.3.10
+Pillow>=10.0.0
+
+# Networking & DNS
+dnspython>=2.4.0
+aiohttp>=3.9.0
+
+# Image Processing
+opencv-python>=4.8.0
+
+# Additional utilities
+psutil>=5.9.0
