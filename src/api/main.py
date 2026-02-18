@@ -8,7 +8,7 @@ from src.utils.logger import get_logger
 from src.intelligence.scheduler import start_intelligence_scheduler, stop_intelligence_scheduler
 from src.api.routes import (
     chat, tasks, settings as settings_route, openclaw, security, 
-    bugbounty, bugbounty_auto, voice, memory, voice_commands, plugins, developer, discord, workflows, monitor, proactive, control, intelligence, evolution
+    bugbounty, bugbounty_auto, voice, memory, voice_commands, plugins, developer, discord, workflows, monitor, proactive, control, intelligence, evolution, autonomous
 )
 from src.api.middleware import rate_limit_middleware
 
@@ -141,6 +141,7 @@ app.include_router(proactive.router)
 app.include_router(control.router)
 app.include_router(intelligence.router)
 app.include_router(evolution.router)
+app.include_router(autonomous.router)
 
 
 if __name__ == "__main__":

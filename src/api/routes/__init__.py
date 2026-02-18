@@ -21,7 +21,8 @@ from . import (
     proactive,
     control,
     intelligence,
-    evolution
+    evolution,
+    autonomous
 )
 
 __all__ = [
@@ -43,5 +44,6 @@ __all__ = [
     'proactive',
     'control',
     'intelligence',
-    'evolution'
+    'evolution',
+    'autonomous'
 ]
