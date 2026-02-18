@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from enum import Enum
 
-from src.cognitive.llm.inference import LLMInference
+from src.cognitive.llm.llm_wrapper import LLMInference
 from src.utils.logger import get_logger
 from src.monitoring.screen_monitor import ScreenMonitor
 from src.control.pc_controller import PCController

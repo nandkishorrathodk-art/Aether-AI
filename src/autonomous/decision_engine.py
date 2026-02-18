@@ -5,7 +5,7 @@ Decides: "Is this a bug?", "Should I exploit?", "Should I submit?"
 """
 
 from typing import Dict, Any, List
-from src.cognitive.llm.inference import LLMInference
+from src.cognitive.llm.llm_wrapper import LLMInference
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)

@@ -6,7 +6,7 @@ Generates exploitation code for discovered vulnerabilities using LLM.
 
 import asyncio
 from typing import Dict, List, Optional, Any
-from src.cognitive.llm.inference import LLMInference
+from src.cognitive.llm.llm_wrapper import LLMInference
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
