@@ -35,6 +35,7 @@
 <p>
 <a href="#-quick-start-5-minutes">🚀 Quick Start</a> •
 <a href="#-features-v090---ultimate-personal-omega-jarvis-">✨ Features</a> •
+<a href="#-new-live-bug-bounty-testing---youtube-style-workflow-">🎬 Live Testing</a> •
 <a href="#-documentation">📖 Documentation</a> •
 <a href="#-bug-bounty-autopilot">🐛 Bug Bounty</a> •
 <a href="#-contributing">🤝 Contributing</a>
@@ -67,6 +68,7 @@
 <p>
 <a href="#-quick-start-5-minutes"><img src="https://img.shields.io/badge/⬇️_Install_Now-00D9FF?style=for-the-badge" alt="Install Now"/></a>
 <a href="./FEATURES_v0.9.0.md"><img src="https://img.shields.io/badge/📖_Full_Features-FF6B6B?style=for-the-badge" alt="Full Features"/></a>
+<a href="./LIVE_TESTING_QUICKSTART.md"><img src="https://img.shields.io/badge/🎬_Live_Testing-FF0000?style=for-the-badge" alt="Live Testing Guide"/></a>
 <a href="./BUGBOUNTY_AUTOPILOT.md"><img src="https://img.shields.io/badge/🐛_Bug_Bounty_Guide-4ECDC4?style=for-the-badge" alt="Bug Bounty Guide"/></a>
 </p>
 
@@ -457,6 +459,86 @@ curl http://localhost:8000/api/v1/autonomous/results
 **ROI**: 5x more targets scanned, 24/7 capability, professional reports in seconds
 
 **API Endpoints**: `/api/v1/bugbounty/auto/*` - Start/stop auto hunting, view findings, generate reports
+
+---
+
+### 🎬 NEW: Live Bug Bounty Testing - YouTube-Style Workflow ⭐⭐⭐
+
+<div align="center">
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=2000&pause=1000&color=FF0000&center=true&vCenter=true&width=800&lines=%F0%9F%8E%AF+Real-Time+Browser+Testing+Like+YouTube+Videos!;%F0%9F%95%B5%EF%B8%8F+Live+Crawler+%E2%80%A2+%F0%9F%92%A3+Smart+Payloads+%E2%80%A2+%F0%9F%9B%A1%EF%B8%8F+WAF+Bypass;%E2%9A%A1+Test+Live+%E2%80%A2+%F0%9F%94%8D+See+Results+%E2%80%A2+%F0%9F%93%B8+Capture+Proof" alt="Live Testing" />
+</div>
+
+**🔥 Full live testing mode - Test websites in real-time just like in professional bug bounty YouTube videos!**
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🌐 **Browser Automation**
+- **Playwright Integration**: Chromium, Firefox, WebKit support
+- **Live Page Interaction**: Navigate, click, fill forms in real-time
+- **Headless/Visible Modes**: Watch browser work or run in background
+- **XSS Detection**: Automatic alert detection & DOM analysis
+- **Screenshot Capture**: Full-page screenshots for PoC
+
+#### 🕷️ **Intelligent Web Crawler**
+- **Real-Time Discovery**: Endpoints, forms, parameters
+- **Configurable Depth**: Control crawl depth (1-5 levels)
+- **Page Limits**: Set max pages to respect targets
+- **Injection Points**: Auto-detect URL params & form inputs
+- **Live Stats**: Pages crawled, endpoints found, forms discovered
+
+</td>
+<td width="50%">
+
+#### 💣 **Smart Payload Engine**
+- **100+ Pre-Built Payloads**: XSS, SQLi, Command Injection, Path Traversal, SSRF, XXE, SSTI
+- **Context-Aware Selection**: Intelligent payload for each injection point
+- **Encoding Techniques**: URL, Base64, Hex, Unicode, HTML encoding
+- **WAF Detection**: Cloudflare, AWS WAF, Akamai, Imperva, ModSecurity, Sucuri
+- **Bypass Strategies**: Null bytes, case variation, comments, line breaks
+
+#### 📊 **Live Testing Dashboard**
+- **4 Real-Time Tabs**: Endpoints, Injection Points, Results, Browser View
+- **Instant Feedback**: Vulnerable ✅ / Not Vulnerable ❌ indicators
+- **Animated UI**: Material-UI with smooth transitions
+- **Test History**: Track all tests with timestamps
+
+</td>
+</tr>
+</table>
+
+**🎯 Example Workflow:**
+```text
+1. Enter Target: https://example.com
+2. Set Depth: 2 | Max Pages: 20
+3. Click "Start Live Testing"
+   → Crawler discovers 47 endpoints
+   → Finds 15 injection points (forms + params)
+4. Click "Test" on any injection point
+   → Payload injected automatically
+   → XSS detected: Vulnerable ✅
+5. Screenshot captured for proof
+```
+
+**🚀 Quick Setup:**
+```bash
+# 1. Install dependencies
+scripts\setup_live_testing.bat
+
+# 2. Start testing
+# Backend: python -m src.api.main
+# Frontend: cd ui && npm start
+# UI: Open v0.9.0 panel → Live Testing tab
+```
+
+**📖 Full Guide**: See [`LIVE_TESTING_QUICKSTART.md`](./LIVE_TESTING_QUICKSTART.md) for complete tutorial
+
+**🔗 API Endpoints**: `/api/v1/live-testing/*` - 10 endpoints for browser control, crawling, payload testing
+
+**⚠️ IMPORTANT**: Only test authorized targets. Review [`SECURITY.md`](./SECURITY.md) for ethical guidelines.
+
+---
 
 <div align="center">
 
@@ -1373,7 +1455,9 @@ This project is licensed under the MIT License - see LICENSE file for details.
 
 - **[QUICKSTART_v0.9.0.md](./QUICKSTART_v0.9.0.md)** - 5-minute setup guide for v0.9.0
 - **[FEATURES_v0.9.0.md](./FEATURES_v0.9.0.md)** - Complete feature documentation (1200+ lines)
+- **[LIVE_TESTING_QUICKSTART.md](./LIVE_TESTING_QUICKSTART.md)** - 🎬 **NEW!** Live bug bounty testing guide (YouTube-style)
 - **[BUGBOUNTY_AUTOPILOT.md](./BUGBOUNTY_AUTOPILOT.md)** - Bug bounty automation guide
+- **[SECURITY.md](./SECURITY.md)** - Security guidelines and ethical hacking rules
 - **[PC_CONTROL_GUIDE.md](./docs/PC_CONTROL_GUIDE.md)** - PC control safety documentation
 - **[PERSONALITY_CUSTOMIZATION.md](./docs/PERSONALITY_CUSTOMIZATION.md)** - Personality configuration guide
 - **[CHANGELOG.md](./CHANGELOG.md)** - Complete version history and release notes
