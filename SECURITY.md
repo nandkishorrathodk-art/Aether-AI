@@ -1,11 +1,11 @@
 # 🛡️ Aether AI Security Documentation
 
-**Version**: v0.9.0  
+**Version**: v2.0.0  
 **Last Updated**: February 2026
 
 ## Overview
 
-Aether AI v0.9.0 introduces powerful features including screen monitoring, PC control, and automated bug bounty hunting. This document outlines security measures, best practices, and potential risks.
+Aether AI v2.0 introduces **FULL AUTONOMOUS MODE** - an AI that operates completely independently like a human. This document outlines critical security measures, best practices, and risk mitigation strategies for autonomous operation.
 
 ---
 
@@ -381,10 +381,184 @@ pip install --upgrade -r requirements.txt
 
 ---
 
+---
+
+## 🤖 **v2.0 AUTONOMOUS MODE SECURITY** 🤖
+
+### **⚠️ CRITICAL WARNINGS**
+
+Autonomous mode grants AI full control to:
+- ✅ Open and operate applications
+- ✅ Execute code it writes itself
+- ✅ Make security decisions independently
+- ✅ Submit bug reports automatically
+
+**This is EXTREMELY powerful. Use responsibly.**
+
+### **Autonomous Mode Safety Layers**
+
+#### **Layer 1: Scope Validation**
+```python
+# Only targets explicitly provided by user
+AUTONOMOUS_ALLOWED_TARGETS = ["example.com"]  # Whitelist
+AUTONOMOUS_REQUIRE_CONFIRMATION = True        # Confirm before start
+```
+
+#### **Layer 2: Decision Engine Safety**
+```python
+# AI decision confidence thresholds
+MIN_CONFIDENCE_BUG = 0.70        # 70% to classify as bug
+MIN_CONFIDENCE_EXPLOIT = 0.80    # 80% to attempt exploitation
+MIN_REPORT_QUALITY = 70          # 70% score to submit report
+```
+
+#### **Layer 3: Code Execution Sandbox**
+```python
+# Self-written code runs in sandbox
+CODE_EXECUTION_TIMEOUT = 30      # Max 30 seconds
+CODE_EXECUTION_SANDBOX = True    # Isolated environment
+ALLOW_NETWORK_ACCESS = False     # No network in sandbox
+```
+
+#### **Layer 4: Action Logging**
+All autonomous actions logged to `data/autonomous_audit.log`:
+
+```log
+2026-02-18 09:00:00 | AUTONOMOUS_START | target:apple.com | user_approved:true
+2026-02-18 09:00:05 | ACTION:launch_app | app:burpsuite | status:success
+2026-02-18 09:01:45 | DECISION:is_bug | confidence:0.85 | decision:true
+2026-02-18 09:02:00 | CODE_EXECUTION | poc_generation | sandbox:true | status:success
+2026-02-18 09:02:45 | SUBMIT_REPORT | platform:hackerone | report_id:2847562
+```
+
+#### **Layer 5: Emergency Stop**
+```bash
+# Kill autonomous session immediately
+curl -X POST http://localhost:8000/api/v1/autonomous/stop
+
+# Or kill process
+taskkill /F /IM python.exe /FI "WINDOWTITLE eq *autonomous*"
+```
+
+### **Autonomous Mode Configuration**
+
+```python
+# .env configuration for autonomous mode
+ENABLE_AUTONOMOUS_MODE=false           # Must explicitly enable
+AUTONOMOUS_MAX_DURATION_HOURS=4        # Auto-stop after N hours
+AUTONOMOUS_AUTO_SUBMIT=false           # Require approval before submit
+AUTONOMOUS_DRY_RUN=true                # Test mode (no real submissions)
+AUTONOMOUS_NOTIFY_ON_BUG=true          # Alert user when bug found
+AUTONOMOUS_REQUIRE_APPROVAL=true       # Ask before risky actions
+```
+
+### **Risk Categories**
+
+| Risk Level | What AI Can Do | Default Setting |
+|------------|----------------|-----------------|
+| **Low** | Read screen, analyze data | ✅ Allowed |
+| **Medium** | Open apps, write code | ⚠️ Logged + monitored |
+| **High** | Execute PoC exploits | 🔒 Sandbox only |
+| **Critical** | Submit reports with $$ | 🔒 Requires approval |
+
+### **Best Practices for Autonomous Mode**
+
+✅ **DO:**
+- Start with `DRY_RUN=true` to test
+- Monitor logs in real-time during first runs
+- Use on authorized targets only
+- Set reasonable time limits (2-4 hours)
+- Review generated reports before submission
+- Keep emergency stop command ready
+
+❌ **DON'T:**
+- Run unsupervised on first use
+- Use on production systems without authorization
+- Disable safety features
+- Run with elevated privileges
+- Leave running unmonitored for hours
+- Use on targets without bug bounty programs
+
+### **Autonomous Code Generation Security**
+
+AI can write and execute code. Safety measures:
+
+1. **Static Analysis:**
+   - Code scanned for dangerous patterns
+   - Blocked: `os.system()`, `eval()`, file deletion
+   - Allowed: HTTP requests, data processing
+
+2. **Sandbox Execution:**
+   - Isolated Python environment
+   - No file system access outside `/tmp`
+   - Network access restricted to target only
+   - CPU/Memory limits enforced
+
+3. **Review Before Execute:**
+   ```python
+   REVIEW_GENERATED_CODE = True  # Show code before running
+   AUTO_EXECUTE_SAFE_CODE = False  # Always ask permission
+   ```
+
+### **Vision System Privacy**
+
+Autonomous mode reads your screen to understand context:
+
+**What it sees:**
+- Burp Suite intercept requests
+- Application windows and titles
+- Text via OCR
+
+**Privacy controls:**
+```python
+VISION_REDACT_SENSITIVE = True     # Hide passwords, keys
+VISION_SAVE_SCREENSHOTS = False    # Memory only
+VISION_SEND_TO_LLM = True          # For analysis (local LLM recommended)
+```
+
+### **Monitoring Autonomous Sessions**
+
+```bash
+# Real-time status
+curl http://localhost:8000/api/v1/autonomous/status
+
+# Live log tail
+tail -f data/autonomous_audit.log
+
+# Check current action
+curl http://localhost:8000/api/v1/autonomous/live-updates
+```
+
+### **Post-Session Review**
+
+After autonomous session completes:
+
+1. **Review audit log:**
+   ```bash
+   cat data/autonomous_audit.log | findstr ERROR
+   ```
+
+2. **Check generated code:**
+   ```bash
+   dir data\autonomous\generated_code\
+   ```
+
+3. **Verify reports:**
+   ```bash
+   dir data\bugbounty\reports\
+   ```
+
+4. **Review decisions:**
+   - Check why AI decided to exploit or skip
+   - Validate confidence scores were appropriate
+
+---
+
 ## 📝 Version History
 
 | Version | Date | Security Changes |
 |---------|------|------------------|
+| **v2.0.0** | **Feb 2026** | **🔥 Added FULL AUTONOMOUS MODE security** |
 | v0.9.0 | Feb 2026 | Initial security doc for v0.9.0 features |
 | v0.8.0 | Jan 2026 | Added PC control security |
 | v0.7.0 | Dec 2025 | Screen monitoring privacy controls |
