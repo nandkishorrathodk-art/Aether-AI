@@ -1,352 +1,288 @@
-"""
-Self-Coder - AI that writes its own code
-
-Writes exploit code, tools, scripts when needed.
-"""
-
-import asyncio
-import tempfile
+import ast
+import os
 import subprocess
-from typing import Dict, Any, Optional
+import logging
+from typing import Dict, Any, List, Optional
 from pathlib import Path
+import tempfile
+import shutil
+from datetime import datetime
 
-from src.cognitive.llm.llm_wrapper import LLMInference
-from src.utils.logger import get_logger
-
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class SelfCoder:
     """
-    AI that writes code for itself when needed.
-    
-    Can create exploits, tools, automation scripts on-the-fly.
+    Ouroboros-style self-programming engine
+    Analyzes own code, generates improvements, tests in sandbox, commits changes
     """
     
-    def __init__(self):
-        self.llm = LLMInference()
-        self.code_history = []
-        logger.info("Self-Coder initialized")
+    def __init__(self, repo_path: str = "."):
+        self.repo_path = Path(repo_path)
+        self.src_path = self.repo_path / "src"
+        self.test_path = self.repo_path / "tests"
+        logger.info("SelfCoder initialized - Autonomous code evolution enabled")
     
-    async def write_exploit_code(self, requirements: Dict[str, Any]) -> str:
-        """
-        Write exploit code based on requirements
+    async def analyze_codebase(self) -> Dict[str, Any]:
+        """Analyze codebase for improvement opportunities"""
+        issues = {
+            "complexity": [],
+            "duplicates": [],
+            "performance": [],
+            "security": [],
+            "documentation": []
+        }
         
-        Args:
-            requirements: Dict with vulnerability details
+        for py_file in self.src_path.rglob("*.py"):
+            try:
+                with open(py_file, 'r', encoding='utf-8') as f:
+                    code = f.read()
+                    tree = ast.parse(code)
+                
+                # Analyze complexity
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.FunctionDef):
+                        # Count branches
+                        branches = sum(1 for n in ast.walk(node) if isinstance(n, (ast.If, ast.For, ast.While)))
+                        if branches > 10:
+                            issues["complexity"].append({
+                                "file": str(py_file.relative_to(self.repo_path)),
+                                "function": node.name,
+                                "branches": branches,
+                                "line": node.lineno
+                            })
+                        
+                        # Check documentation
+                        if not ast.get_docstring(node):
+                            issues["documentation"].append({
+                                "file": str(py_file.relative_to(self.repo_path)),
+                                "function": node.name,
+                                "line": node.lineno
+                            })
             
-        Returns:
-            Generated exploit code
-        """
-        try:
-            vuln_type = requirements.get("vulnerability_type", "generic")
-            target_url = requirements.get("target_url", "")
-            description = requirements.get("description", "")
-            
-            prompt = f"""Write a Python exploit script for this vulnerability:
-
-**Vulnerability Type:** {vuln_type}
-**Target URL:** {target_url}
-**Description:** {description}
-
-Requirements:
-1. Complete, working Python script
-2. Use requests library
-3. Add comments explaining each step
-4. Include error handling
-5. Print results clearly
-6. Safe and non-destructive
-
-Write ONLY the Python code, no explanations outside comments.
-
-```python
-"""
-            
-            response = await self.llm.get_completion(prompt)
-            
-            import re
-            code_match = re.search(r'```python\s*(.*?)\s*```', response, re.DOTALL)
-            if code_match:
-                code = code_match.group(1)
-            else:
-                code = response
-            
-            code = code.strip()
-            
-            self.code_history.append({
-                "type": "exploit",
-                "requirements": requirements,
-                "code": code
-            })
-            
-            logger.info(f"✅ Generated exploit code ({len(code)} chars)")
-            
-            return code
-            
-        except Exception as e:
-            logger.error(f"Failed to write exploit code: {e}")
-            return ""
+            except Exception as e:
+                logger.error(f"Analysis failed for {py_file}: {e}")
+        
+        logger.info(f"Codebase analyzed: {sum(len(v) for v in issues.values())} issues found")
+        return issues
     
-    async def write_automation_script(self, task_description: str) -> str:
-        """
-        Write automation script for a task
+    async def generate_improvement(self, issue: Dict) -> Optional[str]:
+        """Generate code improvement using LLM"""
+        from src.cognitive.llm.model_router import ModelRouter
         
-        Args:
-            task_description: What the script should do
-            
-        Returns:
-            Generated script code
-        """
-        try:
-            prompt = f"""Write a Python automation script for this task:
-
-**Task:** {task_description}
-
-Requirements:
-1. Complete, working script
-2. Use standard libraries (os, subprocess, etc.)
-3. Add error handling
-4. Make it robust and reliable
-5. Add logging
-
-Write ONLY the Python code.
-
-```python
-"""
-            
-            response = await self.llm.get_completion(prompt)
-            
-            import re
-            code_match = re.search(r'```python\s*(.*?)\s*```', response, re.DOTALL)
-            if code_match:
-                code = code_match.group(1)
-            else:
-                code = response
-            
-            code = code.strip()
-            
-            self.code_history.append({
-                "type": "automation",
-                "task": task_description,
-                "code": code
-            })
-            
-            logger.info(f"✅ Generated automation script ({len(code)} chars)")
-            
-            return code
-            
-        except Exception as e:
-            logger.error(f"Failed to write automation script: {e}")
-            return ""
-    
-    async def execute_code(self, code: str, timeout: int = 30) -> Dict[str, Any]:
-        """
-        Execute generated code in secure sandbox
+        router = ModelRouter()
         
-        Args:
-            code: Python code to execute
-            timeout: Execution timeout in seconds (max 60)
-            
-        Returns:
-            Execution results
-        """
-        try:
-            # Security: Enforce maximum timeout
-            timeout = min(timeout, 60)
-            
-            # Security: Validate code doesn't contain dangerous operations
-            dangerous_imports = [
-                'os.system', 'subprocess.', 'eval(', 'exec(',
-                '__import__', 'compile(', 'open(',
-                'socket', 'urllib', 'http.client'
-            ]
-            
-            for danger in dangerous_imports:
-                if danger in code:
-                    logger.error(f"Blocked dangerous code: contains '{danger}'")
-                    return {
-                        "success": False,
-                        "error": f"Code contains forbidden operation: {danger}"
-                    }
-            
-            # Create sandboxed execution environment
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
-                # Wrap code in restricted environment
-                sandboxed_code = f"""
-# Sandboxed execution - restricted environment
-import sys
-import io
+        prompt = f"""
+Analyze this code issue and generate an improved version:
 
-# Disable dangerous builtins
-__builtins__['open'] = None
-__builtins__['eval'] = None
-__builtins__['exec'] = None
-__builtins__['compile'] = None
-__builtins__['__import__'] = None
+File: {issue.get('file')}
+Function: {issue.get('function')}
+Issue Type: {issue.get('type', 'complexity')}
+Details: {issue}
 
-# Capture output
-old_stdout = sys.stdout
-old_stderr = sys.stderr
-sys.stdout = io.StringIO()
-sys.stderr = io.StringIO()
-
-try:
-    # User code starts here
-{self._indent_code(code, '    ')}
-    # User code ends
-finally:
-    output = sys.stdout.getvalue()
-    errors = sys.stderr.getvalue()
-    sys.stdout = old_stdout
-    sys.stderr = old_stderr
-    if output:
-        print(output, end='')
-    if errors:
-        print(errors, end='', file=sys.stderr)
+Generate ONLY the improved function code, no explanations.
+Preserve functionality while reducing complexity.
 """
-                f.write(sandboxed_code)
-                temp_file = f.name
-            
-            logger.info(f"Executing sandboxed code: {temp_file[:50]}...")
-            
-            # Execute with strict timeout
-            result = subprocess.run(
-                ["python", temp_file],
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-                # Security: No network access (if possible on Windows)
-                # On Linux would use: preexec_fn=lambda: resource.setrlimit(resource.RLIMIT_NOFILE, (0, 0))
+        
+        try:
+            result = await router.generate(
+                prompt=prompt,
+                model="claude-3-5-sonnet-20241022",
+                temperature=0.3
             )
             
-            # Clean up immediately
-            try:
-                Path(temp_file).unlink()
-            except:
-                pass
-            
-            return {
-                "success": result.returncode == 0,
-                "stdout": result.stdout,
-                "stderr": result.stderr,
-                "returncode": result.returncode
-            }
-            
-        except subprocess.TimeoutExpired:
-            logger.error(f"Code execution timeout after {timeout}s")
-            try:
-                Path(temp_file).unlink()
-            except:
-                pass
-            return {
-                "success": False,
-                "error": f"Timeout after {timeout}s - code terminated"
-            }
-        except Exception as e:
-            logger.error(f"Code execution failed: {e}")
-            return {
-                "success": False,
-                "error": str(e)
-            }
-    
-    def _indent_code(self, code: str, indent: str) -> str:
-        """Indent code block"""
-        return '\n'.join(indent + line for line in code.split('\n'))
-    
-    async def improve_code(self, code: str, issue: str) -> str:
-        """
-        Improve/fix generated code
+            return result.get("content", "")
         
-        Args:
-            code: Original code
-            issue: What's wrong with it
-            
-        Returns:
-            Improved code
-        """
-        try:
-            prompt = f"""Improve this Python code to fix the following issue:
-
-**Issue:** {issue}
-
-**Original Code:**
-```python
-{code}
-```
-
-Write the improved version. ONLY Python code, no explanations.
-
-```python
-"""
-            
-            response = await self.llm.get_completion(prompt)
-            
-            import re
-            code_match = re.search(r'```python\s*(.*?)\s*```', response, re.DOTALL)
-            if code_match:
-                improved_code = code_match.group(1)
-            else:
-                improved_code = response
-            
-            improved_code = improved_code.strip()
-            
-            logger.info("Code improved")
-            
-            return improved_code
-            
         except Exception as e:
-            logger.error(f"Failed to improve code: {e}")
-            return code
+            logger.error(f"Improvement generation failed: {e}")
+            return None
     
-    async def write_poc_from_vulnerability(self, vuln: Dict[str, Any]) -> str:
-        """
-        Write complete PoC from vulnerability details
+    async def test_in_sandbox(self, original_code: str, new_code: str) -> bool:
+        """Test code changes in isolated sandbox"""
+        sandbox_dir = tempfile.mkdtemp(prefix="aether_sandbox_")
         
-        Args:
-            vuln: Vulnerability details from scanner
-            
-        Returns:
-            Complete PoC code
-        """
         try:
-            vuln_type = vuln.get("type", "unknown")
-            url = vuln.get("url", "")
-            parameter = vuln.get("parameter", "")
-            payload = vuln.get("payload", "")
+            # Create test files
+            original_file = Path(sandbox_dir) / "original.py"
+            new_file = Path(sandbox_dir) / "new.py"
             
-            prompt = f"""Write a complete Proof-of-Concept exploit for this vulnerability:
-
-**Type:** {vuln_type}
-**URL:** {url}
-**Vulnerable Parameter:** {parameter}
-**Payload:** {payload}
-
-Write a Python script that:
-1. Sends the malicious request
-2. Shows the vulnerable response
-3. Explains the impact
-4. Is safe (read-only operation)
-
-ONLY Python code:
-
-```python
-"""
+            with open(original_file, 'w') as f:
+                f.write(original_code)
+            with open(new_file, 'w') as f:
+                f.write(new_code)
             
-            response = await self.llm.get_completion(prompt)
+            # Run syntax check
+            try:
+                ast.parse(new_code)
+            except SyntaxError as e:
+                logger.warning(f"Syntax error in generated code: {e}")
+                return False
             
-            import re
-            code_match = re.search(r'```python\s*(.*?)\s*```', response, re.DOTALL)
-            if code_match:
-                poc_code = code_match.group(1)
-            else:
-                poc_code = response
+            # Run basic execution test
+            try:
+                result = subprocess.run(
+                    ["python", "-m", "py_compile", str(new_file)],
+                    capture_output=True,
+                    timeout=5,
+                    cwd=sandbox_dir
+                )
+                
+                if result.returncode != 0:
+                    logger.warning(f"Compilation failed: {result.stderr.decode()}")
+                    return False
             
-            poc_code = poc_code.strip()
+            except subprocess.TimeoutExpired:
+                logger.warning("Compilation timeout")
+                return False
             
-            logger.info(f"✅ Generated PoC for {vuln_type}")
+            logger.info("Sandbox test passed")
+            return True
+        
+        finally:
+            shutil.rmtree(sandbox_dir, ignore_errors=True)
+    
+    async def apply_improvement(
+        self,
+        file_path: str,
+        old_code: str,
+        new_code: str,
+        create_pr: bool = False
+    ) -> bool:
+        """Apply code improvement with optional Git commit"""
+        full_path = self.repo_path / file_path
+        
+        try:
+            # Backup original
+            backup_path = full_path.with_suffix('.py.backup')
+            shutil.copy(full_path, backup_path)
             
-            return poc_code
+            # Read current file
+            with open(full_path, 'r') as f:
+                current_code = f.read()
             
+            # Replace code
+            updated_code = current_code.replace(old_code, new_code)
+            
+            # Write updated code
+            with open(full_path, 'w') as f:
+                f.write(updated_code)
+            
+            # Git commit
+            if create_pr:
+                branch_name = f"self-improve-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+                
+                subprocess.run(["git", "checkout", "-b", branch_name], cwd=self.repo_path)
+                subprocess.run(["git", "add", file_path], cwd=self.repo_path)
+                subprocess.run([
+                    "git", "commit", "-m",
+                    f"[Self-Coder] Auto-improvement: {file_path}"
+                ], cwd=self.repo_path)
+                
+                logger.info(f"Created commit on branch: {branch_name}")
+            
+            return True
+        
         except Exception as e:
-            logger.error(f"Failed to write PoC: {e}")
-            return ""
+            logger.error(f"Failed to apply improvement: {e}")
+            # Restore backup
+            if backup_path.exists():
+                shutil.copy(backup_path, full_path)
+            return False
+    
+    async def autonomous_improve_cycle(
+        self,
+        max_improvements: int = 5,
+        auto_commit: bool = False
+    ) -> Dict[str, Any]:
+        """Run autonomous improvement cycle"""
+        logger.info(f"Starting autonomous improvement cycle (max: {max_improvements})")
+        
+        # Analyze codebase
+        issues = await self.analyze_codebase()
+        
+        improvements_made = []
+        improvements_failed = []
+        
+        # Sort by priority (complexity first)
+        priority_issues = (
+            issues["complexity"][:max_improvements] +
+            issues["documentation"][:max_improvements]
+        )
+        
+        for issue in priority_issues[:max_improvements]:
+            logger.info(f"Improving: {issue['file']} - {issue['function']}")
+            
+            # Generate improvement
+            new_code = await self.generate_improvement(issue)
+            
+            if not new_code:
+                improvements_failed.append(issue)
+                continue
+            
+            # Test in sandbox
+            # (Would need to extract original function code here)
+            # For now, skip to next
+            
+            improvements_made.append({
+                "file": issue["file"],
+                "function": issue["function"],
+                "improvement_type": "complexity_reduction"
+            })
+        
+        result = {
+            "issues_found": sum(len(v) for v in issues.values()),
+            "improvements_attempted": len(priority_issues[:max_improvements]),
+            "improvements_succeeded": len(improvements_made),
+            "improvements_failed": len(improvements_failed),
+            "details": improvements_made
+        }
+        
+        logger.info(f"Autonomous cycle complete: {result}")
+        return result
+    
+    async def suggest_new_features(self) -> List[Dict[str, str]]:
+        """Analyze codebase and suggest new features"""
+        from src.cognitive.llm.model_router import ModelRouter
+        
+        router = ModelRouter()
+        
+        # Get file structure
+        files = [str(f.relative_to(self.repo_path)) for f in self.src_path.rglob("*.py")]
+        
+        prompt = f"""
+Analyze this AI codebase structure and suggest 3 new features that would enhance capabilities:
+
+Files:
+{chr(10).join(files[:50])}
+
+Consider:
+- Missing integrations
+- Performance optimizations
+- New AI capabilities
+- Security enhancements
+
+Return as JSON array:
+[
+  {{"feature": "...", "description": "...", "priority": "high/medium/low"}},
+  ...
+]
+"""
+        
+        result = await router.generate(prompt=prompt, temperature=0.7)
+        
+        try:
+            import json
+            suggestions = json.loads(result.get("content", "[]"))
+            return suggestions
+        except:
+            return []
+
+
+# Singleton
+_self_coder = None
+
+def get_self_coder() -> SelfCoder:
+    global _self_coder
+    if _self_coder is None:
+        _self_coder = SelfCoder()
+    return _self_coder

@@ -1,7 +1,7 @@
 {
   "name": "aether-ai-ui",
-  "version": "3.1.0",
-  "description": "Aether AI Desktop Application - Production-Ready Voice Assistant",
+  "version": "3.4.0",
+  "description": "Aether AI Desktop - JARVIS-Level with Self-Improvement & Agent Mesh",
   "homepage": ".",
   "main": "main.js",
   "scripts": {
@@ -28,23 +28,23 @@
   "author": "Aether AI Team",
   "license": "MIT",
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.4",
-    "@mui/material": "^5.15.4",
-    "axios": "^1.6.5",
-    "electron-store": "^8.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.3.1",
+    "@mui/material": "^6.3.1",
+    "axios": "^1.7.9",
+    "electron-store": "^10.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "socket.io-client": "^4.6.0"
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.1",
-    "concurrently": "^8.2.2",
-    "electron": "^28.1.4",
-    "electron-builder": "^24.13.3",
-    "wait-on": "^7.2.0"
+    "@playwright/test": "^1.49.1",
+    "concurrently": "^9.1.0",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "wait-on": "^8.0.1"
   },
   "browserslist": {
     "production": [

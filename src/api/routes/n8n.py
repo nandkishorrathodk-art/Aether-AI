@@ -154,6 +154,94 @@ async def execute_aether_action(action: str, data: Dict[str, Any]) -> Dict[str, 
                 "format": audio_data.get("format", "mp3")
             }
         
+        elif action == "analyze_image":
+            image_url = data.get("image_url", "")
+            prompt = data.get("prompt", "Analyze this image in detail")
+            
+            if not image_url:
+                raise ValueError("Image URL required")
+            
+            async with httpx.AsyncClient() as client:
+                response = await model_router.generate(
+                    prompt=prompt,
+                    model=data.get("model", "auto"),
+                    images=[image_url],
+                    temperature=data.get("temperature", 0.7)
+                )
+            
+            return {
+                "analysis": response.get("content", ""),
+                "model": response.get("model", "")
+            }
+        
+        elif action == "scrape_web":
+            url = data.get("url", "")
+            if not url:
+                raise ValueError("URL required for scraping")
+            
+            from src.openclaw.openclaw import OpenClaw
+            openclaw = OpenClaw()
+            
+            result = await openclaw.scrape(
+                url=url,
+                extract_type=data.get("extract_type", "all"),
+                wait_for=data.get("wait_for", None)
+            )
+            
+            return {
+                "url": url,
+                "title": result.get("title", ""),
+                "content": result.get("content", ""),
+                "links": result.get("links", []),
+                "images": result.get("images", [])
+            }
+        
+        elif action == "execute_code":
+            code = data.get("code", "")
+            language = data.get("language", "python")
+            
+            if not code:
+                raise ValueError("Code required for execution")
+            
+            import subprocess
+            import tempfile
+            import os
+            
+            ext_map = {"python": ".py", "javascript": ".js", "bash": ".sh"}
+            ext = ext_map.get(language, ".py")
+            
+            with tempfile.NamedTemporaryFile(mode='w', suffix=ext, delete=False) as f:
+                f.write(code)
+                temp_path = f.name
+            
+            try:
+                if language == "python":
+                    result = subprocess.run(
+                        ["python", temp_path],
+                        capture_output=True,
+                        text=True,
+                        timeout=data.get("timeout", 30)
+                    )
+                elif language == "javascript":
+                    result = subprocess.run(
+                        ["node", temp_path],
+                        capture_output=True,
+                        text=True,
+                        timeout=data.get("timeout", 30)
+                    )
+                else:
+                    raise ValueError(f"Unsupported language: {language}")
+                
+                return {
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                    "return_code": result.returncode,
+                    "language": language
+                }
+            finally:
+                if os.path.exists(temp_path):
+                    os.unlink(temp_path)
+        
         else:
             raise ValueError(f"Unknown action: {action}")
     
@@ -189,6 +277,9 @@ async def n8n_webhook(
     - generate_text: Generate text with LLM
     - transcribe_audio: Convert audio to text
     - synthesize_speech: Convert text to speech
+    - analyze_image: Analyze images with vision AI (NEW v3.2)
+    - scrape_web: Extract data from websites (NEW v3.2)
+    - execute_code: Run Python/JavaScript code (NEW v3.2)
     """
     
     execution_id = f"n8n_{request.workflow_id}_{datetime.now().timestamp()}"

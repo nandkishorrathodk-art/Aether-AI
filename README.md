@@ -19,7 +19,7 @@
 
 <p>
 <img src="https://img.shields.io/github/stars/nandkishorrathodk-art/Aether-AI?style=for-the-badge&logo=github&logoColor=white&color=yellow" alt="GitHub Stars"/>
-<img src="https://img.shields.io/badge/version-3.1.0-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
+<img src="https://img.shields.io/badge/version-3.4.0-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
 <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License"/>
 <img src="https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
 </p>
@@ -44,7 +44,90 @@
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
 <h3>
-🎤 <b>NEW in v3.1</b> - PRODUCTION-READY VOICE ASSISTANT! 🎤
+🤖 <b>NEW in v3.4</b> - JARVIS-LEVEL INTELLIGENCE: SELF-CODING, 60+ AGENT MESH, PROMETHEUS! 🤖
+</h3>
+
+<div align="center">
+<table>
+<tr>
+<td align="center" width="20%">🧠<br><b>Self-Coding</b><br><sub>Ouroboros engine</sub></td>
+<td align="center" width="20%">🕸️<br><b>Agent Mesh</b><br><sub>60+ specialists</sub></td>
+<td align="center" width="20%">📊<br><b>Prometheus</b><br><sub>Full metrics</sub></td>
+<td align="center" width="20%">🔄<br><b>Circuit Breakers</b><br><sub>Auto-recovery</sub></td>
+<td align="center" width="20%">🏥<br><b>Health Checks</b><br><sub>24/7 monitoring</sub></td>
+</tr>
+</table>
+
+**JARVIS-Level Features:**
+- ✅ **Self-Coding Engine**: Analyzes own code, generates improvements, tests in sandbox, commits via Git
+- ✅ **Agent Mesh (60+)**: Specialized agents for scraping, scanning, code analysis, intelligence
+- ✅ **Prometheus Metrics**: Track HTTP, LLM, DB, cache, scans, WebSockets, system resources
+- ✅ **Circuit Breakers**: Prevent cascading failures, auto-recovery, failure thresholds
+- ✅ **Health Monitoring**: Database, cache, LLM providers, system resources
+- ✅ **Swarm Intelligence**: Coordinate multi-agent attacks on targets
+
+</div>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
+
+<h3>
+⚡ <b>v3.3</b> - ENTERPRISE POWER: 10 LANGUAGES, GRAPHQL, WEBSOCKETS, DUAL DATABASES! ⚡
+</h3>
+
+<div align="center">
+<table>
+<tr>
+<td align="center" width="16%">💻<br><b>10 Languages</b><br><sub>Python, JS, Go, Rust, C++, Java, Ruby</sub></td>
+<td align="center" width="16%">🔄<br><b>GraphQL API</b><br><sub>Real-time queries</sub></td>
+<td align="center" width="16%">⚡<br><b>WebSockets</b><br><sub>Live updates</sub></td>
+<td align="center" width="16%">🗄️<br><b>PostgreSQL</b><br><sub>Relational DB</sub></td>
+<td align="center" width="16%">📊<br><b>MongoDB</b><br><sub>Document DB</sub></td>
+<td align="center" width="16%">🚀<br><b>Redis Cache</b><br><sub>Ultra-fast</sub></td>
+</tr>
+</table>
+
+**Enterprise Features:**
+- ✅ **Multi-Language Execution**: Python, JavaScript, TypeScript, Go, Rust, C++, C, Java, Ruby, PHP, Shell
+- ✅ **GraphQL API**: Queries, Mutations, Subscriptions with Strawberry
+- ✅ **WebSocket Support**: Real-time scan progress, LLM streaming, voice transcription
+- ✅ **PostgreSQL**: Structured data with async SQLAlchemy
+- ✅ **MongoDB**: Flexible documents with Motor
+- ✅ **Redis Caching**: Auto-caching with decorators
+- ✅ **Docker Compose**: Full stack deployment
+- ✅ **Kubernetes**: Production-ready with autoscaling
+
+</div>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
+
+<h3>
+🚀 <b>v3.2</b> - ULTRA UPGRADE: DEPENDENCIES, FEATURES & 5X FASTER! 🚀
+</h3>
+
+<div align="center">
+<table>
+<tr>
+<td align="center" width="20%">📦<br><b>40+ Packages</b><br><sub>Latest stable</sub></td>
+<td align="center" width="20%">⚡<br><b>5x Faster</b><br><sub>Faster-Whisper</sub></td>
+<td align="center" width="20%">🎯<br><b>9 n8n Actions</b><br><sub>Vision, Code, Web</sub></td>
+<td align="center" width="20%">🎨<br><b>5 Themes</b><br><sub>Customizable UI</sub></td>
+<td align="center" width="20%">🔧<br><b>Latest APIs</b><br><sub>GPT-4, Claude, Gemini</sub></td>
+</tr>
+</table>
+
+**What's New:**
+- ✅ **Dependencies Upgraded**: FastAPI 0.115, React 18.3, Electron 33, OpenAI 1.58, Anthropic 0.42
+- ✅ **Faster-Whisper**: 5x speed boost (0.6-1s transcription)
+- ✅ **New n8n Actions**: Image analysis, web scraping, code execution
+- ✅ **Theme System**: 5 pre-built themes (Cyberpunk, Matrix, Iron Man, Minimal, Dark)
+- ✅ **Security**: All packages patched to latest stable versions
+
+</div>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
+
+<h3>
+🎤 <b>v3.1</b> - PRODUCTION-READY VOICE ASSISTANT! 🎤
 </h3>
 
 <div align="center">

@@ -18,12 +18,14 @@ class SpeechToText:
         use_cloud: bool = False,
         api_key: Optional[str] = None,
         language: Optional[str] = None,
-        device: str = "cpu"
+        device: str = "cpu",
+        use_faster_whisper: bool = False
     ):
         self.model_name = model_name
         self.use_cloud = use_cloud
         self.language = language
         self.device = device
+        self.use_faster_whisper = use_faster_whisper
         
         self.model: Optional[whisper.Whisper] = None
         self.client: Optional[OpenAI] = None
@@ -38,6 +40,17 @@ class SpeechToText:
     
     def _load_local_model(self):
         try:
+            if self.use_faster_whisper:
+                try:
+                    from faster_whisper import WhisperModel
+                    logger.info(f"Loading Faster-Whisper model: {self.model_name} (5x speed boost!)")
+                    self.model = WhisperModel(self.model_name, device=self.device, compute_type="int8")
+                    logger.info(f"Faster-Whisper loaded on {self.device} - Ultra-fast transcription enabled!")
+                    return
+                except ImportError:
+                    logger.warning("faster-whisper not installed, falling back to standard whisper")
+                    self.use_faster_whisper = False
+            
             logger.info(f"Loading Whisper model: {self.model_name}")
             self.model = whisper.load_model(self.model_name, device=self.device)
             logger.info(f"Whisper model loaded successfully on {self.device}")

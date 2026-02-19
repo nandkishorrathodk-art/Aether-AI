@@ -1,7 +1,7 @@
 {
   "name": "aether-ai",
-  "version": "3.1.0",
-  "description": "Voice-First AI Assistant - Android & Desktop - Production-Ready Voice System",
+  "version": "3.4.0",
+  "description": "JARVIS-Level AI - Self-Coding, 60+ Agent Mesh, Prometheus, Circuit Breakers, Full Observability",
   "main": "index.android.js",
   "scripts": {
     "android": "react-native run-android",
@@ -12,19 +12,19 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "18.2.0",
-    "react-native": "0.73.2",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
     "@react-native-voice/voice": "^3.2.4",
     "react-native-tts": "^4.1.0",
-    "react-native-vector-icons": "^10.0.3",
-    "axios": "^1.6.5"
+    "react-native-vector-icons": "^10.2.0",
+    "axios": "^1.7.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.7",
-    "@babel/runtime": "^7.23.7",
-    "@react-native/babel-preset": "^0.73.19",
-    "@react-native/metro-config": "^0.73.3",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/runtime": "^7.26.0",
+    "@react-native/babel-preset": "^0.76.5",
+    "@react-native/metro-config": "^0.76.5",
     "metro-react-native-babel-preset": "^0.77.0"
   },
   "engines": {
