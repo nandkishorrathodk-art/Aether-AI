@@ -1,323 +1,443 @@
-import os
-os.environ["ANONYMIZED_TELEMETRY"] = "False"
-os.environ["CHROMA_TELEMETRY_IMPL"] = "None"
+"""
+Vector Store - Long-term Memory System
 
-import sys
-from unittest.mock import MagicMock
-sys.modules['posthog'] = MagicMock()
+ChromaDB-powered vector storage for Jarvis-like memory:
+- Remembers conversations, projects, code patterns
+- Enables semantic search across all memories
+- Supports multiple collections (conversations, projects, code, bugs)
 
-import chromadb
-from chromadb.config import Settings as ChromaSettings
-from chromadb.utils import embedding_functions
-from typing import List, Dict, Optional, Tuple
-from datetime import datetime
+Boss, ab Aether ko sab yaad rahega!
+"""
+
 import logging
+from typing import List, Dict, Optional, Any
+from datetime import datetime
+import chromadb
+from chromadb.config import Settings
+from chromadb.utils import embedding_functions
+import json
+import os
 from pathlib import Path
-
-from src.config import settings
 
 logger = logging.getLogger(__name__)
 
 
 class VectorStore:
-    def __init__(self, persist_directory: Optional[Path] = None):
-        self.persist_directory = persist_directory or settings.chromadb_path
-        self.persist_directory.mkdir(parents=True, exist_ok=True)
-        
-        try:
-            self.client = chromadb.PersistentClient(
-                path=str(self.persist_directory),
-                settings=ChromaSettings(
-                    anonymized_telemetry=False,
-                    allow_reset=True
-                )
-            )
-            
-            self._embedding_function = None
-            self.collections = {}
-            logger.info(f"VectorStore initialized at {self.persist_directory}")
-        except Exception as e:
-            logger.error(f"Failed to initialize VectorStore: {e}")
-            raise
+    """
+    Long-term memory using ChromaDB vector database
     
-    @property
-    def embedding_function(self):
-        if self._embedding_function is None:
-            self._embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
-                model_name="all-MiniLM-L6-v2"
-            )
-        return self._embedding_function
+    Collections:
+    - conversations: Chat history with embeddings
+    - projects: Bug bounty projects, coding projects
+    - code_patterns: Coding style, preferences, snippets
+    - vulnerabilities: Found bugs, exploitation techniques
+    """
     
-    def get_or_create_collection(self, collection_name: str) -> chromadb.Collection:
-        if collection_name not in self.collections:
-            self.collections[collection_name] = self.client.get_or_create_collection(
-                name=collection_name,
-                embedding_function=self.embedding_function,
-                metadata={"created_at": datetime.utcnow().isoformat()}
-            )
-            logger.info(f"Collection '{collection_name}' ready")
-        return self.collections[collection_name]
-    
-    def add_memory(
+    def __init__(
         self,
-        collection_name: str,
-        text: str,
-        metadata: Optional[Dict] = None,
-        memory_id: Optional[str] = None
+        persist_directory: Optional[str] = None,
+        embedding_model: str = "all-MiniLM-L6-v2"
+    ):
+        """
+        Initialize vector store
+        
+        Args:
+            persist_directory: Where to store the database (default: data/memory/chroma)
+            embedding_model: Sentence transformer model for embeddings
+        """
+        if persist_directory is None:
+            persist_directory = str(Path("data/memory/chroma").absolute())
+        
+        os.makedirs(persist_directory, exist_ok=True)
+        
+        self.client = chromadb.Client(Settings(
+            chroma_db_impl="duckdb+parquet",
+            persist_directory=persist_directory
+        ))
+        
+        self.embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name=embedding_model
+        )
+        
+        self.collections = {}
+        self._initialize_collections()
+        
+        logger.info(f"VectorStore initialized - Memory path: {persist_directory}")
+    
+    def _initialize_collections(self):
+        """Initialize all memory collections"""
+        collection_configs = {
+            "conversations": "User conversations and interactions",
+            "projects": "Bug bounty and coding projects",
+            "code_patterns": "Coding style, preferences, and snippets",
+            "vulnerabilities": "Discovered vulnerabilities and techniques",
+            "personal_facts": "User preferences, habits, and personal info"
+        }
+        
+        for name, description in collection_configs.items():
+            try:
+                self.collections[name] = self.client.get_or_create_collection(
+                    name=name,
+                    embedding_function=self.embedding_function,
+                    metadata={"description": description}
+                )
+                logger.info(f"Collection '{name}' ready")
+            except Exception as e:
+                logger.error(f"Failed to create collection '{name}': {e}")
+    
+    def add_conversation(
+        self,
+        user_message: str,
+        ai_response: str,
+        metadata: Optional[Dict] = None
     ) -> str:
-        collection = self.get_or_create_collection(collection_name)
+        """
+        Store conversation in memory
         
-        if memory_id is None:
-            memory_id = f"{collection_name}_{datetime.utcnow().timestamp()}"
+        Args:
+            user_message: What user said
+            ai_response: What AI responded
+            metadata: Additional context (timestamp, session_id, etc.)
+            
+        Returns:
+            Memory ID
+        """
+        timestamp = datetime.now().isoformat()
         
-        if metadata is None:
-            metadata = {}
+        combined_text = f"User: {user_message}\nAether: {ai_response}"
         
-        metadata.update({
-            "timestamp": datetime.utcnow().isoformat(),
-            "source": collection_name
-        })
+        meta = {
+            "timestamp": timestamp,
+            "user_message": user_message,
+            "ai_response": ai_response,
+            **(metadata or {})
+        }
         
-        collection.add(
-            documents=[text],
-            metadatas=[metadata],
+        memory_id = f"conv_{timestamp.replace(':', '-').replace('.', '-')}"
+        
+        self.collections["conversations"].add(
+            documents=[combined_text],
+            metadatas=[meta],
             ids=[memory_id]
         )
         
-        logger.debug(f"Added memory '{memory_id}' to '{collection_name}'")
+        logger.info(f"Conversation stored: {memory_id}")
         return memory_id
     
-    def add_memories_batch(
+    def add_project(
         self,
-        collection_name: str,
-        texts: List[str],
-        metadatas: Optional[List[Dict]] = None,
-        ids: Optional[List[str]] = None
-    ) -> List[str]:
-        collection = self.get_or_create_collection(collection_name)
+        project_name: str,
+        project_type: str,
+        description: str,
+        metadata: Optional[Dict] = None
+    ) -> str:
+        """
+        Store project information
         
-        if ids is None:
-            timestamp = datetime.utcnow().timestamp()
-            ids = [f"{collection_name}_{timestamp}_{i}" for i in range(len(texts))]
+        Args:
+            project_name: Name of project
+            project_type: "bug_bounty", "coding", "research", etc.
+            description: Project details
+            metadata: Additional data (stack, findings, etc.)
+            
+        Returns:
+            Memory ID
+        """
+        timestamp = datetime.now().isoformat()
         
-        if metadatas is None:
-            metadatas = [{} for _ in texts]
+        meta = {
+            "timestamp": timestamp,
+            "project_name": project_name,
+            "project_type": project_type,
+            **(metadata or {})
+        }
         
-        current_time = datetime.utcnow().isoformat()
-        for metadata in metadatas:
-            metadata.update({
-                "timestamp": current_time,
-                "source": collection_name
-            })
+        memory_id = f"proj_{project_name.lower().replace(' ', '_')}_{timestamp[:10]}"
         
-        collection.add(
-            documents=texts,
-            metadatas=metadatas,
-            ids=ids
+        self.collections["projects"].add(
+            documents=[description],
+            metadatas=[meta],
+            ids=[memory_id]
         )
         
-        logger.info(f"Added {len(texts)} memories to '{collection_name}'")
-        return ids
+        logger.info(f"Project stored: {project_name}")
+        return memory_id
+    
+    def add_code_pattern(
+        self,
+        pattern_name: str,
+        code_snippet: str,
+        language: str,
+        metadata: Optional[Dict] = None
+    ) -> str:
+        """
+        Store coding pattern/preference
+        
+        Args:
+            pattern_name: Name/description of pattern
+            code_snippet: The code itself
+            language: Programming language
+            metadata: Additional context
+            
+        Returns:
+            Memory ID
+        """
+        timestamp = datetime.now().isoformat()
+        
+        meta = {
+            "timestamp": timestamp,
+            "pattern_name": pattern_name,
+            "language": language,
+            **(metadata or {})
+        }
+        
+        memory_id = f"code_{pattern_name.lower().replace(' ', '_')}_{timestamp[:10]}"
+        
+        self.collections["code_patterns"].add(
+            documents=[f"{pattern_name}\n\n{code_snippet}"],
+            metadatas=[meta],
+            ids=[memory_id]
+        )
+        
+        logger.info(f"Code pattern stored: {pattern_name}")
+        return memory_id
+    
+    def add_vulnerability(
+        self,
+        vuln_type: str,
+        target: str,
+        description: str,
+        exploitation_technique: str,
+        metadata: Optional[Dict] = None
+    ) -> str:
+        """
+        Store vulnerability finding
+        
+        Args:
+            vuln_type: Type of vulnerability (IDOR, XSS, SQLi, etc.)
+            target: Target domain/application
+            description: Detailed description
+            exploitation_technique: How it was exploited
+            metadata: Additional data (severity, payout, etc.)
+            
+        Returns:
+            Memory ID
+        """
+        timestamp = datetime.now().isoformat()
+        
+        meta = {
+            "timestamp": timestamp,
+            "vuln_type": vuln_type,
+            "target": target,
+            "exploitation_technique": exploitation_technique,
+            **(metadata or {})
+        }
+        
+        memory_id = f"vuln_{vuln_type.lower()}_{target.replace('.', '_')}_{timestamp[:10]}"
+        
+        full_text = f"""
+Vulnerability: {vuln_type}
+Target: {target}
+Description: {description}
+Exploitation: {exploitation_technique}
+"""
+        
+        self.collections["vulnerabilities"].add(
+            documents=[full_text],
+            metadatas=[meta],
+            ids=[memory_id]
+        )
+        
+        logger.info(f"Vulnerability stored: {vuln_type} on {target}")
+        return memory_id
+    
+    def add_personal_fact(
+        self,
+        fact_type: str,
+        fact_content: str,
+        metadata: Optional[Dict] = None
+    ) -> str:
+        """
+        Store personal fact about user
+        
+        Args:
+            fact_type: "preference", "habit", "skill", "goal", etc.
+            fact_content: The actual fact
+            metadata: Additional context
+            
+        Returns:
+            Memory ID
+        """
+        timestamp = datetime.now().isoformat()
+        
+        meta = {
+            "timestamp": timestamp,
+            "fact_type": fact_type,
+            **(metadata or {})
+        }
+        
+        memory_id = f"fact_{fact_type}_{timestamp[:10]}"
+        
+        self.collections["personal_facts"].add(
+            documents=[fact_content],
+            metadatas=[meta],
+            ids=[memory_id]
+        )
+        
+        logger.info(f"Personal fact stored: {fact_type}")
+        return memory_id
     
     def search_memories(
         self,
-        collection_name: str,
         query: str,
-        n_results: int = 5,
-        where: Optional[Dict] = None,
-        where_document: Optional[Dict] = None
-    ) -> Dict:
-        collection = self.get_or_create_collection(collection_name)
+        collection_name: str = "conversations",
+        n_results: int = 5
+    ) -> List[Dict[str, Any]]:
+        """
+        Search memories using semantic similarity
         
-        results = collection.query(
-            query_texts=[query],
-            n_results=n_results,
-            where=where,
-            where_document=where_document
-        )
-        
-        formatted_results = {
-            "memories": [],
-            "count": len(results["ids"][0]) if results["ids"] else 0
-        }
-        
-        if results["ids"] and results["ids"][0]:
-            for i in range(len(results["ids"][0])):
-                formatted_results["memories"].append({
-                    "id": results["ids"][0][i],
-                    "text": results["documents"][0][i],
-                    "metadata": results["metadatas"][0][i] if results["metadatas"] else {},
-                    "distance": results["distances"][0][i] if results["distances"] else None
-                })
-        
-        logger.debug(f"Found {formatted_results['count']} memories for query in '{collection_name}'")
-        return formatted_results
-    
-    def get_memory(self, collection_name: str, memory_id: str) -> Optional[Dict]:
-        collection = self.get_or_create_collection(collection_name)
+        Args:
+            query: Search query
+            collection_name: Which collection to search
+            n_results: Number of results to return
+            
+        Returns:
+            List of matching memories with metadata
+        """
+        if collection_name not in self.collections:
+            logger.error(f"Collection '{collection_name}' not found")
+            return []
         
         try:
-            result = collection.get(ids=[memory_id])
-            if result["ids"]:
-                return {
-                    "id": result["ids"][0],
-                    "text": result["documents"][0],
-                    "metadata": result["metadatas"][0] if result["metadatas"] else {}
-                }
-        except Exception as e:
-            logger.error(f"Error retrieving memory '{memory_id}': {e}")
-        
-        return None
-    
-    def update_memory(
-        self,
-        collection_name: str,
-        memory_id: str,
-        text: Optional[str] = None,
-        metadata: Optional[Dict] = None
-    ) -> bool:
-        collection = self.get_or_create_collection(collection_name)
-        
-        try:
-            existing = self.get_memory(collection_name, memory_id)
-            if not existing:
-                logger.warning(f"Memory '{memory_id}' not found in '{collection_name}'")
-                return False
-            
-            update_text = text if text is not None else existing["text"]
-            update_metadata = existing["metadata"].copy()
-            if metadata:
-                update_metadata.update(metadata)
-            update_metadata["updated_at"] = datetime.utcnow().isoformat()
-            
-            collection.update(
-                ids=[memory_id],
-                documents=[update_text],
-                metadatas=[update_metadata]
+            results = self.collections[collection_name].query(
+                query_texts=[query],
+                n_results=n_results
             )
             
-            logger.info(f"Updated memory '{memory_id}' in '{collection_name}'")
-            return True
+            memories = []
+            for i in range(len(results['ids'][0])):
+                memories.append({
+                    "id": results['ids'][0][i],
+                    "content": results['documents'][0][i],
+                    "metadata": results['metadatas'][0][i],
+                    "distance": results['distances'][0][i] if 'distances' in results else None
+                })
+            
+            logger.info(f"Found {len(memories)} memories for query: {query[:50]}")
+            return memories
+        
         except Exception as e:
-            logger.error(f"Error updating memory '{memory_id}': {e}")
-            return False
+            logger.error(f"Search failed: {e}")
+            return []
     
-    def delete_memory(self, collection_name: str, memory_id: str) -> bool:
-        collection = self.get_or_create_collection(collection_name)
-        
-        try:
-            collection.delete(ids=[memory_id])
-            logger.info(f"Deleted memory '{memory_id}' from '{collection_name}'")
-            return True
-        except Exception as e:
-            logger.error(f"Error deleting memory '{memory_id}': {e}")
-            return False
-    
-    def delete_collection(self, collection_name: str) -> bool:
-        try:
-            self.client.delete_collection(name=collection_name)
-            if collection_name in self.collections:
-                del self.collections[collection_name]
-            logger.info(f"Deleted collection '{collection_name}'")
-            return True
-        except Exception as e:
-            logger.error(f"Error deleting collection '{collection_name}': {e}")
-            return False
-    
-    def get_collection_stats(self, collection_name: str) -> Dict:
-        collection = self.get_or_create_collection(collection_name)
-        
-        count = collection.count()
-        metadata = collection.metadata
-        
-        return {
-            "name": collection_name,
-            "count": count,
-            "metadata": metadata
-        }
-    
-    def list_collections(self) -> List[str]:
-        collections = self.client.list_collections()
-        return [col.name for col in collections]
-    
-    def reset(self):
-        self.client.reset()
-        self.collections = {}
-        logger.warning("VectorStore reset - all collections deleted")
-
-
-class MemoryManager:
-    def __init__(self):
-        self.vector_store = VectorStore()
-        self.user_memories = "user_memories"
-        self.conversation_memories = "conversation_memories"
-        self.fact_memories = "fact_memories"
-        self.task_memories = "task_memories"
-        
-        logger.info("MemoryManager initialized")
-    
-    def remember(self, text: str, memory_type: str = "user", metadata: Optional[Dict] = None) -> str:
-        collection_map = {
-            "user": self.user_memories,
-            "conversation": self.conversation_memories,
-            "fact": self.fact_memories,
-            "task": self.task_memories
-        }
-        
-        collection = collection_map.get(memory_type, self.user_memories)
-        
-        if metadata is None:
-            metadata = {}
-        metadata["memory_type"] = memory_type
-        
-        return self.vector_store.add_memory(collection, text, metadata)
-    
-    def recall(
+    def search_all_collections(
         self,
         query: str,
-        memory_type: Optional[str] = None,
-        n_results: int = 5
-    ) -> List[Dict]:
-        if memory_type:
-            collection_map = {
-                "user": self.user_memories,
-                "conversation": self.conversation_memories,
-                "fact": self.fact_memories,
-                "task": self.task_memories
-            }
-            collections = [collection_map.get(memory_type, self.user_memories)]
-        else:
-            collections = [
-                self.user_memories,
-                self.conversation_memories,
-                self.fact_memories,
-                self.task_memories
-            ]
+        n_results: int = 3
+    ) -> Dict[str, List[Dict]]:
+        """
+        Search across all collections
         
-        all_memories = []
-        for collection in collections:
-            results = self.vector_store.search_memories(collection, query, n_results)
-            all_memories.extend(results["memories"])
+        Args:
+            query: Search query
+            n_results: Results per collection
+            
+        Returns:
+            Dict of collection_name -> memories
+        """
+        all_results = {}
         
-        all_memories.sort(key=lambda x: x.get("distance", float("inf")))
+        for collection_name in self.collections.keys():
+            results = self.search_memories(query, collection_name, n_results)
+            if results:
+                all_results[collection_name] = results
         
-        return all_memories[:n_results]
+        return all_results
     
-    def forget(self, memory_id: str, memory_type: str = "user") -> bool:
-        collection_map = {
-            "user": self.user_memories,
-            "conversation": self.conversation_memories,
-            "fact": self.fact_memories,
-            "task": self.task_memories
-        }
+    def get_recent_memories(
+        self,
+        collection_name: str = "conversations",
+        n_results: int = 10
+    ) -> List[Dict[str, Any]]:
+        """
+        Get most recent memories from a collection
         
-        collection = collection_map.get(memory_type, self.user_memories)
-        return self.vector_store.delete_memory(collection, memory_id)
+        Args:
+            collection_name: Which collection
+            n_results: Number of results
+            
+        Returns:
+            List of recent memories (sorted by timestamp)
+        """
+        try:
+            collection = self.collections[collection_name]
+            
+            all_data = collection.get()
+            
+            if not all_data['ids']:
+                return []
+            
+            memories = []
+            for i in range(len(all_data['ids'])):
+                memories.append({
+                    "id": all_data['ids'][i],
+                    "content": all_data['documents'][i],
+                    "metadata": all_data['metadatas'][i]
+                })
+            
+            memories.sort(
+                key=lambda x: x['metadata'].get('timestamp', ''),
+                reverse=True
+            )
+            
+            return memories[:n_results]
+        
+        except Exception as e:
+            logger.error(f"Failed to get recent memories: {e}")
+            return []
     
-    def get_stats(self) -> Dict:
-        return {
-            "user_memories": self.vector_store.get_collection_stats(self.user_memories),
-            "conversation_memories": self.vector_store.get_collection_stats(self.conversation_memories),
-            "fact_memories": self.vector_store.get_collection_stats(self.fact_memories),
-            "task_memories": self.vector_store.get_collection_stats(self.task_memories)
-        }
+    def delete_memory(self, memory_id: str, collection_name: str) -> bool:
+        """Delete a specific memory"""
+        try:
+            self.collections[collection_name].delete(ids=[memory_id])
+            logger.info(f"Deleted memory: {memory_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to delete memory: {e}")
+            return False
+    
+    def get_stats(self) -> Dict[str, int]:
+        """Get memory statistics"""
+        stats = {}
+        
+        for name, collection in self.collections.items():
+            try:
+                count = collection.count()
+                stats[name] = count
+            except:
+                stats[name] = 0
+        
+        return stats
+    
+    def persist(self):
+        """Persist all changes to disk"""
+        try:
+            self.client.persist()
+            logger.info("Vector store persisted to disk")
+        except Exception as e:
+            logger.error(f"Failed to persist: {e}")
+
+
+_vector_store_instance = None
+
+def get_vector_store() -> VectorStore:
+    """Get global vector store instance"""
+    global _vector_store_instance
+    
+    if _vector_store_instance is None:
+        _vector_store_instance = VectorStore()
+    
+    return _vector_store_instance
+
+
+logger.info("Vector Store module loaded - Long-term memory ready!")

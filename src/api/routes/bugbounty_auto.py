@@ -12,6 +12,7 @@ from datetime import datetime
 from src.bugbounty.auto_hunter import AutoHunter
 from src.bugbounty.models import ScanStatus, VulnerabilitySeverity
 from src.bugbounty.auto_submitter import AutoSubmitter
+from src.bugbounty.program_analyzer import ProgramAnalyzer, KNOWN_PROGRAMS
 from src.security.bugbounty.scope_validator import ScopeValidator, Program
 import logging
 
@@ -21,6 +22,7 @@ router = APIRouter(prefix="/api/v1/bugbounty/auto", tags=["Bug Bounty Autopilot"
 
 auto_hunter = AutoHunter()
 auto_submitter = AutoSubmitter()
+program_analyzer = ProgramAnalyzer()
 
 programs: Dict[str, ScopeValidator] = {}
 
@@ -32,6 +34,7 @@ class AutoHuntRequest(BaseModel):
     auto_poc: bool = True
     auto_report: bool = True
     report_formats: List[str] = ["markdown", "html", "json"]
+    enable_voice: bool = False  # Enable Hindi-English voice notifications
 
 
 class ProgramConfigRequest(BaseModel):
@@ -636,3 +639,394 @@ async def auto_format_report(
     except Exception as e:
         logger.error(f"Failed to format report: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class ProgramAnalyzeRequest(BaseModel):
+    program_url: str
+    
+
+class ScopeCheckRequest(BaseModel):
+    program_url: str
+    target_url: str
+
+
+@router.post("/analyze-program")
+async def analyze_program(request: ProgramAnalyzeRequest):
+    """
+    Autonomously analyze a bug bounty program
+    
+    Aether will:
+    1. Fetch the program page
+    2. Extract scope (in-scope/out-of-scope domains)
+    3. Extract rules (allowed/forbidden actions)
+    4. Extract payout information
+    5. Return structured data
+    
+    NO HUMAN INPUT NEEDED - fully autonomous!
+    
+    Example:
+        POST /api/v1/bugbounty/auto/analyze-program
+        {
+            "program_url": "https://security.apple.com/bounty/"
+        }
+    
+    Returns:
+        Complete program information including scope, rules, and payouts
+    """
+    try:
+        logger.info(f"Analyzing program: {request.program_url}")
+        
+        program = await program_analyzer.analyze_program(request.program_url)
+        
+        program_dict = program_analyzer.program_to_dict(program)
+        
+        logger.info(f"Program analyzed: {program.name} (confidence: {program.confidence_score:.2%})")
+        
+        return {
+            "success": True,
+            "program": program_dict,
+            "message": f"Program '{program.name}' analyzed successfully"
+        }
+        
+    except Exception as e:
+        logger.error(f"Program analysis failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+
+
+@router.post("/check-scope")
+async def check_scope(request: ScopeCheckRequest):
+    """
+    Check if a target is in scope for a program
+    
+    Quick autonomous check without full analysis.
+    
+    Example:
+        POST /api/v1/bugbounty/auto/check-scope
+        {
+            "program_url": "https://security.apple.com/bounty/",
+            "target_url": "www.apple.com"
+        }
+    
+    Returns:
+        Whether target is in scope
+    """
+    try:
+        is_in_scope = await program_analyzer.quick_scope_check(
+            request.program_url,
+            request.target_url
+        )
+        
+        return {
+            "success": True,
+            "target": request.target_url,
+            "in_scope": is_in_scope,
+            "message": "In scope" if is_in_scope else "Out of scope"
+        }
+        
+    except Exception as e:
+        logger.error(f"Scope check failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/known-programs")
+async def get_known_programs():
+    """
+    Get list of known bug bounty programs
+    
+    These programs have pre-configured URLs for quick analysis.
+    
+    Returns:
+        Dictionary of program shortcuts
+    """
+    return {
+        "success": True,
+        "programs": KNOWN_PROGRAMS,
+        "count": len(KNOWN_PROGRAMS),
+        "message": "Use these shortcuts for quick program analysis"
+    }
+
+
+@router.post("/smart-hunt")
+async def smart_hunt(
+    request: AutoHuntRequest,
+    background_tasks: BackgroundTasks
+):
+    """
+    FULLY AUTONOMOUS BUG HUNT!
+    
+    Aether will:
+    1. Analyze the program page (extract scope, rules)
+    2. Validate target is in scope
+    3. Configure Burp Suite automatically
+    4. Run scan within program rules
+    5. Analyze findings
+    6. Generate PoCs and reports
+    7. Return everything ready for submission
+    
+    THIS IS THE GOD MODE - NO HUMAN INPUT NEEDED!
+    
+    Example:
+        POST /api/v1/bugbounty/auto/smart-hunt
+        {
+            "target_url": "https://www.apple.com",
+            "program": "apple"
+        }
+    
+    Returns:
+        Hunt ID for tracking
+    """
+    try:
+        logger.info(f"Starting SMART HUNT on {request.target_url}")
+        
+        # Step 1: Get program URL
+        program_url = None
+        if request.program in KNOWN_PROGRAMS:
+            program_url = KNOWN_PROGRAMS[request.program]
+        elif request.program.startswith("http"):
+            program_url = request.program
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unknown program '{request.program}'. Use /known-programs to see available shortcuts"
+            )
+        
+        # Step 2: Analyze program autonomously (with voice if enabled)
+        logger.info(f"Analyzing program: {program_url}")
+        
+        if request.enable_voice:
+            voice_analyzer = ProgramAnalyzer(enable_voice=True)
+            program_data = await voice_analyzer.analyze_program(program_url)
+        else:
+            program_data = await program_analyzer.analyze_program(program_url)
+        
+        # Step 3: Validate scope
+        from urllib.parse import urlparse
+        target_domain = urlparse(request.target_url).netloc
+        
+        is_in_scope = await program_analyzer.quick_scope_check(
+            program_url,
+            target_domain
+        )
+        
+        if not is_in_scope:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Target {target_domain} is OUT OF SCOPE for {program_data.name}"
+            )
+        
+        logger.info(f"Target {target_domain} confirmed IN SCOPE")
+        
+        # Step 4: Create scope validator from analyzed data
+        temp_program = Program(
+            name=program_data.name,
+            platform=program_data.platform,
+            in_scope=program_data.scope.in_scope,
+            out_of_scope=program_data.scope.out_of_scope
+        )
+        scope_validator = ScopeValidator(temp_program)
+        
+        # Step 5: Start autonomous hunt (with voice if enabled)
+        async def run_smart_hunt():
+            try:
+                if request.enable_voice:
+                    voice_hunter = AutoHunter(enable_voice=True)
+                    result = await voice_hunter.start_auto_hunt(
+                        target_url=request.target_url,
+                        program=program_data.name,
+                        scope_validator=scope_validator,
+                        auto_poc=request.auto_poc,
+                        auto_report=request.auto_report,
+                        report_formats=request.report_formats
+                    )
+                else:
+                    result = await auto_hunter.start_auto_hunt(
+                        target_url=request.target_url,
+                        program=program_data.name,
+                        scope_validator=scope_validator,
+                        auto_poc=request.auto_poc,
+                        auto_report=request.auto_report,
+                        report_formats=request.report_formats
+                    )
+                
+                if result.status == ScanStatus.COMPLETED:
+                    logger.info(f"SMART HUNT completed: {result.total_issues_found} findings")
+                else:
+                    logger.error(f"SMART HUNT failed: {result.error_message}")
+                    
+            except Exception as e:
+                logger.error(f"SMART HUNT execution failed: {e}", exc_info=True)
+        
+        background_tasks.add_task(run_smart_hunt)
+        
+        hunt_id = f"smart_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        
+        return {
+            "hunt_id": hunt_id,
+            "status": "started",
+            "message": f"SMART HUNT started on {program_data.name}",
+            "program_info": {
+                "name": program_data.name,
+                "platform": program_data.platform,
+                "max_payout": program_data.payouts.max_payout,
+                "confidence": program_data.confidence_score
+            },
+            "target": request.target_url,
+            "in_scope": True
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"SMART HUNT failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+manual_testing_agent = None
+
+
+class ManualTestingRequest(BaseModel):
+    """Request to start manual testing session"""
+    target_domain: str
+    session_name: Optional[str] = None
+    auto_test: bool = True
+    user_approval: bool = True
+    enable_voice: bool = False
+
+
+@router.post("/manual-testing/start")
+async def start_manual_testing(request: ManualTestingRequest):
+    """
+    Start AI-powered manual testing session
+    
+    This is THE ULTIMATE MANUAL TESTING MODE - Replicates expert human testing!
+    
+    Features:
+    - Watches Burp Suite intercept in real-time
+    - AI analyzes EVERY request for context
+    - Generates context-aware payloads (not generic!)
+    - Detects subtle response anomalies
+    - Makes human-like decisions (forward/drop/modify)
+    - Learns from responses (builds application knowledge)
+    - Chains exploits creatively!
+    
+    Example:
+        POST /api/v1/bugbounty/auto/manual-testing/start
+        {
+            "target_domain": "apple.com",
+            "auto_test": true,
+            "enable_voice": true
+        }
+        
+    Returns:
+        Session ID for tracking
+    """
+    global manual_testing_agent
+    
+    try:
+        from src.bugbounty.manual_testing_agent import ManualTestingAgent
+        from src.security.bugbounty.burp_integration import BurpSuiteClient
+        
+        if not manual_testing_agent:
+            burp_client = BurpSuiteClient()
+            manual_testing_agent = ManualTestingAgent(
+                burp_client=burp_client,
+                enable_voice=request.enable_voice
+            )
+        
+        session_id = await manual_testing_agent.start_manual_testing(
+            target_domain=request.target_domain,
+            session_name=request.session_name,
+            auto_test=request.auto_test,
+            user_approval=request.user_approval
+        )
+        
+        logger.info(f"Manual testing session started: {session_id}")
+        
+        return {
+            "session_id": session_id,
+            "status": "active",
+            "message": f"AI manual testing active for {request.target_domain}",
+            "features": [
+                "Burp intercept monitoring",
+                "AI request analysis",
+                "Context-aware payloads",
+                "Response anomaly detection",
+                "Smart decision making",
+                "Learning loop",
+                "Exploit chaining"
+            ],
+            "target": request.target_domain,
+            "auto_test": request.auto_test,
+            "voice_enabled": request.enable_voice
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to start manual testing: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/manual-testing/stop/{session_id}")
+async def stop_manual_testing(session_id: str):
+    """
+    Stop manual testing session
+    
+    Returns final statistics and discovered vulnerabilities
+    """
+    global manual_testing_agent
+    
+    if not manual_testing_agent:
+        raise HTTPException(status_code=404, detail="No active manual testing session")
+    
+    try:
+        session = await manual_testing_agent.stop_manual_testing(session_id)
+        
+        if not session:
+            raise HTTPException(status_code=404, detail=f"Session {session_id} not found")
+        
+        stats = manual_testing_agent.get_session_stats(session_id)
+        
+        return {
+            "session_id": session_id,
+            "status": "stopped",
+            "statistics": stats
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to stop manual testing: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/manual-testing/stats/{session_id}")
+async def get_manual_testing_stats(session_id: str):
+    """
+    Get real-time statistics for manual testing session
+    
+    Shows:
+    - Requests intercepted/modified/forwarded/dropped
+    - Vulnerabilities found
+    - Exploit chains discovered
+    - Application insights learned
+    """
+    global manual_testing_agent
+    
+    if not manual_testing_agent:
+        raise HTTPException(status_code=404, detail="No active manual testing session")
+    
+    try:
+        stats = manual_testing_agent.get_session_stats(session_id)
+        
+        if "error" in stats:
+            raise HTTPException(status_code=404, detail=stats["error"])
+        
+        return stats
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get stats: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+logger.info("✅ Manual Testing API endpoints registered - /manual-testing/start, /stop, /stats")

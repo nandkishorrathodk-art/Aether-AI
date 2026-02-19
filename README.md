@@ -19,7 +19,7 @@
 
 <p>
 <img src="https://img.shields.io/github/stars/nandkishorrathodk-art/Aether-AI?style=for-the-badge&logo=github&logoColor=white&color=yellow" alt="GitHub Stars"/>
-<img src="https://img.shields.io/badge/version-3.0.0-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
+<img src="https://img.shields.io/badge/version-3.0.3-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
 <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License"/>
 <img src="https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
 </p>
@@ -54,15 +54,16 @@
 
 <table>
 <tr>
-<td align="center" width="11.1%">🌟<br><b>OmniTask</b></td>
-<td align="center" width="11.1%">🔮<br><b>Predicts</b></td>
-<td align="center" width="11.1%">❤️<br><b>Empathy</b></td>
-<td align="center" width="11.1%">👀<br><b>Sees</b></td>
-<td align="center" width="11.1%">🧠<br><b>Plans</b></td>
-<td align="center" width="11.1%">🔍<br><b>Hunts</b></td>
-<td align="center" width="11.1%">💣<br><b>Exploits</b></td>
-<td align="center" width="11.1%">📝<br><b>Reports</b></td>
-<td align="center" width="11.1%">🚀<br><b>Submits</b></td>
+<td align="center" width="10%">🌟<br><b>OmniTask</b></td>
+<td align="center" width="10%">🔮<br><b>Predicts</b></td>
+<td align="center" width="10%">❤️<br><b>Empathy</b></td>
+<td align="center" width="10%">🗣️<br><b>Speaks</b></td>
+<td align="center" width="10%">👀<br><b>Sees</b></td>
+<td align="center" width="10%">🧠<br><b>Plans</b></td>
+<td align="center" width="10%">🔍<br><b>Hunts</b></td>
+<td align="center" width="10%">💣<br><b>Exploits</b></td>
+<td align="center" width="10%">📝<br><b>Reports</b></td>
+<td align="center" width="10%">🚀<br><b>Submits</b></td>
 </tr>
 </table>
 
@@ -72,6 +73,9 @@
 <a href="./FEATURES_v0.9.0.md"><img src="https://img.shields.io/badge/📖_Full_Features-FF6B6B?style=for-the-badge" alt="Full Features"/></a>
 <a href="./LIVE_TESTING_QUICKSTART.md"><img src="https://img.shields.io/badge/🎬_Live_Testing-FF0000?style=for-the-badge" alt="Live Testing Guide"/></a>
 <a href="./BUGBOUNTY_AUTOPILOT.md"><img src="https://img.shields.io/badge/🐛_Bug_Bounty_Guide-4ECDC4?style=for-the-badge" alt="Bug Bounty Guide"/></a>
+<a href="./AUTONOMOUS_BOUNTY_FEATURE.md"><img src="https://img.shields.io/badge/🤖_Autonomous_Program_Analysis-00FF00?style=for-the-badge" alt="Autonomous Feature"/></a>
+<a href="./VOICE_FEATURE.md"><img src="https://img.shields.io/badge/🗣️_Voice_Notifications-FF00FF?style=for-the-badge" alt="Voice Feature"/></a>
+<a href="#-new-human-like-manual-testing-agent---ai-that-tests-like-you-"><img src="https://img.shields.io/badge/🧪_Human--Like_Manual_Testing-00FFFF?style=for-the-badge" alt="Manual Testing Agent"/></a>
 </p>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
@@ -88,9 +92,11 @@
 
 **You say:** *Nothing* (or "make me money" or "find bugs")  
 **AI predicts:** "Sir, prime time for bug hunting! Shall I scan apple.com?"  
+**AI analyzes:** Reads program page → Extracts scope/rules → Validates target  
+**AI speaks:** 🗣️ "Ji boss! Apple program ready - $2M max payout!" (in Hindi-English)  
 **AI does:** Opens Burp → Scans → Finds bugs → Exploits → Reports → Submits  
-**AI reports:** "Done Sir! $150K bug submitted. You're amazing! 💪" (with empathy)  
-**You get:** Results + Emotional support + Proactive planning! 🎉
+**AI reports:** 🗣️ "Boss! CRITICAL BUG MILA! $150K submitted. You're amazing!" (with empathy)  
+**You get:** Results + Voice alerts + Emotional support + Proactive planning! 🎉
 
 </div>
 
@@ -102,6 +108,9 @@
 - 🌟 **OmniTask** - Handles ANY request (even empty!)
 - 🔮 **Predictive Agent** - ML-powered need forecasting
 - ❤️ **Empathy Engine** - Human-like emotional intelligence
+- 🤖 **Autonomous Program Analysis** - Reads bounty pages automatically
+- 🗣️ **Voice Notifications** - Hindi-English TTS alerts
+- 🧪 **Human-Like Manual Testing** - AI that tests like YOU do! (NEW!)
 - ⚡ **NPU Optimization** - 5x faster inference (Intel/AMD)
 - 🔄 **Windows Service** - Always-on background mode
 
@@ -114,6 +123,7 @@
 - 🎮 **PC Control** - Mouse, keyboard, apps (with safety)
 - 🐛 **Bug Bounty Autopilot** - 10x productivity boost
 - 🚀 **Platform Auto-Submit** - HackerOne, Bugcrowd, etc.
+- 📝 **Auto Report Generation** - Professional PoCs & writeups
 
 </td>
 </tr>
@@ -195,6 +205,27 @@
 <td align="center">Generic</td>
 <td align="center">Generic</td>
 <td align="center">✅ <b>Mood-aware + Hinglish</b></td>
+</tr>
+<tr>
+<td><b>🤖 Autonomous Program Analysis</b></td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ <b>Reads bounty pages, extracts scope/rules</b></td>
+</tr>
+<tr>
+<td><b>🗣️ Voice Notifications</b></td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ <b>Hindi-English TTS alerts</b></td>
+</tr>
+<tr>
+<td><b>🧪 Human-Like Manual Testing</b></td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ <b>AI tests like expert researcher</b></td>
 </tr>
 <tr>
 <td><b>⚡ NPU Acceleration</b></td>
@@ -563,6 +594,123 @@ curl http://localhost:8000/api/v1/autonomous/results
 **ROI**: 5x more targets scanned, 24/7 capability, professional reports in seconds
 
 **API Endpoints**: `/api/v1/bugbounty/auto/*` - Start/stop auto hunting, view findings, generate reports
+
+---
+
+### 🧪 NEW: Human-Like Manual Testing Agent - AI That Tests Like YOU! ⭐⭐⭐⭐
+
+<div align="center">
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=2000&pause=1000&color=00FF00&center=true&vCenter=true&width=900&lines=%F0%9F%A7%AA+AI-Powered+Manual+Testing+-+Replicates+Expert+Human+Workflow!;%F0%9F%94%8D+Analyzes+%E2%80%A2+%F0%9F%A7%A0+Understands+%E2%80%A2+%F0%9F%8E%AF+Custom+Payloads+%E2%80%A2+%F0%9F%94%97+Chains+Exploits;%F0%9F%93%88+Learns+%E2%80%A2+%F0%9F%92%AC+Decides+%E2%80%A2+%E2%9A%A1+Evolves+Over+Time" alt="Manual Testing Agent" />
+</div>
+
+**🔥 The ULTIMATE manual testing mode - AI that works EXACTLY like an expert security researcher performing manual testing in Burp Suite!**
+
+**This is NOT automated scanning!** This is AI that:
+- 🧠 **Reads each request carefully** with context understanding
+- 🎯 **Identifies interesting parameters** intelligently (not pattern matching)
+- 💣 **Crafts custom payloads** based on context (user_id=123 → try 124, 122, 1, admin)
+- 🔬 **Analyzes responses** for subtle anomalies (length changes, status codes, error leakage)
+- 🤔 **Makes human-like decisions** (forward/drop/modify/chain)
+- 📚 **Learns from responses** and improves testing over time
+- 🔗 **Chains exploits creatively** (IDOR + XSS → Account takeover)
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🔍 **Phase 1: Interception & Analysis**
+- **BurpInterceptWatcher**: Real-time proxy history monitoring
+- **RequestAnalyzer**: AI understands request context (API/Web/Auth/Upload)
+- **Parameter Detection**: Identifies ID, Token, Email, Password, Amount types
+- **Priority Scoring**: 0.0-1.0 test priority for each request
+- **Vulnerability Recommendations**: Suggests specific tests (IDOR, XSS, SQLi, etc.)
+
+#### 🎯 **Phase 2: Payload Generation**
+- **Context-Aware Payloads** (NOT generic!)
+  - IDOR: Sequential ID manipulation
+  - Business Logic: Negative/zero/extreme values
+  - XSS: 5+ variations with quote breakouts
+  - SQLi: Union, comment, error-based injections
+  - Auth Bypass: Empty tokens, null values
+  - SSRF: Internal IPs, cloud metadata
+- **WAF Bypass**: Automatic evasion when WAF detected
+- **Smart Modification**: Preserves request structure
+
+</td>
+<td width="50%">
+
+#### 🔬 **Phase 3: Detection & Learning**
+- **ResponseAnomalyDetector**: Detects subtle changes
+  - Status code changes (403 → 200 = bypass!)
+  - Length differences (Δ50+ bytes)
+  - Timing anomalies (>1000ms)
+  - Error message leakage
+  - Data leakage (SSNs, emails, API keys)
+- **DecisionEngine**: Forward/Drop/Modify/Chain decisions
+- **LearningLoop**: Builds application knowledge
+  - ID format detection (sequential, UUID)
+  - Auth mechanism (JWT, session cookies)
+  - WAF detection (Cloudflare, Akamai, AWS)
+- **ExploitChainer**: Creative multi-bug combinations
+
+#### 📊 **Features**
+- ✅ Burp Suite integration (watches intercept)
+- ✅ 10 specialized AI components
+- ✅ Context understanding (not pattern matching)
+- ✅ Learning loop (improves over time)
+- ✅ Voice notifications (Hindi-English)
+- ✅ Session tracking with full statistics
+
+</td>
+</tr>
+</table>
+
+**🎯 How It Works:**
+```text
+1. Start Session: POST /api/v1/bugbounty/auto/manual-testing/start
+   {
+     "target_domain": "apple.com",
+     "auto_test": true,
+     "enable_voice": true
+   }
+
+2. Browse Target in Burp → AI watches every request
+
+3. For Each Request:
+   → Analyzes context (AI understands what each parameter does)
+   → Generates custom payloads (not generic wordlists!)
+   → Modifies request intelligently
+   → Sends and analyzes response for anomalies
+   → Makes decision: Forward/Drop/Modify/Chain
+   → Learns from response (builds app knowledge)
+
+4. Discovers Vulnerabilities:
+   → IDOR (confidence: 80%)
+   → XSS (confidence: 90%)
+   → Chains: IDOR + XSS → Account Takeover
+
+5. Get Stats: GET /api/v1/bugbounty/auto/manual-testing/stats/{session_id}
+```
+
+**🆚 Comparison: Manual Testing Agent vs Traditional Tools**
+
+| Feature | Manual Testing Agent | Burp Scanner | Generic Tools |
+|---------|---------------------|--------------|---------------|
+| **Request Understanding** | ✅ AI context analysis | ❌ Pattern matching | ❌ None |
+| **Payload Generation** | ✅ Context-specific | ⚠️ Some context | ❌ Generic lists |
+| **Response Detection** | ✅ Subtle anomalies | ⚠️ Basic checks | ❌ Status codes only |
+| **Decision Making** | ✅ Human-like logic | ❌ Fixed rules | ❌ None |
+| **Learning** | ✅ Improves over time | ❌ No learning | ❌ No learning |
+| **Exploit Chaining** | ✅ Creative combos | ❌ None | ❌ None |
+
+**🚀 API Endpoints:**
+- `POST /api/v1/bugbounty/auto/manual-testing/start` - Start AI manual testing session
+- `POST /api/v1/bugbounty/auto/manual-testing/stop/{session_id}` - Stop and get final stats
+- `GET /api/v1/bugbounty/auto/manual-testing/stats/{session_id}` - Real-time statistics
+
+**📦 Components:** 10 AI classes (~1900 lines), 11 data models, Full Burp integration
+
+**⚠️ IMPORTANT**: Requires Burp Suite with REST API enabled. Only test authorized targets.
 
 ---
 
@@ -1212,7 +1360,22 @@ START_AETHER.bat
 
 **That's it!** 🎉 Your JARVIS is ready. Open http://localhost:3000 in browser.
 
+### 🔥 Test NEW v3.0 Features (Autonomous + Voice!)
+
+```bash
+# Test 1: Autonomous Program Analysis (NO CLI!)
+demo_autonomous_bounty.bat
+
+# Test 2: Voice Notifications (Hindi-English TTS!)
+demo_voice_bounty.bat
+
+# Test 3: Full v3.0 Experience
+START_V3.bat
+```
+
 📖 **New to v0.9.0?** See [QUICKSTART_v0.9.0.md](./QUICKSTART_v0.9.0.md) for feature walkthrough  
+📖 **Autonomous Bounty**: See [AUTONOMOUS_BOUNTY_FEATURE.md](./AUTONOMOUS_BOUNTY_FEATURE.md)  
+📖 **Voice Feature**: See [VOICE_FEATURE.md](./VOICE_FEATURE.md)  
 📖 **Detailed Setup**: See [INSTALLATION.md](./INSTALLATION.md)
 
 ### Manual Installation

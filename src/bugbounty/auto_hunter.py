@@ -14,6 +14,7 @@ from src.bugbounty.burp_controller import BurpController
 from src.bugbounty.scanner_manager import ScannerManager
 from src.bugbounty.poc_generator import PoCGenerator
 from src.bugbounty.report_builder import ReportBuilder
+from src.bugbounty.voice_notifier import get_voice_notifier
 from src.bugbounty.models import (
     AutoScanResult, ScanStatus, Vulnerability, BugReport,
     VulnerabilitySeverity
@@ -47,7 +48,8 @@ class AutoHunter:
         burp_controller: Optional[BurpController] = None,
         scanner_manager: Optional[ScannerManager] = None,
         poc_generator: Optional[PoCGenerator] = None,
-        report_builder: Optional[ReportBuilder] = None
+        report_builder: Optional[ReportBuilder] = None,
+        enable_voice: bool = False
     ):
         """
         Initialize AutoHunter
@@ -57,11 +59,13 @@ class AutoHunter:
             scanner_manager: Scanner manager
             poc_generator: PoC generator
             report_builder: Report builder
+            enable_voice: Enable voice notifications (Hindi-English TTS)
         """
         self.burp = burp_controller or BurpController()
         self.scanner = scanner_manager or ScannerManager(burp_controller=self.burp)
         self.poc_gen = poc_generator or PoCGenerator()
         self.report_builder = report_builder or ReportBuilder()
+        self.voice = get_voice_notifier(enable_voice=enable_voice)
         
         self.monitoring = get_monitoring_bridge()
         
@@ -99,6 +103,9 @@ class AutoHunter:
         
         logger.info(f"Starting auto hunt {hunt_id} for {target_url}")
         
+        # Voice: Announce hunt start
+        await self.voice.announce_hunt_start(target_url)
+        
         result = AutoScanResult(
             scan_id=hunt_id,
             target_url=target_url,
@@ -121,6 +128,10 @@ class AutoHunter:
                 result.status = ScanStatus.FAILED
                 result.error_message = "Burp Suite not detected. Please start Burp Suite Professional with REST API enabled."
                 logger.error(result.error_message)
+                
+                # Voice: Burp not found
+                await self.voice.announce_burp_not_found()
+                
                 await self._notify_status(hunt_id, result)
                 return result
             
@@ -158,6 +169,14 @@ class AutoHunter:
             
             logger.info(f"Scan completed: {result.total_issues_found} vulnerabilities found")
             
+            # Voice: Announce bugs found
+            if result.total_issues_found > 0:
+                await self.voice.announce_multiple_bugs(
+                    result.total_issues_found,
+                    result.critical_count,
+                    result.high_count
+                )
+            
             high_priority_vulns = self.scanner.prioritize_vulnerabilities(
                 result.vulnerabilities,
                 program=program
@@ -168,6 +187,10 @@ class AutoHunter:
                 if v.severity in [VulnerabilitySeverity.CRITICAL, VulnerabilitySeverity.HIGH]
             ]
             
+            # Voice: Announce each critical/high bug
+            for vuln in critical_high[:3]:  # First 3 only
+                await self.voice.announce_bug_found(vuln)
+            
             if auto_poc and critical_high:
                 result.status = ScanStatus.GENERATING_POC
                 await self._notify_status(hunt_id, result)
@@ -176,6 +199,9 @@ class AutoHunter:
                 
                 for vuln in critical_high[:5]:
                     try:
+                        # Voice: Announce PoC generation
+                        await self.voice.announce_poc_generation(vuln.type)
+                        
                         poc = await self.poc_gen.generate_poc(
                             vulnerability=vuln,
                             include_waf_bypass=True,
@@ -220,8 +246,23 @@ class AutoHunter:
                 report.estimated_payout_max for report in result.reports_generated
             )
             
+            # Voice: Reports ready
+            if result.reports_generated:
+                await self.voice.announce_report_ready("markdown, HTML, JSON")
+                
+                if result.estimated_total_payout > 0:
+                    min_payout = sum(r.estimated_payout_min for r in result.reports_generated)
+                    await self.voice.announce_payout_estimate(
+                        int(min_payout),
+                        int(result.estimated_total_payout)
+                    )
+            
             result.status = ScanStatus.COMPLETED
             await self._notify_status(hunt_id, result)
+            
+            # Voice: Celebrate success!
+            if result.critical_count > 0 or result.high_count > 0:
+                await self.voice.celebrate_success()
             
             logger.info(
                 f"Auto hunt completed successfully!\n"

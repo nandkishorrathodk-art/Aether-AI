@@ -1,11 +1,11 @@
 # 🛡️ Aether AI Security Documentation
 
-**Version**: v2.0.0  
+**Version**: v3.0.2  
 **Last Updated**: February 2026
 
 ## Overview
 
-Aether AI v2.0 introduces **FULL AUTONOMOUS MODE** - an AI that operates completely independently like a human. This document outlines critical security measures, best practices, and risk mitigation strategies for autonomous operation.
+Aether AI v3.0.2 introduces **HUMAN-LIKE MANUAL TESTING AGENT** - an AI that performs manual security testing exactly like an expert researcher. This document outlines critical security measures, best practices, and risk mitigation strategies for autonomous operation and manual testing.
 
 ---
 
@@ -153,6 +153,190 @@ BURP_AUTO_SCAN=false  # Manual approval required
 - PoC code never automatically executed
 - Sanitized output (no sensitive data leakage)
 - Encrypted submission to platforms
+
+---
+
+## 🧪 Human-Like Manual Testing Agent Security
+
+### **Overview**
+
+The Manual Testing Agent (v3.0.2) is an AI system that performs manual security testing by monitoring Burp Suite, analyzing requests, and generating context-aware exploits. **This is extremely powerful and requires strict security controls.**
+
+### **Critical Security Features**
+
+**1. User Approval System**
+```python
+# Configuration in manual testing session
+{
+  "auto_test": true,          # AI can test automatically
+  "user_approval": true,      # Requires approval for dangerous payloads
+  "enable_voice": false       # Voice notifications (optional)
+}
+```
+
+**Payload Risk Levels:**
+- ✅ **Safe**: IDOR tests, parameter manipulation (auto-executed)
+- ⚠️ **Medium**: XSS, SQLi probes (auto-executed with logging)
+- 🔴 **Dangerous**: Destructive payloads (e.g., DROP TABLE) - **REQUIRES USER APPROVAL**
+
+**2. Scope Validation**
+```python
+# Manual testing agent validates:
+- Target domain must be explicitly authorized
+- Burp Suite must be running with REST API enabled
+- Target must be in configured scope
+- No testing on localhost/internal IPs without override
+```
+
+**3. Request Monitoring Privacy**
+```python
+# What is monitored from Burp proxy history:
+✅ HTTP method, URL, headers, parameters
+✅ Request/response bodies
+✅ Cookies, tokens (for analysis only)
+❌ NEVER logged to external services
+❌ NEVER sent to LLM providers without sanitization
+```
+
+**Privacy Controls:**
+```python
+# In manual_testing_agent.py
+SANITIZE_SENSITIVE_DATA = True  # Remove passwords, API keys from logs
+LOG_RAW_REQUESTS = False        # Don't log full raw requests
+REDACT_TOKENS = True            # Mask auth tokens in analysis
+```
+
+**4. Learning Loop Data Storage**
+```python
+# Application knowledge stored locally:
+Location: data/manual_testing/{domain}/knowledge.json
+Contains:
+  - ID format patterns (e.g., "sequential", "UUID")
+  - Auth mechanism (e.g., "JWT", "session cookie")
+  - WAF detection (e.g., "Cloudflare detected")
+  - Common parameters
+  - Confirmed vulnerabilities
+  
+Storage limits:
+  - Max 100 endpoints per domain
+  - Auto-cleanup after 30 days
+  - Encrypted at rest (optional)
+```
+
+**5. Exploit Chaining Safety**
+```python
+# Exploit chains are identified but NOT auto-executed
+# Example: IDOR + XSS → Account Takeover
+- Chain detected: ✅ Logged
+- Auto-execute chain: ❌ Blocked (requires manual approval)
+- User notification: ✅ Voice + API response
+```
+
+### **Burp Suite Integration Security**
+
+**Requirements:**
+```python
+# Burp Suite must be configured:
+1. Professional edition (REST API access)
+2. API enabled on localhost only (127.0.0.1:1337)
+3. API key authentication enabled
+4. Proxy history accessible via API
+
+# In .env:
+BURP_API_URL=http://127.0.0.1:1337
+BURP_API_KEY=your_secure_api_key_here
+BURP_MANUAL_TESTING_ENABLED=false  # Must be explicitly enabled
+```
+
+**Network Security:**
+- ✅ Burp API accessible only via localhost
+- ✅ No external network connections for manual testing
+- ✅ All HTTP requests go through Burp proxy
+- ❌ No direct connections to target (everything via Burp)
+
+### **Best Practices for Manual Testing Agent**
+
+**✅ DO:**
+- Enable only when actively performing authorized testing
+- Review session stats regularly (`GET /manual-testing/stats/{session_id}`)
+- Set `user_approval: true` for dangerous payloads
+- Use on isolated/sandboxed machines for high-risk testing
+- Stop sessions when done (`POST /manual-testing/stop/{session_id}`)
+- Review discovered vulnerabilities before exploitation
+- Keep Burp Suite logs for audit trail
+
+**❌ DON'T:**
+- Enable `auto_test: true` without `user_approval: true` on production targets
+- Test targets without written authorization
+- Leave sessions running unattended
+- Disable payload risk checks
+- Test with elevated privileges
+- Use on shared/company machines without approval
+
+### **Emergency Controls**
+
+**Stop All Testing Immediately:**
+```bash
+# API call
+POST /api/v1/bugbounty/auto/manual-testing/stop/{session_id}
+
+# Or kill the process
+taskkill /F /IM python.exe /FI "WINDOWTITLE eq *aether*"
+```
+
+**Audit Logs:**
+```python
+# All actions logged to:
+data/manual_testing/audit.log
+
+# Log format:
+2026-02-19 07:00:00 | SESSION:manual_apple.com_123 | ACTION:request_intercepted | URL:https://apple.com/api/user/123
+2026-02-19 07:00:05 | SESSION:manual_apple.com_123 | ACTION:payload_generated | VULN:IDOR | PARAM:user_id
+2026-02-19 07:00:10 | SESSION:manual_apple.com_123 | ACTION:vulnerability_found | VULN:IDOR | CONFIDENCE:0.85
+```
+
+### **Data Retention**
+
+```python
+# Automatic cleanup
+MANUAL_TESTING_SESSION_RETENTION=7 days
+LEARNING_LOOP_DATA_RETENTION=30 days
+AUDIT_LOG_RETENTION=90 days
+
+# Manual cleanup
+DELETE /api/v1/bugbounty/auto/manual-testing/cleanup
+```
+
+### **Legal & Ethical Compliance**
+
+**CRITICAL WARNING**: The Manual Testing Agent can discover and exploit vulnerabilities autonomously. Users are **legally responsible** for ensuring:
+
+1. ✅ **Authorization**: Written permission to test the target
+2. ✅ **Scope Compliance**: Testing only authorized domains/endpoints
+3. ✅ **Rate Limits**: Respecting target's testing restrictions
+4. ✅ **Data Handling**: No exfiltration of discovered sensitive data
+5. ✅ **Responsible Disclosure**: Reporting vulnerabilities ethically
+
+**Recommended Authorization Documentation:**
+```text
+Before starting manual testing session:
+1. Bug bounty program policy URL
+2. Scope definition (in-scope domains)
+3. Out-of-scope restrictions
+4. Contact information for program owner
+5. Testing window (if applicable)
+```
+
+### **Comparison: Manual Testing Agent vs Other Tools**
+
+| Security Aspect | Manual Testing Agent | Burp Scanner | Generic Tools |
+|----------------|---------------------|--------------|---------------|
+| **User Approval** | ✅ Configurable per session | ⚠️ One-time config | ❌ None |
+| **Payload Risk Checks** | ✅ 3-tier risk system | ⚠️ Basic | ❌ None |
+| **Scope Validation** | ✅ Pre-test validation | ⚠️ Manual config | ❌ User responsibility |
+| **Audit Logging** | ✅ Full session logs | ⚠️ Basic logs | ❌ Minimal |
+| **Learning Data Encryption** | ✅ Optional encryption | N/A | N/A |
+| **Emergency Stop** | ✅ API + Kill switch | ⚠️ Manual stop | ⚠️ Manual stop |
 
 ---
 
