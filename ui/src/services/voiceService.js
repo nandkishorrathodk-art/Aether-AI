@@ -5,39 +5,110 @@
 const API_BASE = 'http://localhost:8000/api/v1';
 
 class VoiceService {
+  constructor() {
+    this.currentAudio = null;
+  }
+
   /**
-   * Text-to-Speech
+   * Text-to-Speech (Downloads audio and plays in browser/Electron)
    */
   async speak(text, options = {}) {
     const {
-      voice = 'male',
+      voice = 'female',
       speed = 1.0,
-      play = true,
-      provider = 'local'
+      play = true
     } = options;
 
     try {
-      const response = await fetch(`${API_BASE}/voice/speak`, {
+      console.log('[VOICE] speak() called with text:', text);
+      
+      // Call /synthesize to get audio file
+      console.log('[VOICE] Fetching audio from backend...');
+      const response = await fetch(`${API_BASE}/voice/synthesize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text,
           voice,
-          speed,
-          play,
-          provider
+          rate: Math.round(speed * 160), // Convert speed to rate
+          use_cache: true
         })
       });
+
+      console.log('[VOICE] Fetch response received, status:', response.status);
 
       if (!response.ok) {
         throw new Error(`TTS failed: ${response.statusText}`);
       }
 
-      return await response.json();
+      const audioBlob = await response.blob();
+      console.log('[VOICE] Audio blob received, size:', audioBlob.size);
+
+      if (play) {
+        console.log('[VOICE] Starting audio playback...');
+        // Play audio in browser/Electron
+        await this.playAudioBlob(audioBlob);
+        console.log('[VOICE] Audio playback completed');
+      }
+
+      return { 
+        status: 'success', 
+        text,
+        audio_size_bytes: audioBlob.size 
+      };
     } catch (error) {
-      console.error('TTS Error:', error);
+      console.error('[VOICE] TTS Error:', error);
       throw error;
     }
+  }
+
+  /**
+   * Play audio blob using HTML5 Audio API
+   */
+  async playAudioBlob(blob) {
+    if (this.currentAudio) {
+      console.log('[VOICE] Stopping previous audio...');
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+      this.currentAudio = null;
+    }
+
+    return new Promise((resolve, reject) => {
+      console.log('[VOICE] Creating new Audio element for playback');
+      const audio = new Audio();
+      const url = URL.createObjectURL(blob);
+      
+      this.currentAudio = audio;
+      
+      audio.src = url;
+      console.log('[VOICE] Audio src set, blob size:', blob.size);
+      
+      audio.onended = () => {
+        console.log('[VOICE] Audio playback ended successfully');
+        URL.revokeObjectURL(url);
+        this.currentAudio = null;
+        resolve();
+      };
+      
+      audio.onerror = (error) => {
+        console.error('[VOICE] Audio element error:', error);
+        URL.revokeObjectURL(url);
+        this.currentAudio = null;
+        reject(error);
+      };
+      
+      console.log('[VOICE] Starting audio.play()...');
+      audio.play()
+        .then(() => {
+          console.log('[VOICE] audio.play() promise resolved');
+        })
+        .catch((error) => {
+          console.error('[VOICE] audio.play() failed:', error);
+          URL.revokeObjectURL(url);
+          this.currentAudio = null;
+          reject(error);
+        });
+    });
   }
 
   /**
@@ -49,10 +120,18 @@ class VoiceService {
       model = 'base'
     } = options;
 
+    // Determine file extension from blob type
+    let filename = 'audio.wav';
+    if (audioBlob.type.includes('webm')) {
+      filename = 'audio.webm';
+    } else if (audioBlob.type.includes('ogg')) {
+      filename = 'audio.ogg';
+    } else if (audioBlob.type.includes('mp3')) {
+      filename = 'audio.mp3';
+    }
+
     const formData = new FormData();
-    formData.append('file', audioBlob, 'audio.wav');
-    formData.append('language', language);
-    formData.append('model', model);
+    formData.append('file', audioBlob, filename);
 
     try {
       const response = await fetch(`${API_BASE}/voice/transcribe`, {
@@ -61,7 +140,8 @@ class VoiceService {
       });
 
       if (!response.ok) {
-        throw new Error(`STT failed: ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`STT failed (${response.status}): ${errorText}`);
       }
 
       return await response.json();

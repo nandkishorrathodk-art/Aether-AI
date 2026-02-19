@@ -176,7 +176,7 @@ class AudioInputHandler:
 
     @staticmethod
     def calculate_energy(audio_chunk: np.ndarray) -> float:
-        return np.sqrt(np.mean(audio_chunk.astype(np.float64) ** 2))
+        return np.sqrt(np.mean(audio_chunk.astype(float) ** 2))
 
     @staticmethod
     def normalize_audio(audio_data: np.ndarray) -> np.ndarray:

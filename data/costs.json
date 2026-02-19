@@ -1186,5 +1186,311 @@
     "cost_usd": 0.0009984300000000002,
     "task_type": "fast",
     "latency_ms": 931.6673278808594
+  },
+  {
+    "timestamp": "2026-02-19T17:28:30.782271",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 85,
+    "cost_usd": 5.865000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 1770.8303928375244
+  },
+  {
+    "timestamp": "2026-02-19T17:28:44.348575",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 68,
+    "cost_usd": 4.692000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 529.9184322357178
+  },
+  {
+    "timestamp": "2026-02-19T17:36:15.552189",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 107,
+    "cost_usd": 7.383e-05,
+    "task_type": "conversation",
+    "latency_ms": 1827.5511264801025
+  },
+  {
+    "timestamp": "2026-02-19T17:36:40.515377",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 63,
+    "cost_usd": 4.347e-05,
+    "task_type": "conversation",
+    "latency_ms": 440.4146671295166
+  },
+  {
+    "timestamp": "2026-02-19T17:42:49.600197",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 82,
+    "cost_usd": 5.658000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 1092.7276611328125
+  },
+  {
+    "timestamp": "2026-02-19T17:43:09.058064",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 393,
+    "cost_usd": 0.00027117000000000005,
+    "task_type": "conversation",
+    "latency_ms": 1122.2057342529297
+  },
+  {
+    "timestamp": "2026-02-19T17:55:01.800997",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 76,
+    "cost_usd": 5.2440000000000006e-05,
+    "task_type": "conversation",
+    "latency_ms": 758.4731578826904
+  },
+  {
+    "timestamp": "2026-02-19T17:55:19.639126",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 76,
+    "cost_usd": 5.2440000000000006e-05,
+    "task_type": "conversation",
+    "latency_ms": 329.2863368988037
+  },
+  {
+    "timestamp": "2026-02-19T18:00:47.413013",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 96,
+    "cost_usd": 6.624e-05,
+    "task_type": "conversation",
+    "latency_ms": 496.92344665527344
+  },
+  {
+    "timestamp": "2026-02-19T18:00:47.421663",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 103,
+    "cost_usd": 7.107000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 554.1603565216064
+  },
+  {
+    "timestamp": "2026-02-19T18:04:01.695162",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 67,
+    "cost_usd": 4.623000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 543.9591407775879
+  },
+  {
+    "timestamp": "2026-02-19T18:04:02.155185",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 67,
+    "cost_usd": 4.623000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 1070.831298828125
+  },
+  {
+    "timestamp": "2026-02-19T18:11:59.095586",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 59,
+    "cost_usd": 4.071e-05,
+    "task_type": "conversation",
+    "latency_ms": 545.6490516662598
+  },
+  {
+    "timestamp": "2026-02-19T18:12:03.208912",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 71,
+    "cost_usd": 4.8990000000000004e-05,
+    "task_type": "conversation",
+    "latency_ms": 4666.444301605225
+  },
+  {
+    "timestamp": "2026-02-19T18:12:03.220872",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 65,
+    "cost_usd": 4.4850000000000006e-05,
+    "task_type": "conversation",
+    "latency_ms": 4680.416584014893
+  },
+  {
+    "timestamp": "2026-02-19T18:12:03.229949",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 67,
+    "cost_usd": 4.623000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 4807.21640586853
+  },
+  {
+    "timestamp": "2026-02-19T18:12:03.241032",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 110,
+    "cost_usd": 7.590000000000002e-05,
+    "task_type": "conversation",
+    "latency_ms": 4659.464120864868
+  },
+  {
+    "timestamp": "2026-02-19T18:12:03.249995",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "tokens_used": 125,
+    "cost_usd": 8.625000000000001e-05,
+    "task_type": "conversation",
+    "latency_ms": 4712.141990661621
+  },
+  {
+    "timestamp": "2026-02-19T18:20:53.140510",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 70,
+    "cost_usd": 6.3e-05,
+    "task_type": "conversation",
+    "latency_ms": 10773.563623428345
+  },
+  {
+    "timestamp": "2026-02-19T18:20:53.715823",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 93,
+    "cost_usd": 8.37e-05,
+    "task_type": "conversation",
+    "latency_ms": 2668.0188179016113
+  },
+  {
+    "timestamp": "2026-02-19T18:26:14.715586",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 83,
+    "cost_usd": 7.47e-05,
+    "task_type": "conversation",
+    "latency_ms": 3676.5620708465576
+  },
+  {
+    "timestamp": "2026-02-19T18:26:14.720586",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 110,
+    "cost_usd": 9.9e-05,
+    "task_type": "conversation",
+    "latency_ms": 3674.2563247680664
+  },
+  {
+    "timestamp": "2026-02-19T18:26:14.724208",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 54,
+    "cost_usd": 4.8599999999999995e-05,
+    "task_type": "conversation",
+    "latency_ms": 3688.5125637054443
+  },
+  {
+    "timestamp": "2026-02-19T18:26:14.728220",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 116,
+    "cost_usd": 0.0001044,
+    "task_type": "conversation",
+    "latency_ms": 3685.89186668396
+  },
+  {
+    "timestamp": "2026-02-19T18:26:14.733389",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 368,
+    "cost_usd": 0.0003312,
+    "task_type": "conversation",
+    "latency_ms": 9949.14436340332
+  },
+  {
+    "timestamp": "2026-02-19T18:38:54.744727",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 71,
+    "cost_usd": 6.39e-05,
+    "task_type": "conversation",
+    "latency_ms": 1794.7616577148438
+  },
+  {
+    "timestamp": "2026-02-19T18:38:54.753709",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 44,
+    "cost_usd": 3.9599999999999994e-05,
+    "task_type": "conversation",
+    "latency_ms": 1806.6856861114502
+  },
+  {
+    "timestamp": "2026-02-19T18:38:54.769066",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 73,
+    "cost_usd": 6.57e-05,
+    "task_type": "conversation",
+    "latency_ms": 1832.780122756958
+  },
+  {
+    "timestamp": "2026-02-19T18:38:54.780650",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 73,
+    "cost_usd": 6.57e-05,
+    "task_type": "conversation",
+    "latency_ms": 1839.8332595825195
+  },
+  {
+    "timestamp": "2026-02-19T18:38:54.901633",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 74,
+    "cost_usd": 6.659999999999999e-05,
+    "task_type": "conversation",
+    "latency_ms": 1945.563554763794
+  },
+  {
+    "timestamp": "2026-02-19T18:38:54.919611",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 78,
+    "cost_usd": 7.02e-05,
+    "task_type": "conversation",
+    "latency_ms": 5536.276578903198
+  },
+  {
+    "timestamp": "2026-02-19T18:38:55.870022",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 44,
+    "cost_usd": 3.9599999999999994e-05,
+    "task_type": "conversation",
+    "latency_ms": 919.5165634155273
+  },
+  {
+    "timestamp": "2026-02-19T19:39:17.218078",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 604,
+    "cost_usd": 0.0005436,
+    "task_type": "fast",
+    "latency_ms": 2718.179702758789
+  },
+  {
+    "timestamp": "2026-02-19T19:41:24.983193",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 552,
+    "cost_usd": 0.0004968,
+    "task_type": "fast",
+    "latency_ms": 1163.4280681610107
   }
 ]

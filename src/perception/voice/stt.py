@@ -51,11 +51,10 @@ class SpeechToText:
         language: Optional[str] = None,
         task: str = "transcribe",
         temperature: float = 0.0,
-        best_of: int = 5,
-        beam_size: int = 5
+        best_of: int = 1,
+        beam_size: int = 1
     ) -> dict:
         language = language or self.language
-        prompt = "This is a casual conversation in Hinglish (Hindi + English). Accurately transcribe English and Hindi words."
         
         if isinstance(audio_data, (str, Path)):
             audio_path = str(audio_data)
@@ -100,8 +99,18 @@ class SpeechToText:
         if self.use_cloud:
             return self._transcribe_cloud_from_file(audio_path, language)
         else:
-            audio = whisper.load_audio(audio_path)
-            return self._transcribe_local(audio, language, task, temperature, best_of, beam_size)
+            try:
+                audio = whisper.load_audio(audio_path)
+                if len(audio) == 0:
+                    logger.warning(f"Audio file {audio_path} loaded but is empty")
+                    return self._empty_result(error="Empty audio file")
+                return self._transcribe_local(audio, language, task, temperature, best_of, beam_size)
+            except Exception as e:
+                error_msg = str(e)
+                logger.error(f"Failed to load audio file {audio_path}: {error_msg}")
+                if "EBML" in error_msg or "Invalid data" in error_msg or "parsing failed" in error_msg:
+                    logger.warning("⚠️  Corrupted audio file detected (WebM header invalid)")
+                return self._empty_result(error=f"Audio load error: {error_msg}")
 
     def _transcribe_local(
         self,
@@ -119,16 +128,19 @@ class SpeechToText:
             options = {
                 "task": task,
                 "temperature": temperature,
-                "best_of": best_of,
-                "beam_size": beam_size,
-                "fp16": False if self.device == "cpu" else True,
-                "initial_prompt": "This is a casual conversation in Hinglish (Hindi + English). Accurately transcribe English and Hindi words."
+                "best_of": 1,
+                "beam_size": 1,
+                "fp16": False,
+                "no_speech_threshold": 0.6,
+                "condition_on_previous_text": False
             }
             
             if language:
                 options["language"] = language
             
+            logger.info(f"Starting Whisper transcription with options: {options}")
             result = self.model.transcribe(audio, **options)
+            logger.info(f"Whisper transcription complete")
             
             confidence = self._calculate_confidence(result)
             

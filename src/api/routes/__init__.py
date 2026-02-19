@@ -22,7 +22,10 @@ from . import (
     control,
     intelligence,
     evolution,
-    autonomous
+    autonomous,
+    live_testing,
+    v3,
+    n8n
 )
 
 __all__ = [
@@ -45,5 +48,8 @@ __all__ = [
     'control',
     'intelligence',
     'evolution',
-    'autonomous'
+    'autonomous',
+    'live_testing',
+    'v3',
+    'n8n'
 ]

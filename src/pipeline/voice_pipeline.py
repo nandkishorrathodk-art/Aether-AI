@@ -512,9 +512,13 @@ class VoicePipelineOrchestrator:
         """Check if text is a common Whisper hallucination"""
         hallucinations = [
             "This is a casual conversation",
+            "casual conversation in Hinglish",
+            "Hindi + English",
+            "Accurately transcribe",
             "Thank you for watching",
             "Please subscribe",
             "Subtitles by",
+            "I'm sorry",
             "Amara.org",
             "MBC",
             "Bu videoyu",
@@ -525,9 +529,19 @@ class VoicePipelineOrchestrator:
         
         # Check known phrases
         if any(h.lower() in text_lower for h in hallucinations):
+            logger.info(f"Detected Whisper hallucination: {text[:100]}...")
             return True
+        
+        # Check for repetitive text (same phrase repeated many times)
+        words = text.split()
+        if len(words) > 10:
+            unique_words = set(words)
+            repetition_ratio = len(words) / len(unique_words) if unique_words else 0
+            if repetition_ratio > 5:
+                logger.info(f"Detected repetitive hallucination: {text[:100]}...")
+                return True
             
-        # Check repetitive garbage
+        # Check repetitive garbage (old logic)
         if len(text) > 50 and len(set(text.split())) < 5:
             return True
             

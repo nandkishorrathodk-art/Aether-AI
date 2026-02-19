@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut } = require('electron');
 const path = require('path');
 const Store = require('electron-store');
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = !app.isPackaged;
 
 const store = new Store();
 let mainWindow;
@@ -9,16 +9,18 @@ let tray;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 420,              // Voice-optimized width
-    height: 600,             // Voice-optimized height
-    minWidth: 380,           // Minimum width
-    minHeight: 550,          // Minimum height
-    frame: false,            // Frameless for custom drag bar
-    transparent: true,       // Transparent for rounded corners
-    alwaysOnTop: true,       // Float above other windows
-    resizable: true,         // Can resize
+    width: 130,              // Small floating orb
+    height: 130,             // Circular size
+    minWidth: 130,           // Fixed size
+    minHeight: 130,          // Fixed size
+    maxWidth: 130,           // Fixed size
+    maxHeight: 130,          // Fixed size
+    frame: false,            // No frame
+    transparent: true,       // Transparent background
+    alwaysOnTop: true,       // Always float on top
+    resizable: false,        // Cannot resize
     movable: true,           // Can drag
-    hasShadow: true,         // Shadow effect
+    hasShadow: false,        // No shadow for clean orb
     show: false,             // Don't show until ready
     webPreferences: {
       nodeIntegration: false,
@@ -29,7 +31,9 @@ function createWindow() {
     icon: path.join(__dirname, 'assets', 'icon.png'),
     backgroundColor: '#00000000', // Fully transparent
     titleBarStyle: 'hidden',
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    skipTaskbar: false,      // Show in taskbar
+    type: 'toolbar'          // Floating toolbar type
   });
 
   const startURL = isDev
@@ -44,10 +48,10 @@ function createWindow() {
     mainWindow.focus();
   });
 
-  // DevTools only in dev mode
-  if (isDev) {
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
-  }
+  // DevTools disabled for floating orb (causes drag errors)
+  // if (isDev) {
+  //   mainWindow.webContents.openDevTools({ mode: 'detach' });
+  // }
 
   mainWindow.on('closed', () => {
     mainWindow = null;

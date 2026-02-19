@@ -50,10 +50,7 @@ class VectorStore:
         
         os.makedirs(persist_directory, exist_ok=True)
         
-        self.client = chromadb.Client(Settings(
-            chroma_db_impl="duckdb+parquet",
-            persist_directory=persist_directory
-        ))
+        self.client = chromadb.PersistentClient(path=persist_directory)
         
         self.embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name=embedding_model
@@ -419,6 +416,55 @@ Exploitation: {exploitation_technique}
         
         return stats
     
+    def add_memory(
+        self,
+        collection_name: str,
+        content: str,
+        metadata: Optional[Dict] = None
+    ) -> str:
+        """
+        Generic method to add a memory to a specific collection
+        
+        Args:
+            collection_name: Target collection
+            content: Text content to store
+            metadata: Additional metadata
+            
+        Returns:
+            Memory ID
+        """
+        if collection_name not in self.collections:
+            # Fallback to conversations if collection doesn't exist
+            # But better to just create it or use 'conversations'
+            if collection_name == "conversation_memories": 
+                # This is what ConversationHistory asks for, map it to conversations
+                collection_name = "conversations"
+            else:
+                 logger.warning(f"Collection '{collection_name}' not found, falling back to 'conversations'")
+                 collection_name = "conversations"
+            
+        timestamp = datetime.now().isoformat()
+        
+        # Create a deterministic but unique ID
+        import hashlib
+        content_hash = hashlib.md5(content.encode()).hexdigest()[:8]
+        memory_id = f"mem_{timestamp.replace(':', '-').replace('.', '-')}_{content_hash}"
+        
+        meta = metadata.copy() if metadata else {}
+        meta["timestamp"] = timestamp
+        
+        try:
+            self.collections[collection_name].add(
+                documents=[content],
+                metadatas=[meta],
+                ids=[memory_id]
+            )
+            logger.info(f"Generic memory stored in '{collection_name}': {memory_id}")
+            return memory_id
+        except Exception as e:
+            logger.error(f"Failed to add generic memory: {e}")
+            return ""
+    
     def persist(self):
         """Persist all changes to disk"""
         try:
@@ -438,6 +484,8 @@ def get_vector_store() -> VectorStore:
         _vector_store_instance = VectorStore()
     
     return _vector_store_instance
+
+
 
 
 logger.info("Vector Store module loaded - Long-term memory ready!")

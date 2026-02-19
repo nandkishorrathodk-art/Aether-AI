@@ -208,6 +208,9 @@ class ConversationEngine:
         system_prompt_type = self._map_intent_to_prompt_type(intent)
 
         system_prompt = prompt_engine.get_system_prompt(system_prompt_type)
+        
+        logger.info(f"🔍 Intent: {intent}, Prompt Type: {system_prompt_type}")
+        logger.info(f"📝 System Prompt (first 200 chars): {system_prompt[:200]}...")
 
         conversation_history = context_mgr.get_history()
 
@@ -222,6 +225,45 @@ class ConversationEngine:
                 temperature=request.temperature,
                 max_tokens=request.max_tokens
             )
+
+            # DEBUG: Log raw response
+            logger.info(f"🛑 RAW AI CONTENT: '{ai_response.content}'")
+
+            # Safeguard: Check for Echo / "You said:" pattern (Case Insensitive & Loose)
+            content_clean = ai_response.content.strip().lower()
+            user_input_clean = request.user_input.strip().lower()
+            
+            if "you said:" in content_clean or \
+               user_input_clean in content_clean[:len(user_input_clean)+20] or \
+               content_clean == user_input_clean:
+               
+                logger.warning(f"⚠️ DETECTED ECHO RESPONSE: '{ai_response.content}'")
+                
+                # Fallback mechanism
+                fallback_response = "I heard you. How can I help with that?"
+                
+                # Update response content
+                ai_response.content = fallback_response
+                formatted_content = fallback_response
+                enhanced_content = fallback_response
+                
+                # Correct the metadata in response
+                response = ConversationResponse(
+                    content=enhanced_content,
+                    intent=intent,
+                    session_id=request.session_id,
+                    ai_response=ai_response,
+                    context_stats=context_mgr.get_context_stats(),
+                    metadata={
+                        "task_type": task_type.value,
+                        "system_prompt_type": system_prompt_type,
+                        "original_content": "ECHO_DETECTED_AND_SUPPRESSED",
+                        "personality_enhanced": False,
+                        "safeguard_triggered": True
+                    }
+                )
+                logger.info(f"Safeguard triggered. Returned fallback response.")
+                return response
 
             # Execute Detected Actions (God Mode)
             await self._execute_detected_actions(ai_response.content)

@@ -45,12 +45,12 @@ class BugBountyVoiceNotifier:
         if self.enable_voice:
             try:
                 self.tts = TextToSpeech(TTSConfig(
-                    provider="pyttsx3",  # Fast offline TTS
+                    provider="edge",  # Natural human-like voice
                     voice="female",
                     rate=170,  # Slightly faster for excitement
                     volume=10.0  # Max volume
                 ))
-                logger.info("Voice notifier initialized - Ready to speak!")
+                logger.info("Voice notifier initialized - Natural human voice ready!")
             except Exception as e:
                 logger.error(f"TTS initialization failed: {e}")
                 self.enable_voice = False

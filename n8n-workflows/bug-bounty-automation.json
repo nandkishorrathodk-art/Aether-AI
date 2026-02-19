@@ -1,0 +1,184 @@
+{
+  "name": "Aether AI - Bug Bounty Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bug-bounty-trigger",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "aether-bounty-webhook"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/api/v1/n8n/webhook",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"workflow_id\": \"bug-bounty-automation\",\n  \"action\": \"autonomous_scan\",\n  \"data\": {\n    \"target\": \"{{ $json.body.target }}\",\n    \"mode\": \"{{ $json.body.mode || 'balanced' }}\"\n  },\n  \"async_mode\": true,\n  \"callback_url\": \"{{ $node[\"Webhook\"].json[\"headers\"][\"x-callback-url\"] }}\"\n}"
+      },
+      "name": "Start Aether Scan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.success }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "Scan Started?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/webhook/slack-notify",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "channel",
+              "value": "#bug-bounty"
+            },
+            {
+              "name": "message",
+              "value": "=🚀 Aether AI scan started!\n\n**Target**: {{ $json.data.target }}\n**Session ID**: {{ $json.execution_id }}\n**Status**: Started\n\nI'll notify you when bugs are found! 🐛"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1000, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/webhook/error-handler",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "error",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "workflow",
+              "value": "bug-bounty-automation"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Log Error",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1000, 400]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Start Aether Scan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Aether Scan": {
+      "main": [
+        [
+          {
+            "node": "Scan Started?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan Started?": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Slack": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Error": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "pinData": {},
+  "versionId": "1"
+}

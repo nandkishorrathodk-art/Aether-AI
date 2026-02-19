@@ -1,0 +1,224 @@
+.floating-orb-container {
+  background: transparent;
+  overflow: hidden;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Ripple Animations - Cyberpunk Style */
+.orb-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(255, 0, 255, 0.2);
+  pointer-events: none;
+  animation: ripple-expand 2s ease-out infinite;
+}
+
+.ripple-1 {
+  width: 80px;
+  height: 80px;
+  animation-delay: 0s;
+}
+
+.ripple-2 {
+  width: 80px;
+  height: 80px;
+  animation-delay: 0.5s;
+}
+
+.ripple-3 {
+  width: 80px;
+  height: 80px;
+  animation-delay: 1s;
+}
+
+@keyframes ripple-expand {
+  0% {
+    width: 80px;
+    height: 80px;
+    opacity: 1;
+  }
+  100% {
+    width: 180px;
+    height: 180px;
+    opacity: 0;
+  }
+}
+
+/* Compact Widget */
+.floating-widget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 10;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.floating-widget.listening {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+.floating-widget.speaking {
+  animation: pulse-speak 0.8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes pulse-speak {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* Icon Animations */
+.orb-icon {
+  color: white;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.orb-icon.pulse {
+  animation: icon-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Speaking Wave Animation */
+.speaking-wave {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 60px;
+}
+
+.wave-bar {
+  width: 6px;
+  background: white;
+  border-radius: 3px;
+  animation: wave-bounce 0.6s ease-in-out infinite;
+}
+
+@keyframes wave-bounce {
+  0%, 100% {
+    height: 20px;
+  }
+  50% {
+    height: 50px;
+  }
+}
+
+/* Status Text */
+.orb-status {
+  position: absolute;
+  bottom: -40px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  animation: fade-in-up 0.3s ease-out;
+  -webkit-app-region: no-drag;
+  pointer-events: none;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Audio Visualizer */
+.orb-visualizer {
+  position: absolute;
+  bottom: -60px;
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 40px;
+}
+
+.visualizer-bar {
+  width: 4px;
+  background: linear-gradient(to top, #6366f1, #8b5cf6);
+  border-radius: 2px;
+  animation: bar-bounce 0.5s ease-in-out infinite;
+  transition: height 0.1s ease;
+}
+
+@keyframes bar-bounce {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.3);
+  }
+}
+
+/* Cyberpunk Glitch Effect */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+.floating-widget.listening::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  border-radius: 20px;
+  opacity: 0.3;
+  animation: glitch 3s infinite;
+  z-index: -1;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.3s ease;
+}

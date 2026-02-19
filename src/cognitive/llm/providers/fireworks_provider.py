@@ -21,7 +21,7 @@ class FireworksProvider(BaseAIProvider):
             api_key=api_key,
             base_url="https://api.fireworks.ai/inference/v1"
         )
-        self.default_model = "accounts/fireworks/models/llama-v3p1-70b-instruct"
+        self.default_model = "accounts/fireworks/models/llama-v3p3-70b-instruct"
 
     async def generate(
         self,

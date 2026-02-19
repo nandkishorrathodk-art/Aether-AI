@@ -8,7 +8,7 @@ from src.utils.logger import get_logger
 from src.intelligence.scheduler import start_intelligence_scheduler, stop_intelligence_scheduler
 from src.api.routes import (
     chat, tasks, settings as settings_route, openclaw, security, 
-    bugbounty, bugbounty_auto, voice, memory, voice_commands, plugins, developer, discord, workflows, monitor, proactive, control, intelligence, evolution, autonomous, live_testing, v3
+    bugbounty, bugbounty_auto, voice, memory, voice_commands, plugins, developer, discord, workflows, monitor, proactive, control, intelligence, evolution, autonomous, live_testing, v3, n8n
 )
 from src.api.middleware import rate_limit_middleware
 
@@ -107,6 +107,9 @@ async def root():
             "intelligence_earnings": "/api/v1/intelligence/earnings",
             "discord_start": "/api/v1/discord/start",
             "discord_status": "/api/v1/discord/status",
+            "n8n_webhook": "/api/v1/n8n/webhook",
+            "n8n_trigger": "/api/v1/n8n/trigger",
+            "n8n_actions": "/api/v1/n8n/actions",
             "health": "/health",
             "docs": "/docs"
         }
@@ -144,6 +147,7 @@ app.include_router(evolution.router)
 app.include_router(autonomous.router)
 app.include_router(live_testing.router)
 app.include_router(v3.router)
+app.include_router(n8n.router)
 
 
 if __name__ == "__main__":

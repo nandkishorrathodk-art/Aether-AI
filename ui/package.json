@@ -1,7 +1,7 @@
 {
   "name": "aether-ai-ui",
-  "version": "0.1.0",
-  "description": "Aether AI Desktop Application",
+  "version": "3.1.0",
+  "description": "Aether AI Desktop Application - Production-Ready Voice Assistant",
   "homepage": ".",
   "main": "main.js",
   "scripts": {

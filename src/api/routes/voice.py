@@ -31,19 +31,22 @@ tts_instance: Optional[TextToSpeech] = None
 def get_stt():
     global stt_instance
     if stt_instance is None:
-        if settings.voice_provider == "openai" and settings.openai_api_key:
+        stt_provider = getattr(settings, 'stt_provider', 'local')
+        stt_model = getattr(settings, 'stt_model', 'base')
+        
+        if stt_provider == "openai" and settings.openai_api_key:
             stt_instance = SpeechToText(
                 use_cloud=True,
                 api_key=settings.openai_api_key
             )
-            logger.info("Initialized cloud-based STT")
+            logger.info("Initialized cloud-based STT (OpenAI Whisper API)")
         else:
             stt_instance = SpeechToText(
-                model_name="base",
+                model_name=stt_model,
                 use_cloud=False,
                 device="cpu"
             )
-            logger.info("Initialized local STT with 'base' model")
+            logger.info(f"Initialized local STT with '{stt_model}' model")
     return stt_instance
 
 
@@ -112,30 +115,112 @@ class AudioDeviceInfo(BaseModel):
 
 @router.post("/transcribe", response_model=TranscribeResponse)
 async def transcribe_audio(
-    audio: UploadFile = File(...),
-    language: Optional[str] = None
+    file: UploadFile = File(...)
 ):
     try:
         stt = get_stt()
         
-        contents = await audio.read()
+        contents = await file.read()
         
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_file:
+        # Check if file is too small (corrupted or just noise)
+        # With echo cancellation enabled on frontend, require larger size for valid speech
+        if len(contents) < 25000:  # 25KB minimum for 3-second recording
+            logger.warning(f"Audio file too small ({len(contents)} bytes), likely corrupted or silence")
+            return TranscribeResponse(
+                text="",
+                language="en",
+                confidence=0.0,
+                source="file_too_small"
+            )
+        
+        # Determine file extension from filename or content type
+        file_ext = ".wav"
+        if file.filename:
+            if file.filename.endswith(('.webm', '.ogg', '.mp3', '.wav', '.m4a')):
+                file_ext = os.path.splitext(file.filename)[1]
+        elif file.content_type:
+            if 'webm' in file.content_type:
+                file_ext = '.webm'
+            elif 'ogg' in file.content_type:
+                file_ext = '.ogg'
+            elif 'mp3' in file.content_type:
+                file_ext = '.mp3'
+        
+        with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext) as temp_file:
             temp_file.write(contents)
             temp_path = temp_file.name
         
         try:
-            result = stt.transcribe_audio(temp_path, language=language)
+            logger.info("Starting transcription...")
+            result = stt.transcribe_audio(temp_path, language='en')
+            logger.info(f"Transcription result: {result}")
+        except Exception as e:
+            logger.error(f"Transcription failed: {e}")
+            result = {"text": "", "error": str(e)}
         finally:
             if os.path.exists(temp_path):
                 os.unlink(temp_path)
         
         if "error" in result:
-            raise HTTPException(status_code=500, detail=result["error"])
+            logger.warning(f"Transcription error (returning empty): {result['error']}")
+            return TranscribeResponse(
+                text="",
+                language="en",
+                confidence=0.0,
+                source="transcription_error"
+            )
+        
+        transcribed_text = result.get("text", "").strip()
+        
+        # Filter Whisper hallucinations
+        hallucinations = [
+            "This is a casual conversation",
+            "casual conversation in Hinglish",
+            "Hindi + English",
+            "Accurately transcribe",
+            "Thank you for watching",
+            "Please subscribe",
+            "Subtitles by",
+            "I'm sorry"
+        ]
+        
+        text_lower = transcribed_text.lower()
+        is_hallucination = any(h.lower() in text_lower for h in hallucinations)
+        
+        # Check for repetitive text (same phrase repeated many times)
+        words = transcribed_text.split()
+        if len(words) > 10:
+            unique_words = set(words)
+            repetition_ratio = len(words) / len(unique_words) if unique_words else 0
+            if repetition_ratio > 5:  # Same words repeated more than 5x on average
+                logger.warning(f"⚠️  Filtered repetitive hallucination: {transcribed_text[:100]}...")
+                is_hallucination = True
+        
+        if is_hallucination:
+            logger.warning(f"⚠️  Filtered Whisper hallucination: {transcribed_text[:100]}...")
+            return TranscribeResponse(
+                text="",
+                language=result.get("language", "en"),
+                confidence=0.0,
+                source="hallucination_filtered"
+            )
+        
+        # Check for empty or very short transcriptions (likely silence)
+        if len(transcribed_text) < 2:
+            logger.info("Empty or very short transcription, likely silence")
+            return TranscribeResponse(
+                text="",
+                language=result.get("language", "en"),
+                confidence=0.0,
+                source="silence_filtered"
+            )
+        
+        print(f"\n📢 USER SAID: '{transcribed_text}' (length: {len(transcribed_text)})\n", flush=True)
+        logger.info(f"📢 USER SAID: '{transcribed_text}' (length: {len(transcribed_text)})")
         
         return TranscribeResponse(
-            text=result["text"],
-            language=result.get("language"),
+            text=transcribed_text,
+            language=result.get("language", "en"),
             confidence=result.get("confidence", 0.0),
             source=result.get("source", "unknown")
         )
@@ -349,6 +434,9 @@ async def synthesize_speech(request: SynthesizeRequest):
             tts.update_config(**update_params)
         
         audio_data = tts.synthesize(request.text, use_cache=request.use_cache)
+        
+        print(f"\n🔊 AETHER SAID: '{request.text}' (audio size: {len(audio_data)} bytes)\n", flush=True)
+        logger.info(f"🔊 AETHER SAID: '{request.text}' (audio size: {len(audio_data)} bytes)")
         
         return StreamingResponse(
             io.BytesIO(audio_data),

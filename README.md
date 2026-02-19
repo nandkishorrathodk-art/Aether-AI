@@ -19,7 +19,7 @@
 
 <p>
 <img src="https://img.shields.io/github/stars/nandkishorrathodk-art/Aether-AI?style=for-the-badge&logo=github&logoColor=white&color=yellow" alt="GitHub Stars"/>
-<img src="https://img.shields.io/badge/version-3.0.3-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
+<img src="https://img.shields.io/badge/version-3.1.0-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
 <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License"/>
 <img src="https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
 </p>
@@ -44,7 +44,32 @@
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
 <h3>
-🔥 <b>NEW in v3.0</b> - GOD-TIER INTELLIGENCE! 🔥
+🎤 <b>NEW in v3.1</b> - PRODUCTION-READY VOICE ASSISTANT! 🎤
+</h3>
+
+<div align="center">
+<table>
+<tr>
+<td align="center" width="25%">⚡<br><b>60x Faster</b><br><sub>190s → 3s</sub></td>
+<td align="center" width="25%">🎯<br><b>VAD</b><br><sub>Voice Activity Detection</sub></td>
+<td align="center" width="25%">🔇<br><b>No Hallucinations</b><br><sub>Whisper filters</sub></td>
+<td align="center" width="25%">🎨<br><b>Cyberpunk UI</b><br><sub>Compact widget</sub></td>
+</tr>
+</table>
+
+**What's Fixed:**
+- ✅ **Transcription Speed**: 60x performance boost (190s → 3-5s)
+- ✅ **Hallucination-Free**: Eliminated phantom "I'm sorry" loops
+- ✅ **Smart VAD**: Only listens when you actually speak (ignores background audio/videos)
+- ✅ **Cyberpunk Widget**: Sleek, draggable, top-left compact UI with neon effects
+- ✅ **Production Stable**: No more echo issues, feedback loops, or mic hangs
+
+</div>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
+
+<h3>
+🔥 <b>v3.0</b> - GOD-TIER INTELLIGENCE! 🔥
 </h3>
 
 <div align="center">
@@ -76,6 +101,7 @@
 <a href="./AUTONOMOUS_BOUNTY_FEATURE.md"><img src="https://img.shields.io/badge/🤖_Autonomous_Program_Analysis-00FF00?style=for-the-badge" alt="Autonomous Feature"/></a>
 <a href="./VOICE_FEATURE.md"><img src="https://img.shields.io/badge/🗣️_Voice_Notifications-FF00FF?style=for-the-badge" alt="Voice Feature"/></a>
 <a href="#-new-human-like-manual-testing-agent---ai-that-tests-like-you-"><img src="https://img.shields.io/badge/🧪_Human--Like_Manual_Testing-00FFFF?style=for-the-badge" alt="Manual Testing Agent"/></a>
+<a href="./N8N_INTEGRATION.md"><img src="https://img.shields.io/badge/🔗_n8n_Integration-EA4B71?style=for-the-badge" alt="n8n Integration"/></a>
 </p>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
@@ -111,6 +137,7 @@
 - 🤖 **Autonomous Program Analysis** - Reads bounty pages automatically
 - 🗣️ **Voice Notifications** - Hindi-English TTS alerts
 - 🧪 **Human-Like Manual Testing** - AI that tests like YOU do! (NEW!)
+- 🔗 **n8n Integration** - Connect with 1000+ apps via workflows (NEW!)
 - ⚡ **NPU Optimization** - 5x faster inference (Intel/AMD)
 - 🔄 **Windows Service** - Always-on background mode
 

@@ -1,0 +1,111 @@
+{
+  "name": "Aether AI - Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "aether-chat-webhook"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/api/v1/n8n/webhook",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"workflow_id\": \"ai-chatbot\",\n  \"action\": \"chat\",\n  \"data\": {\n    \"message\": \"{{ $json.body.message }}\",\n    \"session_id\": \"{{ $json.body.user_id || 'default' }}\"\n  }\n}"
+      },
+      "name": "Send to Aether AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/api/v1/n8n/webhook",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"workflow_id\": \"ai-chatbot-tts\",\n  \"action\": \"synthesize_speech\",\n  \"data\": {\n    \"text\": \"{{ $json.data.response }}\",\n    \"voice\": \"alloy\",\n    \"speed\": 1.0\n  }\n}"
+      },
+      "name": "Generate Voice",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "options": {},
+        "responseBody": "={\n  \"text\": \"{{ $node[\"Send to Aether AI\"].json[\"data\"][\"response\"] }}\",\n  \"audio\": \"{{ $json.data.audio_base64 }}\",\n  \"intent\": \"{{ $node[\"Send to Aether AI\"].json[\"data\"][\"intent\"] }}\",\n  \"session_id\": \"{{ $node[\"Send to Aether AI\"].json[\"data\"][\"session_id\"] }}\"\n}"
+      },
+      "name": "Respond with Text + Audio",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1000, 300]
+    }
+  ],
+  "connections": {
+    "Chat Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send to Aether AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Aether AI": {
+      "main": [
+        [
+          {
+            "node": "Generate Voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voice": {
+      "main": [
+        [
+          {
+            "node": "Respond with Text + Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "pinData": {},
+  "versionId": "1"
+}

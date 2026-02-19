@@ -1,7 +1,7 @@
 {
   "name": "aether-ai",
-  "version": "0.5.0",
-  "description": "Voice-First AI Assistant - Android & Desktop",
+  "version": "3.1.0",
+  "description": "Voice-First AI Assistant - Android & Desktop - Production-Ready Voice System",
   "main": "index.android.js",
   "scripts": {
     "android": "react-native run-android",

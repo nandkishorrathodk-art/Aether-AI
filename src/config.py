@@ -30,7 +30,7 @@ class Settings(BaseSettings):
 
     ai_provider: str = "auto"
     default_model: str = "gpt-4-turbo-preview"
-    fallback_provider: str = "groq"
+    fallback_provider: str = "fireworks"
     enable_cost_tracking: bool = True
     max_cost_per_day_usd: float = 10.0
 
@@ -48,7 +48,8 @@ class Settings(BaseSettings):
     voice_gender: str = "male"
     voice_provider: str = "edge"
     tts_model: str = "tts-1"
-    stt_model: str = "whisper-1"
+    stt_provider: str = "local"
+    stt_model: str = "base"
     porcupine_api_key: Optional[str] = None
 
     chromadb_path: Path = Path("./data/chromadb")

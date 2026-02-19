@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TTSConfig:
     """Configuration for TTS settings"""
-    provider: Literal["pyttsx3", "openai", "edge"] = "pyttsx3"
+    provider: Literal["pyttsx3", "openai", "edge"] = "edge"  # Natural human voice
     voice: Literal["male", "female", "neutral"] = "female"
     rate: int = 160  # Normal conversational speed
     volume: float = 10.0  # MAXIMUM volume (was 1.0 → 3.0 → 10.0)
@@ -253,13 +253,11 @@ class EdgeTTS:
         import edge_tts
         import asyncio
         
-        # Select voice based on gender
+        # Select voice based on gender - using most natural sounding voices
         if self.config.voice == "male":
-            # "en-US-ChristopherNeural" is a great male voice
-            # "en-US-GuyNeural" is also good
-            voice = "en-US-ChristopherNeural" 
+            voice = "en-US-AndrewNeural"  # Natural, friendly male voice
         else:
-            voice = "en-US-AriaNeural"
+            voice = "en-IN-NeerjaNeural"  # Indian English female voice - sounds very natural and human
             
         # Calculate rate adjustment
         # Default 160 wpm. Edge uses percentage.

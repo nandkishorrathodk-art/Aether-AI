@@ -33,14 +33,21 @@ class ModelRouter:
         }
 
     def _initialize_providers(self):
-        if settings.openai_api_key:
+        # Priority order: Fireworks → Groq → Anthropic → Google → OpenRouter → OpenAI (last)
+        
+        if settings.fireworks_api_key:
             try:
-                self.providers["openai"] = OpenAIProvider(settings.openai_api_key)
-                self.providers["gpt-4"] = self.providers["openai"]
-                self.providers["gpt-4-vision"] = self.providers["openai"]
-                logger.info("OpenAI provider initialized")
+                self.providers["fireworks"] = FireworksProvider(settings.fireworks_api_key)
+                logger.info("Fireworks provider initialized")
             except Exception as e:
-                logger.warning(f"Failed to initialize OpenAI: {e}")
+                logger.warning(f"Failed to initialize Fireworks: {e}")
+
+        if settings.groq_api_key:
+            try:
+                self.providers["groq"] = GroqProvider(settings.groq_api_key)
+                logger.info("Groq provider initialized")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Groq: {e}")
 
         if settings.anthropic_api_key:
             try:
@@ -58,26 +65,21 @@ class ModelRouter:
             except Exception as e:
                 logger.warning(f"Failed to initialize Google: {e}")
 
-        if settings.groq_api_key:
-            try:
-                self.providers["groq"] = GroqProvider(settings.groq_api_key)
-                logger.info("Groq provider initialized")
-            except Exception as e:
-                logger.warning(f"Failed to initialize Groq: {e}")
-
-        if settings.fireworks_api_key:
-            try:
-                self.providers["fireworks"] = FireworksProvider(settings.fireworks_api_key)
-                logger.info("Fireworks provider initialized")
-            except Exception as e:
-                logger.warning(f"Failed to initialize Fireworks: {e}")
-
         if settings.openrouter_api_key:
             try:
                 self.providers["openrouter"] = OpenRouterProvider(settings.openrouter_api_key)
                 logger.info("OpenRouter provider initialized")
             except Exception as e:
                 logger.warning(f"Failed to initialize OpenRouter: {e}")
+
+        if settings.openai_api_key:
+            try:
+                self.providers["openai"] = OpenAIProvider(settings.openai_api_key)
+                self.providers["gpt-4"] = self.providers["openai"]
+                self.providers["gpt-4-vision"] = self.providers["openai"]
+                logger.info("OpenAI provider initialized")
+            except Exception as e:
+                logger.warning(f"Failed to initialize OpenAI: {e}")
 
         if not self.providers and not os.getenv("TESTING"):
             logger.warning("No AI providers configured. Please add API keys to .env file")

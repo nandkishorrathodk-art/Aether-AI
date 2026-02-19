@@ -78,7 +78,14 @@ class VoiceActivatedAssistant:
         self.audio_input = AudioInputHandler()
         self.wake_word_detector = SimpleWakeWordDetector(wake_word=wake_word)
         self.stt = SpeechToText()
-        self.tts = TextToSpeech()
+        
+        # Natural human voice using Edge TTS
+        from src.perception.voice.tts import TTSConfig
+        self.tts = TextToSpeech(config=TTSConfig(
+            provider="edge",
+            voice="female",
+            rate=165
+        ))
         self.command_controller = VoiceCommandController()
         
         # State
