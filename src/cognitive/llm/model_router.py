@@ -142,7 +142,6 @@ class ModelRouter:
         messages: List[Dict[str, str]],
         task_type: TaskType = TaskType.CONVERSATION,
         max_retries: int = 2,
-        enable_ollama_fallback: bool = True,
         **kwargs
     ) -> AIResponse:
         """
@@ -152,7 +151,6 @@ class ModelRouter:
         1. Primary provider (OpenAI/Groq/etc)
         2. Fallback provider
         3. Other configured providers
-        4. Local Ollama (if enabled)
         
         Self-healing: Auto-recovers when primary API returns
         """
@@ -187,88 +185,8 @@ class ModelRouter:
                 last_error = e
                 continue
 
-        if enable_ollama_fallback:
-            logger.warning("🔄 All cloud providers failed - Switching to local Ollama")
-            try:
-                ollama_response = await self._fallback_to_ollama(messages, **kwargs)
-                logger.info("✅ Ollama fallback successful - Running in degraded mode")
-                return ollama_response
-            except Exception as ollama_error:
-                logger.error(f"Ollama fallback also failed: {ollama_error}")
-                raise Exception(f"All providers including Ollama failed. Last error: {last_error}")
-
         raise Exception(f"All providers failed. Last error: {last_error}")
     
-    async def _fallback_to_ollama(
-        self,
-        messages: List[Dict[str, str]],
-        model: Optional[str] = None,
-        temperature: float = 0.7,
-        max_tokens: int = 2048,
-        **kwargs
-    ) -> AIResponse:
-        """
-        Self-healing mechanism: Fallback to local Ollama
-        
-        Uses local models:
-        - llama3.2 (default, fast)
-        - mistral (good reasoning)
-        - codellama (for code tasks)
-        """
-        try:
-            import ollama
-            
-            available_models = ollama.list()
-            model_names = [m['name'] for m in available_models.get('models', [])]
-            
-            logger.info(f"Available Ollama models: {model_names}")
-            
-            if not model_names:
-                raise Exception("No Ollama models installed. Run: ollama pull llama3.2")
-            
-            fallback_model = model or model_names[0]
-            if ':' not in fallback_model:
-                if f"{fallback_model}:latest" in model_names:
-                    fallback_model = f"{fallback_model}:latest"
-            
-            logger.info(f"Using Ollama model: {fallback_model}")
-            
-            formatted_messages = []
-            for msg in messages:
-                formatted_messages.append({
-                    "role": msg.get("role", "user"),
-                    "content": msg.get("content", "")
-                })
-            
-            response = ollama.chat(
-                model=fallback_model,
-                messages=formatted_messages,
-                options={
-                    "temperature": temperature,
-                    "num_predict": max_tokens
-                }
-            )
-            
-            content = response.get('message', {}).get('content', '')
-            
-            return AIResponse(
-                content=content,
-                provider="ollama_local",
-                model=fallback_model,
-                metadata={
-                    "fallback": True,
-                    "degraded_mode": True,
-                    "total_duration": response.get('total_duration', 0),
-                    "load_duration": response.get('load_duration', 0)
-                }
-            )
-            
-        except ImportError:
-            logger.error("Ollama Python package not installed. Run: pip install ollama")
-            raise
-        except Exception as e:
-            logger.error(f"Ollama execution error: {e}")
-            raise
 
     def get_available_providers(self) -> List[str]:
         return list(self.providers.keys())

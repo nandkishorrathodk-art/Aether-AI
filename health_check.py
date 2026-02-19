@@ -220,12 +220,6 @@ class AetherHealthChecker:
             else:
                 providers_status["Groq"] = "⚠️  No API key"
             
-            try:
-                import ollama
-                models = ollama.list()
-                providers_status["Ollama (Local)"] = f"✅ {len(models.get('models', []))} models"
-            except Exception as e:
-                providers_status["Ollama (Local)"] = "❌ Not running"
             
             latency = (time.time() - start) * 1000
             

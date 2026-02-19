@@ -36,7 +36,7 @@ python refactored_brain_logic.py
 - ✅ System Resources (RAM, CPU, Disk)
 - ✅ Intel NPU Driver (OpenVINO)
 - ✅ Audio Devices (Input/Output)
-- ✅ LLM Providers (OpenAI, Groq, Ollama)
+- ✅ LLM Providers (OpenAI, Groq, etc.)
 - ✅ Critical Dependencies
 
 **Usage**:
@@ -79,10 +79,9 @@ python src\perception\voice\stt_openvino.py
 ### 4. **model_router.py** (Enhanced)
 **Location**: `C:\Users\nandk\Aether-AI\src\cognitive\llm\model_router.py`
 
-**Purpose**: Self-healing LLM provider with Ollama fallback
+**Purpose**: Enhanced LLM provider with multi-provider fallback
 
 **Enhancements**:
-- ✅ `_fallback_to_ollama()` method for local model switching
 - ✅ Automatic degraded mode on API failures
 - ✅ Error classification (429, timeout, 500, 503)
 - ✅ Seamless recovery when cloud APIs return
@@ -167,7 +166,7 @@ pip install openvino openvino-dev
 | **Wake word → Response** | 8-12s | <2s | **6x faster** |
 | **STT Latency** | 3-5s | <500ms | **6-10x faster** |
 | **Memory (8h session)** | 4-6GB | <2GB | **50% reduction** |
-| **API Failure Recovery** | Crash | Ollama fallback | **100% uptime** |
+| **API Failure Recovery** | Crash | Multi-provider fallback | **High availability** |
 | **Concurrent Requests** | Blocked | Fully async | **∞ improvement** |
 
 ---
@@ -180,14 +179,7 @@ cd C:\Users\nandk\Aether-AI
 pip install openvino openvino-dev
 ```
 
-### 2. Install Ollama (For Self-Healing Fallback)
-```bash
-# Download from: https://ollama.ai
-ollama pull llama3.2
-ollama pull mistral
-```
-
-### 3. Run Health Check
+### 2. Run Health Check
 ```bash
 cd C:\Users\nandk\Aether-AI
 python health_check.py
@@ -237,15 +229,6 @@ python -c "import openvino as ov; print(ov.Core().available_devices)"
 # If NPU missing, install Intel NPU drivers from Intel website
 ```
 
-### If Ollama Not Working
-```bash
-# Check Ollama service
-ollama list
-
-# If not running, start Ollama service
-ollama serve
-```
-
 ### If Health Check Fails
 ```bash
 # Run with verbose output
@@ -273,7 +256,7 @@ Wake Word → Blocking asyncio.run() → CPU Whisper (3-5s) → LLM → TTS
 ```
 Wake Word → Async Queue → NPU Whisper (<500ms) → CoT Reasoning → LLM → TTS
               ↓ Non-blocking                         ↓ Smart planning
-         Concurrent processing              API Failure → Ollama
+         Concurrent processing              API Failure → Fallback providers
          Auto memory cleanup                Self-healing recovery
          <2s total latency                  100% uptime
 ```
@@ -286,7 +269,7 @@ Wake Word → Async Queue → NPU Whisper (<500ms) → CoT Reasoning → LLM →
 - ✅ **Memory**: <2GB after 8h session (via auto-cleanup)
 - ✅ **Reasoning**: CoT integration for complex tasks
 - ✅ **Hardware**: NPU acceleration ready
-- ✅ **Reliability**: Self-healing Ollama fallback
+- ✅ **Reliability**: Multi-provider fallback
 - ✅ **Concurrency**: Fully async, non-blocking
 
 ---
