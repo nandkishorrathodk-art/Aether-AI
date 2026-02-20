@@ -9,11 +9,11 @@ let tray;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 420,              // Voice-optimized width
-    height: 600,             // Voice-optimized height
-    minWidth: 380,           // Minimum width
-    minHeight: 550,          // Minimum height
-    frame: false,            // Frameless for custom drag bar
+    width: 380,
+    height: 140,
+    minWidth: 380,
+    minHeight: 140,
+    frame: false,
     transparent: true,       // Transparent for rounded corners
     alwaysOnTop: true,       // Float above other windows
     resizable: true,         // Can resize
@@ -32,9 +32,11 @@ function createWindow() {
     autoHideMenuBar: true
   });
 
-  const startURL = isDev
+  const isDevMode = process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath) || isDev;
+
+  const startURL = isDevMode
     ? 'http://localhost:3000'
-    : `file://${path.join(__dirname, 'build/index.html')}`;
+    : `file://${path.join(__dirname, '../build/index.html')}`;
 
   mainWindow.loadURL(startURL);
 
@@ -127,7 +129,7 @@ function createTray() {
 
 app.on('ready', () => {
   createWindow();
-  
+
   globalShortcut.register('CommandOrControl+Space', () => {
     if (mainWindow) {
       mainWindow.webContents.send('activate-voice-input');

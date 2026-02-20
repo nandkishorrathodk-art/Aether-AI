@@ -2,13 +2,14 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import time
+import threading
 from contextlib import asynccontextmanager
 from src.config import settings
 from src.utils.logger import get_logger
 from src.intelligence.scheduler import start_intelligence_scheduler, stop_intelligence_scheduler
 from src.api.routes import (
     chat, tasks, settings as settings_route, openclaw, security, 
-    bugbounty, bugbounty_auto, voice, memory, voice_commands, plugins, developer, discord, workflows, monitor, proactive, control, intelligence, evolution, autonomous, live_testing, v3, n8n
+    bugbounty, bugbounty_auto, voice, memory, voice_commands, plugins, developer, discord, workflows, monitor, proactive, control, intelligence, evolution, autonomous, live_testing, v3, n8n, desktop
 )
 from src.api.middleware import rate_limit_middleware
 
@@ -148,6 +149,7 @@ app.include_router(autonomous.router)
 app.include_router(live_testing.router)
 app.include_router(v3.router)
 app.include_router(n8n.router)
+app.include_router(desktop.router)
 
 
 if __name__ == "__main__":

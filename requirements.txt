@@ -108,3 +108,14 @@ uvloop==0.21.0
 # v3.4.0 JARVIS-Level Enterprise Features
 circuitbreaker==2.0.0
 tenacity==9.0.0
+
+# v3.5.0 Desktop AI Automation
+pyautogui==0.9.54
+pyperclip==1.9.0
+psutil==6.1.0
+pygetwindow==0.0.9
+
+# v3.6.0 Desktop Mate - Floating AI Character
+PyQt6==6.8.0
+PyQt6-Qt6==6.8.1
+PyQt6-sip==13.9.0

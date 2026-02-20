@@ -20,6 +20,28 @@ class BrowserAutomation:
         return f"Searching for '{query}'"
 
     @staticmethod
+    def play_music(query: str):
+        """Play a song/video on YouTube by finding the first result"""
+        import urllib.request
+        import re
+        try:
+            search_url = f"https://www.youtube.com/results?search_query={query.replace(' ', '+')}"
+            req = urllib.request.Request(search_url, headers={'User-Agent': 'Mozilla/5.0'})
+            html = urllib.request.urlopen(req).read().decode()
+            video_ids = re.findall(r"watch\?v=(\S{11})", html)
+            if video_ids:
+                url = f"https://www.youtube.com/watch?v={video_ids[0]}"
+                webbrowser.open(url)
+                return f"Playing '{query}' on YouTube"
+        except Exception as e:
+            print(f"Failed direct playback URL extraction: {e}")
+            pass
+            
+        url = f"https://www.youtube.com/results?search_query={query.replace(' ', '+')}"
+        webbrowser.open(url)
+        return f"Playing '{query}' on YouTube"
+
+    @staticmethod
     def open_site_by_name(name: str):
         """Open a popular site by name"""
         sites = {

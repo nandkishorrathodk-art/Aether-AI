@@ -6,7 +6,7 @@ const WS_URL = process.env.REACT_APP_WS_URL || 'http://localhost:8000';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000,
+  timeout: 60000, // Increased to 60s to accommodate slower AI processing or model downloading
   headers: {
     'Content-Type': 'application/json',
   },
@@ -125,9 +125,12 @@ class APIClient {
 
   async synthesizeSpeech(text, voice = 'default') {
     try {
-      const response = await axiosInstance.post('/api/v1/voice/speak', {
+      const response = await axiosInstance.post('/api/v1/voice/synthesize', {
         text,
         voice,
+        use_cache: true
+      }, {
+        responseType: 'blob'
       });
       return response.data;
     } catch (error) {
@@ -551,6 +554,36 @@ class APIClient {
       return new Error('Unable to connect to server. Check if backend is running.');
     }
     return error;
+  }
+
+  async executeDesktopCommand(command) {
+    try {
+      const response = await axiosInstance.post('/api/v1/desktop/command', { command });
+      return response.data;
+    } catch (error) {
+      console.error('Desktop command error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async controlAgent(action) {
+    try {
+      const response = await axiosInstance.post('/api/v1/desktop/agent/control', { action });
+      return response.data;
+    } catch (error) {
+      console.error('Agent control error:', error);
+      throw this._handleError(error);
+    }
+  }
+
+  async getAgentStatus() {
+    try {
+      const response = await axiosInstance.get('/api/v1/desktop/agent/status');
+      return response.data;
+    } catch (error) {
+      console.error('Agent status error:', error);
+      throw this._handleError(error);
+    }
   }
 }
 

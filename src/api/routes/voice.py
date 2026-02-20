@@ -54,9 +54,9 @@ def get_tts():
     global tts_instance
     if tts_instance is None:
         config = TTSConfig(
-            provider=settings.tts_provider if hasattr(settings, 'tts_provider') else "pyttsx3",
-            voice=settings.tts_voice if hasattr(settings, 'tts_voice') else "female",
-            rate=settings.tts_rate if hasattr(settings, 'tts_rate') else 175,
+            provider=settings.voice_provider if hasattr(settings, 'voice_provider') else "edge",
+            voice=settings.voice_gender if hasattr(settings, 'voice_gender') else "male",
+            rate=175,
             cache_enabled=True
         )
         
@@ -124,7 +124,7 @@ async def transcribe_audio(
         
         # Check if file is too small (corrupted or just noise)
         # With echo cancellation enabled on frontend, require larger size for valid speech
-        if len(contents) < 25000:  # 25KB minimum for 3-second recording
+        if len(contents) < 500:  # Allow smaller WebM chunks from frontend
             logger.warning(f"Audio file too small ({len(contents)} bytes), likely corrupted or silence")
             return TranscribeResponse(
                 text="",
@@ -568,11 +568,11 @@ async def start_pipeline(
             wake_word_sensitivity=0.5,
             porcupine_access_key=settings.porcupine_api_key,
             use_porcupine=bool(settings.porcupine_api_key),
-            stt_model="base",
+            stt_model=settings.stt_model if hasattr(settings, 'stt_model') else "small",
             stt_use_cloud=settings.voice_provider == "openai",
             stt_api_key=settings.openai_api_key,
-            tts_provider=settings.voice_provider or "pyttsx3",
-            tts_voice="female",
+            tts_provider=settings.voice_provider if hasattr(settings, 'voice_provider') else "edge",
+            tts_voice=settings.voice_gender if hasattr(settings, 'voice_gender') else "male",
             tts_api_key=settings.openai_api_key,
             session_timeout_minutes=session_timeout_minutes,
             enable_continuous_mode=continuous_mode

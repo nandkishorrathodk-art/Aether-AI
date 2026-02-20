@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import './index.css';
-import FloatingOrb from './FloatingOrb';
+import App from './App';
 
 const darkTheme = createTheme({
   palette: {
@@ -26,9 +26,6 @@ const darkTheme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <FloatingOrb />
-    </ThemeProvider>
+    <App />
   </React.StrictMode>
 );

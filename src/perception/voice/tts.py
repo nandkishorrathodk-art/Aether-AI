@@ -18,10 +18,10 @@ logger = logging.getLogger(__name__)
 class TTSConfig:
     """Configuration for TTS settings"""
     provider: Literal["pyttsx3", "openai", "edge"] = "edge"  # Natural human voice
-    voice: Literal["male", "female", "neutral"] = "female"
-    rate: int = 160  # Normal conversational speed
-    volume: float = 10.0  # MAXIMUM volume (was 1.0 → 3.0 → 10.0)
-    pitch: float = 1.2  # Higher pitch for Megumi
+    voice: Literal["male", "female", "neutral"] = "male"  # Jarvis is male
+    rate: int = 150  # Slightly slower, more deliberate (Jarvis style)
+    volume: float = 10.0  # MAXIMUM volume
+    pitch: float = 1.0  # Normal/Deep pitch
     sample_rate: int = 22050
     cache_enabled: bool = True
     cache_dir: str = "data/tts_cache"
@@ -255,7 +255,7 @@ class EdgeTTS:
         
         # Select voice based on gender - using most natural sounding voices
         if self.config.voice == "male":
-            voice = "en-US-AndrewNeural"  # Natural, friendly male voice
+            voice = "en-GB-RyanNeural"  # British Male (Jarvis-like)
         else:
             voice = "en-IN-NeerjaNeural"  # Indian English female voice - sounds very natural and human
             

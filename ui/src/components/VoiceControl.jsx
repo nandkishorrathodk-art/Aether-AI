@@ -23,19 +23,10 @@ function VoiceControl({ onTranscription, onError, enabled = true }) {
   const streamRef = useRef(null);
 
   useEffect(() => {
-    const handleActivateVoice = () => {
-      if (enabled && !isRecording && !isProcessing) {
-        startRecording();
-      }
-    };
-
-    window.electron?.ipcRenderer.on('activate-voice-input', handleActivateVoice);
-
     return () => {
-      window.electron?.ipcRenderer.removeListener('activate-voice-input', handleActivateVoice);
       stopRecording();
     };
-  }, [enabled, isRecording, isProcessing]);
+  }, []);
 
   useEffect(() => {
     if (isRecording) {

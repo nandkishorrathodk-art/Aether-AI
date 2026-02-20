@@ -19,7 +19,7 @@
 
 <p>
 <img src="https://img.shields.io/github/stars/nandkishorrathodk-art/Aether-AI?style=for-the-badge&logo=github&logoColor=white&color=yellow" alt="GitHub Stars"/>
-<img src="https://img.shields.io/badge/version-3.4.0-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
+<img src="https://img.shields.io/badge/version-3.5.0-brightgreen.svg?style=for-the-badge&logo=semanticrelease&logoColor=white" alt="Version"/>
 <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License"/>
 <img src="https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
 </p>
@@ -29,7 +29,7 @@
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React"/>
 <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI"/>
 <img src="https://img.shields.io/badge/Anthropic-191919?style=for-the-badge&logo=anthropic&logoColor=white" alt="Anthropic"/>
-<img src="https://img.shields.io/badge/Electron-47848F?style=for-the-badge&logo=electron&logoColor=white" alt="Electron"/>
+<img src="https://img.shields.io/badge/PyQt6-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="PyQt6"/>
 </p>
 
 <p>
@@ -44,7 +44,32 @@
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
 <h3>
-🤖 <b>NEW in v3.4</b> - JARVIS-LEVEL INTELLIGENCE: SELF-CODING, 60+ AGENT MESH, PROMETHEUS! 🤖
+🎯 <b>NEW in v3.5</b> - VISION SYSTEM, DESKTOP AUTOMATION & BUG BOUNTY PRO MODE! 🎯
+</h3>
+
+<div align="center">
+<table>
+<tr>
+<td align="center" width="20%">👁️<br><b>Vision System</b><br><sub>Screen analysis</sub></td>
+<td align="center" width="20%">🖱️<br><b>Desktop Control</b><br><sub>30+ actions</sub></td>
+<td align="center" width="20%">🎙️<br><b>Voice UI</b><br><sub>Whisper + TTS</sub></td>
+<td align="center" width="20%">🐛<br><b>Bug Bounty</b><br><sub>Authorized testing</sub></td>
+<td align="center" width="20%">🤖<br><b>Autonomous Agent</b><br><sub>God Mode</sub></td>
+</tr>
+</table>
+
+**Latest Features:**
+- ✅ **Vision System**: Real-time screen capture and analysis using Google Gemini 1.5 Flash
+- ✅ **Desktop Automation**: 30+ actions (OPEN, TYPE, SEARCH, PLAY, LOOK, SCAN, etc.)
+- ✅ **Voice Assistant**: Browser-based voice control with Whisper transcription and edge-TTS
+- ✅ **Bug Bounty Mode**: Authorized security testing with BurpSuite, Nmap, vulnerability scanning
+- ✅ **Autonomous Agent**: Self-directed desktop automation with multi-step workflow execution
+- ✅ **n8n Integration**: Advanced workflow orchestration for complex automation tasks
+
+</div>
+
+<h3>
+🤖 <b>v3.4</b> - JARVIS-LEVEL INTELLIGENCE: SELF-CODING, 60+ AGENT MESH, PROMETHEUS! 🤖
 </h3>
 
 <div align="center">

@@ -5,10 +5,11 @@ import httpx
 import asyncio
 from datetime import datetime
 from src.utils.logger import get_logger
-from src.cognitive.llm.conversation_engine import ConversationEngine
+from src.cognitive.llm.inference import ConversationEngine
 from src.autonomous.autonomous_brain import AutonomousBrain
-from src.bugbounty.bug_bounty_engine import BugBountyEngine
+from src.action.security.bugbounty import BugBountyEngine
 from src.cognitive.llm.model_router import ModelRouter
+from src.automation.desktop_automation import get_desktop_automation
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/api/v1/n8n", tags=["n8n"])
@@ -17,6 +18,7 @@ conversation_engine = ConversationEngine()
 autonomous_brain = AutonomousBrain()
 bug_bounty_engine = BugBountyEngine()
 model_router = ModelRouter()
+desktop_automation = get_desktop_automation()
 
 
 class N8NWebhookRequest(BaseModel):
@@ -241,6 +243,16 @@ async def execute_aether_action(action: str, data: Dict[str, Any]) -> Dict[str, 
             finally:
                 if os.path.exists(temp_path):
                     os.unlink(temp_path)
+        
+        elif action == "desktop_automation":
+            desktop_action = data.get("desktop_action", "")
+            params = data.get("params", {})
+            
+            if not desktop_action:
+                raise ValueError("Desktop action required")
+            
+            result = await desktop_automation.execute_command(desktop_action, params)
+            return result
         
         else:
             raise ValueError(f"Unknown action: {action}")

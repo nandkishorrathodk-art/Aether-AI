@@ -1,0 +1,97 @@
+{
+  "date": "2026-02-20",
+  "goals": [
+    "Find high-priority bugs",
+    "Create engaging YouTube content",
+    "Increase online presence"
+  ],
+  "scheduled_tasks": [
+    {
+      "time": "08:00",
+      "title": "Morning Routine",
+      "description": "Exercise, breakfast, and planning",
+      "duration_minutes": 60,
+      "priority": 6,
+      "task_type": "routine"
+    },
+    {
+      "time": "09:00",
+      "title": "Bug Bounty Session",
+      "description": "Focus on high-priority bugs and vulnerabilities",
+      "duration_minutes": 120,
+      "priority": 9,
+      "task_type": "bug_bounty"
+    },
+    {
+      "time": "11:00",
+      "title": "Break",
+      "description": "Rest and recharge",
+      "duration_minutes": 15,
+      "priority": 5,
+      "task_type": "break"
+    },
+    {
+      "time": "11:15",
+      "title": "Bug Bounty Session",
+      "description": "Continue hunting for bugs and vulnerabilities",
+      "duration_minutes": 120,
+      "priority": 9,
+      "task_type": "bug_bounty"
+    },
+    {
+      "time": "13:15",
+      "title": "Lunch Break",
+      "description": "Take a break and refuel",
+      "duration_minutes": 60,
+      "priority": 5,
+      "task_type": "break"
+    },
+    {
+      "time": "14:15",
+      "title": "YouTube Content Planning",
+      "description": "Plan and research content for upcoming videos",
+      "duration_minutes": 90,
+      "priority": 8,
+      "task_type": "content_creation"
+    },
+    {
+      "time": "15:45",
+      "title": "Break",
+      "description": "Short break to stretch and move around",
+      "duration_minutes": 15,
+      "priority": 5,
+      "task_type": "break"
+    },
+    {
+      "time": "16:00",
+      "title": "YouTube Content Creation",
+      "description": "Create and edit content for upcoming videos",
+      "duration_minutes": 120,
+      "priority": 9,
+      "task_type": "content_creation"
+    },
+    {
+      "time": "18:00",
+      "title": "Dinner Break",
+      "description": "Take a break and relax",
+      "duration_minutes": 60,
+      "priority": 5,
+      "task_type": "break"
+    },
+    {
+      "time": "19:00",
+      "title": "Review and Plan",
+      "description": "Review progress and plan for tomorrow",
+      "duration_minutes": 60,
+      "priority": 7,
+      "task_type": "planning"
+    }
+  ],
+  "suggested_focus_areas": [
+    "Bug Bounty",
+    "YouTube"
+  ],
+  "estimated_earnings_potential": 500.0,
+  "motivation_message": "Aaj ka din bahut hi shandaar hai! Apne goals ko achieve karne ke liye full energy 🔥",
+  "created_at": "2026-02-20T11:41:03.794705"
+}

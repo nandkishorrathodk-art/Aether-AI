@@ -55,7 +55,7 @@ class VisionSystem:
         }
         
         payload = {
-            "model": "google/gemini-2.0-flash-exp:free", # Using Free/Fast model
+            "model": "google/gemini-1.5-flash", # Using stable Gemini 1.5 Flash model
             "messages": [
                 {
                     "role": "user",

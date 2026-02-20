@@ -88,6 +88,8 @@ class IntentClassifier:
                 r'\b(automate|schedule|workflow|batch|pipeline)\b',
                 r'\b(every|daily|weekly|monthly|hourly)\b',
                 r'\b(when|if|trigger|on event)\b',
+                r'\b(play)\s+(song|music|video|track|playlist)\b',
+                r'\b(play)\s+.*\s+(on|using)\s+(youtube|spotify|browser)\b',
             ],
             IntentType.CREATIVE: [
                 r'\b(write|create|generate|compose)\s+(story|poem|article|essay|blog)',
@@ -352,6 +354,8 @@ class ConversationEngine:
                     DesktopAutomation.open_app(args)
                 elif command == "SEARCH":
                     BrowserAutomation.search(args)
+                elif command == "PLAY":
+                    BrowserAutomation.play_music(args)
                 elif command == "TYPE":
                     DesktopAutomation.type_text(args)
                 elif command == "PRESS":

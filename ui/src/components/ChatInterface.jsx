@@ -12,9 +12,10 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import PersonIcon from '@mui/icons-material/Person';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import api from '../services/api';
 
-function ChatInterface({ sessionId, onError }) {
+function ChatInterface({ sessionId, onError, onClose }) {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +60,7 @@ function ChatInterface({ sessionId, onError }) {
 
     try {
       const response = await api.conversation(inputMessage, sessionId, true);
-      
+
       const assistantMessage = {
         role: 'assistant',
         content: response.response,
@@ -81,7 +82,7 @@ function ChatInterface({ sessionId, onError }) {
       }
     } catch (error) {
       onError?.(error.message);
-      
+
       const errorMessage = {
         role: 'assistant',
         content: `Sorry, I encountered an error: ${error.message}`,
@@ -115,6 +116,23 @@ function ChatInterface({ sessionId, onError }) {
         bgcolor: 'background.default',
       }}
     >
+      {/* Header bar with Back button */}
+      <Box sx={{
+        p: 1.5,
+        display: 'flex',
+        alignItems: 'center',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        bgcolor: 'background.paper',
+        gap: 1
+      }}>
+        <IconButton onClick={onClose} size="small" sx={{ color: 'text.secondary' }}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="subtitle1" sx={{ fontWeight: 500, color: 'text.primary' }}>
+          Aether Chat
+        </Typography>
+      </Box>
+
       <Box
         sx={{
           flex: 1,
@@ -158,7 +176,7 @@ function ChatInterface({ sessionId, onError }) {
                 <SmartToyIcon />
               </Avatar>
             )}
-            
+
             <Paper
               elevation={1}
               sx={{
@@ -174,12 +192,12 @@ function ChatInterface({ sessionId, onError }) {
               <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {message.content}
               </Typography>
-              
+
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
                 <Typography variant="caption" sx={{ opacity: 0.7 }}>
                   {formatTimestamp(message.timestamp)}
                 </Typography>
-                
+
                 {message.metadata && (
                   <Box sx={{ display: 'flex', gap: 0.5 }}>
                     {message.metadata.provider && (
@@ -247,7 +265,7 @@ function ChatInterface({ sessionId, onError }) {
             <SendIcon />
           </IconButton>
         </Box>
-        
+
         {provider && (
           <Typography variant="caption" sx={{ mt: 0.5, display: 'block', color: 'text.secondary' }}>
             Using: {provider}
