@@ -55,7 +55,7 @@ class VisionSystem:
         }
         
         payload = {
-            "model": "google/gemini-1.5-flash", # Using stable Gemini 1.5 Flash model
+            "model": "google/gemini-3-flash-preview", # Using Gemini 3 Flash Preview - vision-capable model
             "messages": [
                 {
                     "role": "user",

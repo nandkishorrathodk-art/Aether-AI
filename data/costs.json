@@ -2059,5 +2059,104 @@
     "cost_usd": 0.0014454000000000001,
     "task_type": "fast",
     "latency_ms": 4082.9546451568604
+  },
+  {
+    "timestamp": "2026-02-20T13:54:06.402356",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1839,
+    "cost_usd": 0.0016550999999999998,
+    "task_type": "fast",
+    "latency_ms": 2962.656259536743
+  },
+  {
+    "timestamp": "2026-02-20T13:55:07.690009",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1523,
+    "cost_usd": 0.0013706999999999999,
+    "task_type": "fast",
+    "latency_ms": 2390.981912612915
+  },
+  {
+    "timestamp": "2026-02-20T13:55:55.657205",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1387,
+    "cost_usd": 0.0012483,
+    "task_type": "fast",
+    "latency_ms": 1604.5997142791748
+  },
+  {
+    "timestamp": "2026-02-20T13:56:28.324582",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1262,
+    "cost_usd": 0.0011358,
+    "task_type": "fast",
+    "latency_ms": 2014.5411491394043
+  },
+  {
+    "timestamp": "2026-02-20T13:56:59.550522",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1229,
+    "cost_usd": 0.0011061,
+    "task_type": "fast",
+    "latency_ms": 1679.4183254241943
+  },
+  {
+    "timestamp": "2026-02-20T13:57:28.740007",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1259,
+    "cost_usd": 0.0011331,
+    "task_type": "fast",
+    "latency_ms": 2563.7879371643066
+  },
+  {
+    "timestamp": "2026-02-20T13:59:13.288895",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1581,
+    "cost_usd": 0.0014229,
+    "task_type": "fast",
+    "latency_ms": 2847.5606441497803
+  },
+  {
+    "timestamp": "2026-02-20T14:01:28.156954",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1633,
+    "cost_usd": 0.0014697,
+    "task_type": "fast",
+    "latency_ms": 3813.647985458374
+  },
+  {
+    "timestamp": "2026-02-20T14:03:15.167219",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1676,
+    "cost_usd": 0.0015083999999999998,
+    "task_type": "fast",
+    "latency_ms": 1567.1300888061523
+  },
+  {
+    "timestamp": "2026-02-20T14:10:12.138076",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1694,
+    "cost_usd": 0.0015245999999999999,
+    "task_type": "fast",
+    "latency_ms": 1499.8104572296143
+  },
+  {
+    "timestamp": "2026-02-20T14:11:03.726103",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1716,
+    "cost_usd": 0.0015444,
+    "task_type": "fast",
+    "latency_ms": 1660.891056060791
   }
 ]

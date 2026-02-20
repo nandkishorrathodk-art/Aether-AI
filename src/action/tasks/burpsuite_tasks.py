@@ -141,30 +141,43 @@ class BurpSuiteAutomation:
         except Exception as e:
             return {"status": "error", "message": str(e)}
     
-    def check_scan_results(self) -> Dict[str, Any]:
-        """Check for vulnerabilities found"""
+    def check_scan_results(self, target_url: str = None) -> Dict[str, Any]:
+        """Check for vulnerabilities found using basic structural analysis"""
         try:
-            # In real implementation, would parse scan results
-            # For now, simulate finding some issues
+            import urllib.request
             
-            mock_results = {
-                "total_issues": 5,
-                "high": 1,
-                "medium": 2,
-                "low": 2,
-                "vulnerabilities": [
-                    {"severity": "high", "type": "SQL Injection", "url": "/login"},
-                    {"severity": "medium", "type": "XSS", "url": "/search"},
-                    {"severity": "medium", "type": "CSRF", "url": "/profile"},
-                    {"severity": "low", "type": "Missing HTTPS", "url": "/"},
-                    {"severity": "low", "type": "Weak Cookie", "url": "/session"},
-                ]
+            if not target_url:
+                target_url = "https://www.google.com" # fallback
+            
+            if not target_url.startswith('http'):
+                target_url = "https://" + target_url
+                
+            req = urllib.request.Request(target_url, headers={'User-Agent': 'Mozilla/5.0'})
+            response = urllib.request.urlopen(req, timeout=10)
+            headers = response.info()
+            
+            vulns = []
+            if 'X-Frame-Options' not in headers:
+                vulns.append({"severity": "medium", "type": "Missing X-Frame-Options Header", "url": target_url})
+            if 'Strict-Transport-Security' not in headers:
+                vulns.append({"severity": "low", "type": "Missing HSTS Header", "url": target_url})
+            if 'Content-Security-Policy' not in headers:
+                vulns.append({"severity": "medium", "type": "Missing CSP Header", "url": target_url})
+            if 'Server' in headers:
+                vulns.append({"severity": "low", "type": f"Server Version Disclosure ({headers['Server']})", "url": target_url})
+                
+            if not vulns:
+                vulns.append({"severity": "info", "type": "No basic header vulnerabilities found", "url": target_url})
+
+            results = {
+                "total_issues": len(vulns),
+                "vulnerabilities": vulns
             }
             
-            return {"status": "success", "results": mock_results}
+            return {"status": "success", "results": results}
             
         except Exception as e:
-            return {"status": "error", "message": str(e)}
+            return {"status": "error", "message": f"Scan failed: {str(e)}"}
 
 def create_burpsuite_setup_task(target_url: Optional[str] = None) -> Task:
     """Create a complete BurpSuite setup and scan task"""
@@ -232,8 +245,9 @@ def create_burpsuite_setup_task(target_url: Optional[str] = None) -> Task:
         # Step 8: Check results
         task.add_step(TaskStep(
             step_id="results",
-            description="Checking scan results for vulnerabilities...",
-            action=burp.check_scan_results
+            description="Extracting vulnerability report from target...",
+            action=burp.check_scan_results,
+            params={"target_url": target_url}
         ))
     
     return task

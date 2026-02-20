@@ -26,13 +26,14 @@ class SecurityModule:
             return False
 
     async def run_scan(self, target: str, scan_type: str = "quick") -> str:
-        """Run Nmap scan on target (Authorized Only)"""
-        if not self.nmap_available:
-            return "Error: Nmap is not installed or not in PATH."
-            
+        """Run scan on target (Authorized Only)"""
         # Security: Basic sanitization
         if any(c in target for c in [";", "&", "|", "`", "$"]):
              return "Error: Invalid target format."
+             
+        if not self.nmap_available:
+            logger.warning("Nmap not available, falling back to basic Python scan")
+            return await self._basic_fallback_scan(target)
 
         cmd = ["nmap", target]
         if scan_type == "quick":
@@ -58,6 +59,50 @@ class SecurityModule:
             return stdout.decode()
         except Exception as e:
             return f"Scan Execution Error: {str(e)}"
+            
+    async def _basic_fallback_scan(self, target: str) -> str:
+        """Fallback basic scan using Python if Nmap is unavailable"""
+        import socket
+        import urllib.request
+        from urllib.parse import urlparse
+        
+        results = f"Basic Python Scan Report for {target}:\n\n"
+        
+        # Clean target for socket
+        hostname = target
+        if hostname.startswith("http"):
+            hostname = urlparse(hostname).netloc
+            if ":" in hostname:
+                hostname = hostname.split(":")[0]
+                
+        # Port Scan
+        results += "--- Open Ports ---\n"
+        for port in [21, 22, 80, 443, 3306, 8080]:
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(1.0)
+                if s.connect_ex((hostname, port)) == 0:
+                    results += f"Port {port}: OPEN\n"
+                s.close()
+            except Exception:
+                pass
+                
+        # HTTP Headers
+        results += "\n--- HTTP Security Headers ---\n"
+        url = target if target.startswith("http") else f"http://{target}"
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Aether-Scanner/1.0'})
+            response = urllib.request.urlopen(req, timeout=5)
+            headers = response.info()
+            for h in ['Server', 'X-Powered-By', 'Strict-Transport-Security', 'X-Frame-Options', 'Content-Security-Policy']:
+                if h in headers:
+                    results += f"{h}: {headers[h]}\n"
+                else:
+                    results += f"{h}: MISSING\n"
+        except Exception as e:
+            results += f"HTTP Check Failed: {str(e)}\n"
+            
+        return results
 
     async def analyze_logs(self, log_name: str = "Security", limit: int = 20) -> str:
         """Get Windows Event Logs via PowerShell"""

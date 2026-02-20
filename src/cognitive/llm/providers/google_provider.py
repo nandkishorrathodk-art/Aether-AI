@@ -1,6 +1,11 @@
 import time
+import warnings
 from typing import List, Dict, Optional, Any
-import google.generativeai as genai
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", category=FutureWarning)
+    import google.generativeai as genai
+
 from .base import BaseAIProvider, AIResponse
 
 
