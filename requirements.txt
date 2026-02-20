@@ -76,6 +76,7 @@ langdetect==1.0.9
 # Screen Understanding & OCR
 pytesseract==0.3.13
 easyocr==1.7.2
+imagehash==4.3.1
 
 # Discord Bot Integration (Mekio-style)
 

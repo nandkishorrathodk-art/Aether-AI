@@ -21,6 +21,14 @@ async def lifespan(app: FastAPI):
     """Application lifespan manager"""
     logger.info("Starting Aether AI application")
     
+    # Start live vision monitoring
+    try:
+        from src.features.live_vision import start_live_monitoring
+        start_live_monitoring()
+        logger.info("🔴 LIVE VISION MONITORING STARTED - Real-time screen awareness active")
+    except Exception as e:
+        logger.warning(f"Could not start live vision: {e}")
+    
     if settings.enable_daily_reports:
         start_intelligence_scheduler()
         logger.info("Intelligence scheduler started")
@@ -28,6 +36,14 @@ async def lifespan(app: FastAPI):
     yield
     
     logger.info("Shutting down Aether AI application")
+    
+    # Stop live vision monitoring
+    try:
+        from src.features.live_vision import stop_live_monitoring
+        stop_live_monitoring()
+    except:
+        pass
+    
     stop_intelligence_scheduler()
 
 

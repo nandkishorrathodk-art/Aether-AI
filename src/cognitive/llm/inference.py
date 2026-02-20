@@ -15,6 +15,7 @@ from src.features.automation import DesktopAutomation
 from src.features.browser import BrowserAutomation
 from src.features.vision import VisionSystem
 from src.features.creation import ImageGenerator
+from src.features.live_vision import live_monitor, get_live_context, start_live_monitoring
 
 # Personality System
 from src.personality.conversational_style import response_enhancer, ToneType
@@ -218,9 +219,16 @@ class ConversationEngine:
 
         context_mgr.add_message("user", request.user_input)
 
+        # 🔴 INJECT LIVE SCREEN CONTEXT
+        live_context = get_live_context()
+        enhanced_prompt = request.user_input
+        if live_context and len(live_context) > 50:
+            enhanced_prompt = f"{request.user_input}\n\n[LIVE SCREEN CONTEXT - What Aether can currently see]:\n{live_context}"
+            logger.info(f"📺 Live screen context injected into conversation")
+
         try:
             ai_response = await model_loader.generate(
-                prompt=request.user_input,
+                prompt=enhanced_prompt,
                 task_type=task_type,
                 system_prompt=system_prompt,
                 conversation_history=conversation_history,
