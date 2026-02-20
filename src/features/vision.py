@@ -55,7 +55,7 @@ class VisionSystem:
         }
         
         payload = {
-            "model": "google/gemini-3-flash-preview", # Using Gemini 3 Flash Preview - vision-capable model
+            "model": "google/gemini-2.0-flash-lite-001", # Using Gemini 2.0 Flash Lite
             "messages": [
                 {
                     "role": "user",
@@ -69,7 +69,7 @@ class VisionSystem:
         
         try:
             logger.info(f"Sending Vision Request to OpenRouter ({payload['model']})...")
-            response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload, timeout=15)
+            response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload, timeout=30)
             
             if response.status_code == 200:
                 result = response.json()
