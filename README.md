@@ -1791,6 +1791,181 @@ build-installer.bat
 
 📖 **Full Guide**: See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 
+## 🛡️ Advanced Security Suite - Professional Penetration Testing
+
+**NEW v3.6**: Aether AI now includes an enterprise-grade security testing suite with AI-powered vulnerability detection, multi-tool orchestration, and threat intelligence integration.
+
+### 🎯 Core Security Capabilities
+
+#### 1. **Comprehensive Vulnerability Database**
+- **CVE Integration**: Real-time CVE database with CVSS scoring and severity tracking
+- **NVD API**: Direct integration with National Vulnerability Database
+- **Exploit-DB Mapping**: Links CVEs to known exploits and Metasploit modules
+- **Custom Signatures**: Add your own vulnerability patterns and detection rules
+- **Offline Caching**: Fast lookups with local caching system
+
+```python
+from src.security import VulnerabilityDatabase
+
+vuln_db = VulnerabilityDatabase()
+cve_info = await vuln_db.get_cve_details("CVE-2024-1234")
+results = await vuln_db.search_vulnerabilities(keyword="SQL injection", severity="HIGH")
+```
+
+#### 2. **Multi-Tool Security Scanner Integration**
+- **Metasploit Framework**: RPC API integration for exploit execution
+- **Nessus Professional**: Automated vulnerability scanning and compliance checks
+- **OWASP ZAP**: Spider, active/passive scanning, Ajax spider
+- **Nuclei**: Template-based high-speed vulnerability detection
+- **Tool Orchestration**: Run multiple scanners in parallel for comprehensive coverage
+
+```python
+from src.security import SecurityToolOrchestrator, ScanTool
+
+orchestrator = SecurityToolOrchestrator()
+results = await orchestrator.orchestrated_scan(
+    target="https://target.com",
+    tools=[ScanTool.ZAP, ScanTool.NUCLEI, ScanTool.NESSUS],
+    parallel=True
+)
+```
+
+#### 3. **AI-Powered Vulnerability Scanner**
+- **0-Day Detection**: Pattern recognition for unknown vulnerabilities
+- **LLM Analysis**: Deep code and response analysis using AI
+- **Behavioral Detection**: Identifies suspicious application behavior
+- **False Positive Reduction**: AI filters out noise automatically
+- **Context-Aware Scanning**: Understands application context for accurate detection
+
+```python
+from src.security import AIVulnerabilityScanner
+
+ai_scanner = AIVulnerabilityScanner()
+findings = await ai_scanner.scan_application(
+    base_url="https://target.com",
+    endpoints=["/api/v1", "/admin", "/user"]
+)
+```
+
+#### 4. **Real-Time Threat Intelligence**
+- **Multiple Feeds**: Abuse.ch, AlienVault OTX, Emerging Threats, MalwareBazaar
+- **IOC Matching**: Check IPs, domains, hashes against threat databases
+- **Vulnerability Enrichment**: Adds threat context to discovered vulnerabilities
+- **Active Exploit Tracking**: Know if vulnerabilities are being exploited in the wild
+- **Automatic Updates**: Threat feeds updated automatically
+
+```python
+from src.security import ThreatIntelligencePlatform
+
+threat_intel = ThreatIntelligencePlatform()
+await threat_intel.update_feeds()
+threat_info = threat_intel.check_indicator("ip", "192.168.1.100")
+```
+
+#### 5. **Professional Report Generation**
+- **Multiple Formats**: HTML, JSON, Markdown, PDF support
+- **Executive Summaries**: High-level overviews for management
+- **Technical Details**: Full vulnerability details with PoC
+- **CVSS Scoring**: Industry-standard severity ratings
+- **Remediation Guidance**: Step-by-step fix instructions
+- **Charts & Visualizations**: Severity distribution, attack vectors
+
+```python
+from src.security import SecurityReportGenerator
+
+report_gen = SecurityReportGenerator()
+report_path = report_gen.generate_comprehensive_report(
+    scan_results=results,
+    output_format="html"
+)
+```
+
+#### 6. **Cloud & Container Security**
+- **Docker Scanning**: Image vulnerability scanning with Trivy integration
+- **Kubernetes Auditing**: Cluster security checks, pod security policies
+- **AWS Security**: S3 bucket checks, IAM analysis, security groups
+- **Azure Support**: Security center integration (coming soon)
+- **GCP Support**: Security command center (coming soon)
+- **Best Practices**: Platform-specific security recommendations
+
+```python
+from src.security import CloudSecurityScanner, CloudPlatform
+
+cloud_scanner = CloudSecurityScanner()
+docker_results = await cloud_scanner.scan_docker_image("nginx:latest")
+k8s_results = await cloud_scanner.scan_kubernetes_cluster()
+aws_results = await cloud_scanner.scan_aws_security(profile="default")
+```
+
+### 🚀 Security Orchestrator - All-in-One
+
+The **AetherSecurityOrchestrator** combines all security tools into a unified interface:
+
+```python
+from src.security.security_orchestrator import orchestrator
+
+# Comprehensive scan with all tools
+results = await orchestrator.comprehensive_scan(
+    target="https://target.com",
+    scan_profile="full"  # Options: quick, standard, full, deep
+)
+
+# Bug bounty specialized scan
+bounty_results = await orchestrator.bug_bounty_scan(
+    target="https://hackerone-target.com",
+    program_name="HackerOne Program"
+)
+
+# Cloud security audit
+cloud_audit = await orchestrator.cloud_security_audit(
+    platform=CloudPlatform.DOCKER,
+    resource_id="nginx:latest"
+)
+
+# Generate professional report
+report = orchestrator.generate_report(results, output_format="html")
+```
+
+### 📊 Features Comparison
+
+| Feature | Traditional Tools | Aether AI Security Suite |
+|---------|------------------|-------------------------|
+| **CVE Database** | Manual lookup | ✅ Automated with caching |
+| **Tool Integration** | Run separately | ✅ Unified orchestration |
+| **AI Detection** | ❌ None | ✅ LLM-powered analysis |
+| **Threat Intel** | Paid subscriptions | ✅ Free feeds integrated |
+| **Reports** | Manual creation | ✅ Auto-generated (HTML/PDF) |
+| **Cloud Scanning** | Separate tools | ✅ Built-in support |
+| **False Positives** | Manual filtering | ✅ AI-powered reduction |
+
+### 💡 Use Cases
+
+1. **Bug Bounty Hunting**: Comprehensive target analysis with AI-powered detection
+2. **Penetration Testing**: Professional security assessments with automated reporting
+3. **DevSecOps**: Integrate into CI/CD for continuous security scanning
+4. **Cloud Security**: Audit Docker images, Kubernetes clusters, AWS infrastructure
+5. **Threat Hunting**: Track emerging threats and vulnerable systems
+
+### ⚙️ Installation Requirements
+
+```bash
+# Core security tools (optional but recommended)
+brew install nmap           # Network scanning
+brew install trivy          # Container scanning
+brew install nuclei         # Template-based scanning
+
+# For Metasploit integration
+# Install Metasploit Framework and enable RPC
+
+# For Nessus integration  
+# Install Nessus Professional and enable API
+
+# For ZAP integration
+# Install OWASP ZAP and enable API
+```
+
+---
+
 ## 🐛 Bug Bounty Autopilot (v0.9.0 - NEW!)
 
 Transform from manual hunter to **automated bug bounty machine** with v0.9.0's groundbreaking autopilot system.

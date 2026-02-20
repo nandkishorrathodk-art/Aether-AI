@@ -2158,5 +2158,14 @@
     "cost_usd": 0.0015444,
     "task_type": "fast",
     "latency_ms": 1660.891056060791
+  },
+  {
+    "timestamp": "2026-02-20T14:11:50.553301",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "tokens_used": 1836,
+    "cost_usd": 0.0016524,
+    "task_type": "fast",
+    "latency_ms": 4011.965036392212
   }
 ]
