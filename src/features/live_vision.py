@@ -274,7 +274,7 @@ Provide comprehensive analysis."""
 
 # Global instance
 live_monitor = LiveVisionMonitor(
-    monitor_interval=5.0,
+    monitor_interval=1.0,
     change_threshold=8,
     auto_analyze=True
 )
