@@ -59,7 +59,7 @@
 </table>
 
 **Latest Features:**
-- ✅ **Vision System**: Real-time screen capture and analysis using Google Gemini 1.5 Flash
+- ✅ **Vision System**: Real-time screen capture and analysis using Google Gemini 3 Flash Preview
 - ✅ **Desktop Automation**: 30+ actions (OPEN, TYPE, SEARCH, PLAY, LOOK, SCAN, etc.)
 - ✅ **Voice Assistant**: Browser-based voice control with Whisper transcription and edge-TTS
 - ✅ **Bug Bounty Mode**: Authorized security testing with BurpSuite, Nmap, vulnerability scanning

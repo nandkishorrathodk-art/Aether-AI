@@ -49,7 +49,7 @@ Aether AI v3.5.0 introduces **VISION-ENABLED DESKTOP AUTOMATION** and **AUTHORIZ
 **Technology Stack:**
 - Screen capture: Python `mss` library (in-memory capture)
 - Image processing: PIL for base64 encoding
-- Vision analysis: Google Gemini 1.5 Flash via OpenRouter API
+- Vision analysis: Google Gemini 3 Flash Preview via OpenRouter API
 - Trigger: Only on explicit `Action: [LOOK: prompt]` command
 
 **What is captured:**
@@ -71,7 +71,7 @@ Vision analysis returned → Presented to user
 **Privacy Controls:**
 ```python
 # In src/features/vision.py
-MODEL = "google/gemini-1.5-flash"  # Stable, fast vision model
+MODEL = "google/gemini-3-flash-preview"  # Latest vision-capable model
 TIMEOUT = 15  # seconds
 API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
 
