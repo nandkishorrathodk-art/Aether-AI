@@ -74,14 +74,14 @@ class LiveVisionMonitor:
         self.is_running = True
         self.monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
         self.monitor_thread.start()
-        logger.info("🔴 LIVE VISION MONITORING STARTED - Real-time screen awareness active")
+        logger.info("[LIVE VISION] MONITORING STARTED - Real-time screen awareness active")
     
     def stop(self):
         """Stop live monitoring"""
         self.is_running = False
         if self.monitor_thread:
             self.monitor_thread.join(timeout=5)
-        logger.info("⚫ Live vision monitoring stopped")
+        logger.info("[LIVE VISION] Monitoring stopped")
     
     def _monitor_loop(self):
         """Main monitoring loop - runs in background"""
@@ -105,7 +105,7 @@ class LiveVisionMonitor:
                     screen_changed = hash_distance > self.change_threshold
                 
                 if screen_changed:
-                    logger.info(f"📺 Screen change detected! Hash distance: {hash_distance}")
+                    logger.info(f"[SCREEN CHANGE] Detected! Hash distance: {hash_distance}")
                     
                     # Save to history
                     self._add_to_history(screenshot, current_hash, hash_distance)
@@ -137,7 +137,7 @@ class LiveVisionMonitor:
         """Queue screenshot for vision analysis"""
         try:
             self.vision_queue.put_nowait(screenshot)
-            logger.info("📸 Screenshot queued for vision analysis")
+            logger.info("[VISION QUEUE] Screenshot queued for vision analysis")
         except queue.Full:
             logger.warning("Vision queue full, skipping analysis")
     
@@ -154,7 +154,7 @@ class LiveVisionMonitor:
             screenshot.save(temp_path)
             
             # Analyze with vision system
-            logger.info("🔍 Running vision analysis on screen change...")
+            logger.info("[VISION ANALYSIS] Running vision analysis on screen change...")
             
             # Create detailed prompt
             prompt = """Analyze this screen and provide:
@@ -178,7 +178,7 @@ Be concise but thorough."""
             self.last_analysis = analysis
             self.last_analysis_time = datetime.now()
             
-            logger.info(f"✅ Vision analysis complete: {analysis[:100]}...")
+            logger.info(f"[VISION ANALYSIS] Complete: {analysis[:100]}...")
             
             # Trigger analysis callback
             if self.on_analysis_complete:
@@ -228,7 +228,7 @@ Be concise but thorough."""
     
     def force_analysis(self) -> str:
         """Force immediate screen analysis"""
-        logger.info("🔴 FORCED VISION ANALYSIS - Capturing screen now...")
+        logger.info("[FORCED ANALYSIS] Capturing screen now...")
         screenshot = pyautogui.screenshot()
         
         temp_path = f"forced_vision_{int(time.time())}.png"

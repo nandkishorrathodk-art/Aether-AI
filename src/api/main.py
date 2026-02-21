@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
     try:
         from src.features.live_vision import start_live_monitoring
         start_live_monitoring()
-        logger.info("🔴 LIVE VISION MONITORING STARTED - Real-time screen awareness active")
+        logger.info("[LIVE VISION] MONITORING STARTED - Real-time screen awareness active")
     except Exception as e:
         logger.warning(f"Could not start live vision: {e}")
     

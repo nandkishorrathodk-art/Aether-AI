@@ -8,6 +8,7 @@ from src.cognitive.llm.model_loader import model_loader
 from src.cognitive.llm.prompt_engine import prompt_engine, PromptTemplate
 from src.cognitive.llm.context_manager import ContextManager, session_manager
 from src.cognitive.llm.providers.base import TaskType, AIResponse
+from src.cognitive.llm.conversation_state import state_manager, ConversationContext
 from src.utils.logger import get_logger
 
 # God Mode Features
@@ -204,6 +205,9 @@ class ConversationEngine:
         request: ConversationRequest
     ) -> ConversationResponse:
         context_mgr = session_manager.get_or_create_session(request.session_id)
+        
+        # GET CONVERSATION STATE CONTEXT
+        conv_state = state_manager.get_context(request.session_id)
 
         intent = request.intent or self.intent_classifier.classify(request.user_input)
 
@@ -219,12 +223,25 @@ class ConversationEngine:
 
         context_mgr.add_message("user", request.user_input)
 
-        # 🔴 INJECT LIVE SCREEN CONTEXT
+        # INJECT CONVERSATION STATE CONTEXT (Learned Facts, Task Progress, etc.)
+        conv_context = conv_state.get_summary()
+        
+        # INJECT LIVE SCREEN CONTEXT
         live_context = get_live_context()
         enhanced_prompt = request.user_input
+        
+        # Combine all context layers
+        context_parts = [request.user_input]
+        
+        if conv_context and len(conv_context) > 20:
+            context_parts.append(f"\n{conv_context}")
+            logger.info(f"[CONV STATE] Conversation context injected")
+        
         if live_context and len(live_context) > 50:
-            enhanced_prompt = f"{request.user_input}\n\n[LIVE SCREEN CONTEXT - What Aether can currently see]:\n{live_context}"
-            logger.info(f"📺 Live screen context injected into conversation")
+            context_parts.append(f"\n[LIVE SCREEN CONTEXT - What Aether can currently see]:\n{live_context}")
+            logger.info(f"[LIVE VISION] Screen context injected")
+        
+        enhanced_prompt = "\n".join(context_parts)
 
         try:
             ai_response = await model_loader.generate(
@@ -237,7 +254,7 @@ class ConversationEngine:
             )
 
             # DEBUG: Log raw response
-            logger.info(f"🛑 RAW AI CONTENT: '{ai_response.content}'")
+            logger.info(f"[AI RESPONSE] RAW CONTENT: '{ai_response.content}'")
 
             # CRITICAL: Security Testing Refusal Override
             refusal_patterns = [
@@ -361,8 +378,8 @@ I'm ready to execute immediately, Sir."""
                 logger.info(f"Safeguard triggered. Returned fallback response.")
                 return response
 
-            # Execute Detected Actions (God Mode)
-            await self._execute_detected_actions(ai_response.content)
+            # Execute Detected Actions (God Mode) + Track in Conversation State
+            executed_actions = await self._execute_detected_actions(ai_response.content, request.session_id)
 
             formatted_content = self.formatter.format_response(
                 ai_response.content,
@@ -381,6 +398,20 @@ I'm ready to execute immediately, Sir."""
             )
 
             context_mgr.add_message("assistant", ai_response.content)
+            
+            # UPDATE CONVERSATION STATE TRACKING
+            conv_state.add_conversation_turn(
+                user_input=request.user_input,
+                aether_response=ai_response.content,
+                actions=executed_actions
+            )
+            
+            # Update analytics
+            state_manager.update_analytics(
+                request.session_id,
+                turn_completed=True,
+                action_executed=(len(executed_actions) > 0)
+            )
 
             response = ConversationResponse(
                 content=enhanced_content,
@@ -392,11 +423,13 @@ I'm ready to execute immediately, Sir."""
                     "task_type": task_type.value,
                     "system_prompt_type": system_prompt_type,
                     "original_content": ai_response.content,
-                    "personality_enhanced": True
+                    "personality_enhanced": True,
+                    "actions_executed": len(executed_actions),
+                    "conversation_state": conv_state.get_summary()
                 }
             )
 
-            logger.info(f"Conversation processed: session={request.session_id}, intent={intent.value}")
+            logger.info(f"Conversation processed: session={request.session_id}, intent={intent.value}, actions={len(executed_actions)}")
             return response
 
         except Exception as e:
@@ -433,8 +466,11 @@ I'm ready to execute immediately, Sir."""
         
         return enhanced
 
-    async def _execute_detected_actions(self, text: str):
-        """Execute actions embedded in text like `Action: [OPEN: notepad]`"""
+    async def _execute_detected_actions(self, text: str, session_id: str = "default"):
+        """Execute actions embedded in text like `Action: [OPEN: notepad]` and track in conversation state"""
+        executed_actions = []
+        conv_state = state_manager.get_context(session_id)
+        
         try:
             pattern = r"Action: \[([A-Z]+): (.*?)\]"
             matches = re.finditer(pattern, text)
@@ -442,37 +478,51 @@ I'm ready to execute immediately, Sir."""
             for match in matches:
                 command = match.group(1).upper()
                 args = match.group(2).strip()
+                action_str = f"{command}: {args}"
+                executed_actions.append(action_str)
+                
                 logger.info(f"⚡ Executing God Mode Action: {command} -> {args}")
                 
                 if command == "OPEN":
                     DesktopAutomation.open_app(args)
+                    # Track opened app in conversation state
+                    conv_state.add_app_opened(args)
+                    conv_state.record_action(action_str, f"Opened {args}")
                 elif command == "SEARCH":
                     BrowserAutomation.search(args)
+                    conv_state.record_action(action_str, f"Searched: {args}")
                 elif command == "PLAY":
                     BrowserAutomation.play_music(args)
+                    conv_state.record_action(action_str, f"Playing: {args}")
                 elif command == "TYPE":
                     DesktopAutomation.type_text(args)
+                    conv_state.record_action(action_str, f"Typed: {args}")
                 elif command == "PRESS":
                     DesktopAutomation.press_key(args)
+                    conv_state.record_action(action_str, f"Pressed: {args}")
                 elif command == "CLICK":
                     if "," in args:
                         try:
                             x, y = map(int, args.split(','))
                             DesktopAutomation.click_at(x, y)
+                            conv_state.record_action(action_str, f"Clicked at ({x}, {y})")
                         except ValueError:
                              # Fallback to text click if parsing fails
                              result = DesktopAutomation.click_text(args)
                              logger.info(result)
+                             conv_state.record_action(action_str, f"Clicked: {args}")
                     else:
                         # Click by Text (UI Automation)
                         result = DesktopAutomation.click_text(args)
                         logger.info(result)
+                        conv_state.record_action(action_str, f"Clicked: {args}")
                 elif command == "LOOK":
                     # Vision analysis (can take time, so run in thread or await if possible)
                     # VisionSystem.analyze_screen uses sync requests
                     logger.info("Starting Vision Analysis...")
                     result = VisionSystem.analyze_screen(args)
                     logger.info(f"Vision Result: {result[:50]}...")
+                    conv_state.record_action(action_str, f"Analyzed screen: {result[:100]}")
                     
                     # Speak Result immediately
                     try:
@@ -496,6 +546,7 @@ I'm ready to execute immediately, Sir."""
                         filepath = os.path.join(poc_dir, f"{args.replace(' ', '_')}_{int(time.time())}.png")
                         pyautogui.screenshot().save(filepath)
                         logger.info(f"Saved POC Screenshot to {filepath}")
+                        conv_state.record_action(action_str, f"Screenshot saved: {filepath}")
                         # Optionally speak that it was saved
                         from src.pipeline.voice_pipeline import get_pipeline
                         pipeline = get_pipeline()
@@ -503,6 +554,7 @@ I'm ready to execute immediately, Sir."""
                             pipeline.response_queue.put({"text": f"Screenshot saved as {args}", "session_id": "task"})
                     except Exception as e:
                         logger.error(f"Failed to take screenshot: {e}")
+                        conv_state.record_action(action_str, f"Screenshot failed: {e}")
                         
                 elif command == "IMAGE":
                     logger.info("Starting Image Generation...")
@@ -510,8 +562,10 @@ I'm ready to execute immediately, Sir."""
                     if not url.startswith("Error"):
                         logger.info(f"Image Generated: {url}")
                         BrowserAutomation.open_url(url)
+                        conv_state.record_action(action_str, f"Image generated: {url}")
                     else:
                         logger.error(f"Image Gen Error: {url}")
+                        conv_state.record_action(action_str, f"Image generation failed")
                 elif command == "SCAN":
                     # Security Scan
                     from src.features.security import security_module
@@ -561,9 +615,16 @@ I'm ready to execute immediately, Sir."""
                         # Start the complete setup task
                         task_id = await setup_burpsuite_and_scan(target, progress_callback)
                         logger.info(f"✅ BurpSuite complete setup task started: {task_id}")
+                        conv_state.record_action(action_str, f"BurpSuite setup started: {task_id}")
+                
+                # Track any other commands generically
+                else:
+                    conv_state.record_action(action_str, f"Executed: {command}")
 
         except Exception as e:
             logger.error(f"God Mode Action Execution Failed: {e}")
+        
+        return executed_actions
 
     async def stream_conversation(
         self,

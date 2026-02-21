@@ -174,11 +174,11 @@ class Settings(BaseSettings):
                 else:
                     # Development only - generate random key
                     self.secret_key = secrets.token_urlsafe(32)
-                    print(f"⚠️ WARNING: Using auto-generated secret key for development")
+                    print("WARNING: Using auto-generated secret key for development")
         
         # Warn if autonomous mode enabled without auth
         if self.enable_autonomous_mode and not self.autonomous_require_auth:
-            print("⚠️ WARNING: Autonomous mode enabled without authentication! This is dangerous!")
+            print("WARNING: Autonomous mode enabled without authentication! This is dangerous!")
 
     def _ensure_directories(self):
         self.chromadb_path.parent.mkdir(parents=True, exist_ok=True)

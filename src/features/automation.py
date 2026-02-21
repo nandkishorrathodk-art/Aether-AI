@@ -58,6 +58,12 @@ class DesktopAutomation:
             return f"Invalid key: {key}"
     
     @staticmethod
+    def move_mouse(x: int, y: int):
+        """Move mouse to specific coordinates"""
+        pyautogui.moveTo(x, y)
+        return f"Moved mouse to ({x}, {y})"
+    
+    @staticmethod
     def click_at(x: int, y: int):
         """Click at specific coordinates"""
         pyautogui.click(x, y)
@@ -75,35 +81,62 @@ class DesktopAutomation:
 
     @staticmethod
     def click_text(text: str):
-        """Click a UI element by text (requires pywinauto)"""
+        """Click a UI element by text using pywinauto (installed)"""
+        try:
+            from pywinauto import Desktop
+            from pywinauto.findwindows import ElementNotFoundError
+            
+            app = Desktop(backend="uia")
+            window = app.window(active_only=True)
+            
+            if not window.exists():
+                return "Error: No active window found"
+            
+            # Try multiple strategies to find the element
+            strategies = [
+                # Strategy 1: Button with exact title
+                lambda: window.child_window(title=text, control_type="Button"),
+                # Strategy 2: Any control with exact title
+                lambda: window.child_window(title=text),
+                # Strategy 3: Button containing text
+                lambda: window.child_window(title_re=f".*{text}.*", control_type="Button"),
+                # Strategy 4: Any control containing text
+                lambda: window.child_window(title_re=f".*{text}.*"),
+                # Strategy 5: Look for accessible name
+                lambda: window.child_window(best_match=text)
+            ]
+            
+            for i, strategy in enumerate(strategies):
+                try:
+                    element = strategy()
+                    if element.exists(timeout=1):
+                        element.click_input()
+                        return f"Clicked '{text}' (strategy {i+1})"
+                except:
+                    continue
+            
+            # If all strategies fail, return detailed error
+            return f"Element '{text}' not found. Active window: {window.window_text()}"
+            
+        except ImportError as e:
+            return f"Error: pywinauto import failed - {e}. Module should be installed."
+        except Exception as e:
+            return f"Click failed: {str(e)}"
+    
+    @staticmethod
+    def get_window_info():
+        """Get information about the active window"""
         try:
             from pywinauto import Desktop
             app = Desktop(backend="uia")
-            # Find element in top window
-            # This is a bit aggressive, might need refinement
             window = app.window(active_only=True)
-            if not window:
-                 return "No active window found."
             
-            # Search for the element
-            # Try specific control types if simple title fails
-            try:
-                element = window.child_window(title=text, control_type="Button")
-                if element.exists():
-                    element.click_input()
-                    return f"Clicked Button '{text}'"
-            except: pass
-
-            try:
-                element = window.child_window(title=text)
-                if element.exists():
-                    element.click_input()
-                    return f"Clicked '{text}'"
-            except: pass
-            
-            return f"Element '{text}' not found in active window."
-            
-        except ImportError:
-            return "Error: pywinauto not installed. Please install it."
+            info = {
+                "title": window.window_text(),
+                "class": window.class_name(),
+                "visible": window.is_visible(),
+                "enabled": window.is_enabled()
+            }
+            return info
         except Exception as e:
-            return f"Click Failed: {str(e)}"
+            return {"error": str(e)}

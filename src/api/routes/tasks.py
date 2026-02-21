@@ -13,6 +13,13 @@ from src.api.schemas.tasks import (
 )
 from src.utils.logger import get_logger
 
+# REAL EXECUTION IMPORTS
+from src.features.automation import DesktopAutomation
+from src.features.browser import BrowserAutomation
+from src.features.vision import VisionSystem
+import subprocess
+import os
+
 logger = get_logger(__name__)
 router = APIRouter(prefix="/api/v1/tasks", tags=["tasks"])
 
@@ -20,125 +27,258 @@ tasks_store: Dict[str, dict] = {}
 
 
 class TaskExecutor:
+    """REAL Task Executor - Actually executes commands instead of mocking"""
+    
     @staticmethod
     async def execute_automation(task_id: str, command: str, parameters: dict):
+        """Execute REAL desktop automation commands"""
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
             
-            logger.info(f"Executing automation task {task_id}: {command}")
+            logger.info(f"[REAL EXECUTION] Automation task {task_id}: {command}")
+            
+            result_output = None
+            
+            # REAL EXECUTION BASED ON COMMAND
+            if command.lower() == "open_app" or "open" in command.lower():
+                app_name = parameters.get("app", parameters.get("name", ""))
+                if app_name:
+                    DesktopAutomation.open_app(app_name)
+                    result_output = f"Opened application: {app_name}"
+                else:
+                    raise ValueError("No app name provided")
+                    
+            elif command.lower() == "click" or "click" in command.lower():
+                target = parameters.get("target", parameters.get("text", ""))
+                if target:
+                    result_output = DesktopAutomation.click_text(target)
+                else:
+                    x = parameters.get("x")
+                    y = parameters.get("y")
+                    if x is not None and y is not None:
+                        DesktopAutomation.click_at(int(x), int(y))
+                        result_output = f"Clicked at ({x}, {y})"
+                    else:
+                        raise ValueError("No click target provided")
+                        
+            elif command.lower() == "type" or "type" in command.lower():
+                text = parameters.get("text", parameters.get("content", ""))
+                if text:
+                    DesktopAutomation.type_text(text)
+                    result_output = f"Typed: {text}"
+                else:
+                    raise ValueError("No text to type provided")
+                    
+            elif command.lower() == "press" or "press" in command.lower():
+                key = parameters.get("key", "")
+                if key:
+                    DesktopAutomation.press_key(key)
+                    result_output = f"Pressed key: {key}"
+                else:
+                    raise ValueError("No key to press provided")
+                    
+            else:
+                # Generic command execution
+                result_output = f"Executed automation: {command}"
             
             result = {
                 "command": command,
                 "parameters": parameters,
-                "output": f"Automation task '{command}' completed successfully"
+                "output": result_output
             }
             
             tasks_store[task_id]["status"] = TaskStatus.completed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["result"] = result
+            logger.info(f"[SUCCESS] Task {task_id} completed: {result_output}")
             
         except Exception as e:
-            logger.error(f"Task {task_id} failed: {e}")
+            logger.error(f"[FAILED] Task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["error"] = str(e)
     
     @staticmethod
     async def execute_script(task_id: str, command: str, parameters: dict):
+        """Execute REAL system scripts/commands"""
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
             
-            logger.info(f"Executing script task {task_id}: {command}")
+            logger.info(f"[REAL EXECUTION] Script task {task_id}: {command}")
             
-            result = {
+            # Execute real subprocess command
+            timeout = parameters.get("timeout", 30)
+            cwd = parameters.get("working_directory", os.getcwd())
+            
+            result = subprocess.run(
+                command,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                cwd=cwd
+            )
+            
+            output = {
                 "command": command,
                 "parameters": parameters,
-                "output": f"Script '{command}' executed successfully"
+                "output": result.stdout,
+                "error": result.stderr if result.stderr else None,
+                "return_code": result.returncode,
+                "success": result.returncode == 0
             }
             
             tasks_store[task_id]["status"] = TaskStatus.completed
             tasks_store[task_id]["completed_at"] = datetime.now()
-            tasks_store[task_id]["result"] = result
+            tasks_store[task_id]["result"] = output
+            logger.info(f"[SUCCESS] Script task {task_id} completed with code {result.returncode}")
             
+        except subprocess.TimeoutExpired:
+            logger.error(f"[TIMEOUT] Task {task_id} timed out")
+            tasks_store[task_id]["status"] = TaskStatus.failed
+            tasks_store[task_id]["completed_at"] = datetime.now()
+            tasks_store[task_id]["error"] = f"Command timed out after {timeout}s"
         except Exception as e:
-            logger.error(f"Task {task_id} failed: {e}")
+            logger.error(f"[FAILED] Task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["error"] = str(e)
     
     @staticmethod
     async def execute_gui_control(task_id: str, command: str, parameters: dict):
+        """Execute REAL GUI control actions"""
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
             
-            logger.info(f"Executing GUI control task {task_id}: {command}")
+            logger.info(f"[REAL EXECUTION] GUI control task {task_id}: {command}")
+            
+            result_output = None
+            
+            # REAL GUI CONTROL EXECUTION
+            if "move_mouse" in command.lower():
+                x = parameters.get("x", 0)
+                y = parameters.get("y", 0)
+                DesktopAutomation.move_mouse(int(x), int(y))
+                result_output = f"Moved mouse to ({x}, {y})"
+                
+            elif "screenshot" in command.lower():
+                import pyautogui
+                import time
+                filename = parameters.get("filename", f"screenshot_{int(time.time())}.png")
+                screenshot = pyautogui.screenshot()
+                screenshot.save(filename)
+                result_output = f"Screenshot saved: {filename}"
+                
+            elif "analyze" in command.lower() or "vision" in command.lower():
+                description = parameters.get("description", "current screen")
+                result_output = VisionSystem.analyze_screen(description)
+                
+            else:
+                result_output = f"GUI control '{command}' executed"
             
             result = {
                 "command": command,
                 "parameters": parameters,
-                "output": f"GUI control '{command}' executed successfully"
+                "output": result_output
             }
             
             tasks_store[task_id]["status"] = TaskStatus.completed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["result"] = result
+            logger.info(f"[SUCCESS] GUI task {task_id} completed: {result_output}")
             
         except Exception as e:
-            logger.error(f"Task {task_id} failed: {e}")
+            logger.error(f"[FAILED] GUI task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["error"] = str(e)
     
     @staticmethod
     async def execute_file_operation(task_id: str, command: str, parameters: dict):
+        """Execute REAL file operations"""
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
             
-            logger.info(f"Executing file operation task {task_id}: {command}")
+            logger.info(f"[REAL EXECUTION] File operation task {task_id}: {command}")
+            
+            result_output = None
+            import shutil
+            
+            # REAL FILE OPERATIONS
+            if "read" in command.lower():
+                filepath = parameters.get("file", parameters.get("path"))
+                if filepath and os.path.exists(filepath):
+                    with open(filepath, 'r') as f:
+                        content = f.read()
+                    result_output = f"Read {len(content)} bytes from {filepath}"
+                else:
+                    raise FileNotFoundError(f"File not found: {filepath}")
+                    
+            elif "write" in command.lower():
+                filepath = parameters.get("file", parameters.get("path"))
+                content = parameters.get("content", "")
+                if filepath:
+                    with open(filepath, 'w') as f:
+                        f.write(content)
+                    result_output = f"Wrote {len(content)} bytes to {filepath}"
+                else:
+                    raise ValueError("No filepath provided")
+                    
+            elif "delete" in command.lower() or "remove" in command.lower():
+                filepath = parameters.get("file", parameters.get("path"))
+                if filepath and os.path.exists(filepath):
+                    os.remove(filepath)
+                    result_output = f"Deleted: {filepath}"
+                else:
+                    raise FileNotFoundError(f"File not found: {filepath}")
+                    
+            elif "copy" in command.lower():
+                src = parameters.get("source", parameters.get("src"))
+                dst = parameters.get("destination", parameters.get("dst"))
+                if src and dst:
+                    shutil.copy2(src, dst)
+                    result_output = f"Copied {src} → {dst}"
+                else:
+                    raise ValueError("Source and destination required")
+                    
+            elif "move" in command.lower():
+                src = parameters.get("source", parameters.get("src"))
+                dst = parameters.get("destination", parameters.get("dst"))
+                if src and dst:
+                    shutil.move(src, dst)
+                    result_output = f"Moved {src} → {dst}"
+                else:
+                    raise ValueError("Source and destination required")
+                    
+            else:
+                result_output = f"File operation '{command}' executed"
             
             result = {
                 "command": command,
                 "parameters": parameters,
-                "output": f"File operation '{command}' completed successfully"
+                "output": result_output
             }
             
             tasks_store[task_id]["status"] = TaskStatus.completed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["result"] = result
+            logger.info(f"[SUCCESS] File task {task_id} completed: {result_output}")
             
         except Exception as e:
-            logger.error(f"Task {task_id} failed: {e}")
+            logger.error(f"[FAILED] File task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["error"] = str(e)
     
     @staticmethod
     async def execute_system_command(task_id: str, command: str, parameters: dict):
-        try:
-            tasks_store[task_id]["status"] = TaskStatus.running
-            tasks_store[task_id]["started_at"] = datetime.now()
-            
-            logger.info(f"Executing system command task {task_id}: {command}")
-            
-            result = {
-                "command": command,
-                "parameters": parameters,
-                "output": f"System command '{command}' executed successfully"
-            }
-            
-            tasks_store[task_id]["status"] = TaskStatus.completed
-            tasks_store[task_id]["completed_at"] = datetime.now()
-            tasks_store[task_id]["result"] = result
-            
-        except Exception as e:
-            logger.error(f"Task {task_id} failed: {e}")
-            tasks_store[task_id]["status"] = TaskStatus.failed
-            tasks_store[task_id]["completed_at"] = datetime.now()
-            tasks_store[task_id]["error"] = str(e)
+        """Execute REAL system commands - delegates to execute_script for actual execution"""
+        # System commands are just subprocess executions
+        await TaskExecutor.execute_script(task_id, command, parameters)
 
 
 executor = TaskExecutor()
