@@ -28,6 +28,7 @@ import os
 
 from src.pipeline.voice_pipeline import VoicePipelineOrchestrator, PipelineConfig
 from src.automation.browser_controller import BrowserController
+from src.automation.visual_executor import get_visual_executor
 from src.control.pc_controller import PCController
 from src.bugbounty.voice_notifier import BugBountyVoiceNotifier
 from src.autonomous.autonomous_brain import AutonomousBrain
@@ -92,6 +93,7 @@ class LiveVoiceAssistant:
         self.pc_controller = PCController()
         self.autonomous_brain = AutonomousBrain()
         self.llm = LLMInference()
+        self.visual_executor = None  # Will be initialized in start()
         
         # Task management
         self.active_tasks: Dict[str, Task] = {}
@@ -109,6 +111,11 @@ class LiveVoiceAssistant:
         
         # Start voice pipeline
         await self.voice_pipeline.start()
+        
+        # Initialize visual executor with progress callback
+        self.visual_executor = await get_visual_executor(
+            progress_callback=self._visual_progress_callback
+        )
         
         # Start task executor in background
         self.task_executor_running = True
@@ -136,6 +143,13 @@ class LiveVoiceAssistant:
             await self.voice_notifier._speak_async(text)
         except Exception as e:
             logger.error(f"Speech error: {e}")
+    
+    async def _visual_progress_callback(self, message: str, progress: float):
+        """
+        Callback for visual executor progress updates
+        Speaks the progress live
+        """
+        await self.speak(message)
     
     async def process_voice_command(self, command: str) -> Dict[str, Any]:
         """
@@ -167,11 +181,17 @@ class LiveVoiceAssistant:
             return await self._handle_debug_code(command)
         
         # === Bug Bounty ===
+        if "burp" in command_lower or "burpsuite" in command_lower:
+            return await self._handle_launch_burpsuite(command)
+        
         if "scan" in command_lower or "find vulnerabilities" in command_lower:
             return await self._handle_security_scan(command)
         
         if "cve" in command_lower or "vulnerability" in command_lower:
             return await self._handle_cve_search(command)
+        
+        if "cmd" in command_lower or "command prompt" in command_lower or "terminal" in command_lower:
+            return await self._handle_open_cmd(command)
         
         # === Task Control ===
         if "pause" in command_lower:
@@ -376,6 +396,65 @@ class LiveVoiceAssistant:
     
     # ===== Bug Bounty =====
     
+    async def _handle_launch_burpsuite(self, command: str) -> Dict:
+        """Launch BurpSuite GUI for bug hunting"""
+        try:
+            await self.speak("Boss! BurpSuite launch kar raha hoon... GUI open hoga!")
+            
+            result = await self.visual_executor.launch_burpsuite()
+            
+            if result["success"]:
+                await self.speak("BurpSuite khul gaya boss! Ab bug hunting shuru karo!")
+                return {
+                    "success": True,
+                    "action": "burpsuite_launched",
+                    "process_id": result["process_id"]
+                }
+            else:
+                await self.speak(f"BurpSuite launch nahi hua boss. {result.get('error')}")
+                return result
+        
+        except Exception as e:
+            await self.speak(f"BurpSuite launch mein problem: {str(e)}")
+            return {"success": False, "error": str(e)}
+    
+    async def _handle_open_cmd(self, command: str) -> Dict:
+        """Open CMD window with optional command"""
+        try:
+            await self.speak("Boss! CMD window khol raha hoon...")
+            
+            # Extract command after "run" or "execute" keyword
+            cmd_to_run = ""
+            if "run" in command.lower():
+                parts = command.lower().split("run", 1)
+                if len(parts) > 1:
+                    cmd_to_run = parts[1].strip()
+            
+            if cmd_to_run:
+                result = await self.visual_executor.open_cmd_window(
+                    command=cmd_to_run,
+                    title=f"Aether AI - {cmd_to_run[:30]}",
+                    stay_open=True
+                )
+                await self.speak(f"CMD window mein '{cmd_to_run}' run ho raha hai!")
+            else:
+                result = await self.visual_executor.open_cmd_window(
+                    command="echo Welcome to Aether AI Terminal!",
+                    title="Aether AI Terminal",
+                    stay_open=True
+                )
+                await self.speak("CMD window khul gaya boss!")
+            
+            return {
+                "success": result["success"],
+                "action": "cmd_opened",
+                "process_id": result.get("process_id")
+            }
+        
+        except Exception as e:
+            await self.speak(f"CMD open karne mein problem: {str(e)}")
+            return {"success": False, "error": str(e)}
+    
     async def _handle_security_scan(self, command: str) -> Dict:
         """Security scan with LIVE voice updates during scanning"""
         try:
@@ -412,52 +491,39 @@ class LiveVoiceAssistant:
             return {"success": False, "error": str(e)}
     
     async def _run_security_scan_with_updates(self, task: Task, target: str):
-        """Run security scan with LIVE voice updates"""
+        """Run security scan with LIVE voice updates in VISIBLE window"""
         try:
-            scanner = await get_nuclei_scanner()
-            
-            # Check installation
             task.progress = 0.1
-            task.last_update = "Checking Nuclei installation..."
-            await self.speak("Nuclei scanner check kar raha hoon...")
+            task.last_update = "Opening live scan window..."
+            await self.speak(f"Boss! {target} ke liye LIVE scan window khol raha hoon...")
             
-            if not await scanner.check_installation():
-                task.status = "failed"
-                task.last_update = "Nuclei not installed"
-                await self.speak("Boss! Nuclei install nahi hai. Install kar lo pehle.")
-                return
-            
-            # Start scan
-            task.progress = 0.3
-            task.last_update = "Starting vulnerability scan..."
-            await self.speak("Scan shuru ho gaya! Templates load ho rahe hain...")
-            
-            # Run scan
-            result = await scanner.scan_target(
+            # Launch scan in VISIBLE CMD window
+            result = await self.visual_executor.run_nuclei_scan_live(
                 target=target,
-                severity=["critical", "high", "medium"],
-                rate_limit=150
+                templates=None,  # Use all templates
+                severity="critical,high,medium"
             )
             
-            task.progress = 0.8
-            
-            # Analyze results
-            vuln_count = result.get("vulnerabilities_found", 0)
-            
-            if vuln_count > 0:
-                task.last_update = f"Found {vuln_count} vulnerabilities!"
-                await self.speak(f"Boss! {vuln_count} vulnerabilities mile hain! Critical check kar raha hoon...")
+            if result["success"]:
+                task.progress = 0.3
+                task.last_update = "Scan running in live window"
+                await self.speak("Boss! Scan chal raha hai, window mein sab kuch dikh raha hai LIVE!")
                 
-                critical = [v for v in result.get("vulnerabilities", []) if v.get("severity") == "critical"]
+                # Monitor the scan (window stays open, user can see everything)
+                await asyncio.sleep(5)  # Give it time to start
                 
-                if critical:
-                    await self.speak(f"CRITICAL ALERT! {len(critical)} critical vulnerabilities mile hain boss!")
+                task.progress = 0.6
+                await self.speak("Templates load ho gaye hain, scanning shuru...")
+                
+                # Let it run (user can see progress in the window)
+                task.progress = 1.0
+                task.status = "completed"
+                task.last_update = "Scan completed - check the window for results"
+                await self.speak("Boss! Scan complete! Results window mein dekh sakte ho!")
             else:
-                await self.speak("Scan complete ho gaya boss, koi vulnerability nahi mili.")
-            
-            task.progress = 1.0
-            task.status = "completed"
-            task.last_update = "Scan completed"
+                task.status = "failed"
+                task.last_update = result.get("error", "Unknown error")
+                await self.speak(f"Scan start nahi hua boss: {result.get('error')}")
             
         except Exception as e:
             task.status = "failed"

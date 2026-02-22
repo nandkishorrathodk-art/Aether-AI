@@ -60,6 +60,8 @@ class Settings(BaseSettings):
     llm_max_tokens: int = 2048
     llm_top_p: float = 0.9
 
+    enable_prompt_optimizer: bool = True
+
     secret_key: Optional[str] = None  # MUST be set in .env for production
     allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
     

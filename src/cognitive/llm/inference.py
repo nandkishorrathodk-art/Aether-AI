@@ -9,6 +9,8 @@ from src.cognitive.llm.prompt_engine import prompt_engine, PromptTemplate
 from src.cognitive.llm.context_manager import ContextManager, session_manager
 from src.cognitive.llm.providers.base import TaskType, AIResponse
 from src.cognitive.llm.conversation_state import state_manager, ConversationContext
+from src.cognitive.llm.prompt_optimizer import prompt_optimizer
+from src.config import settings
 from src.utils.logger import get_logger
 
 # God Mode Features
@@ -221,6 +223,10 @@ class ConversationEngine:
         system_prompt_type = self._map_intent_to_prompt_type(intent)
 
         system_prompt = prompt_engine.get_system_prompt(system_prompt_type)
+        
+        # Optimize prompt dynamically if enabled
+        if getattr(settings, "enable_prompt_optimizer", False):
+            system_prompt = await prompt_optimizer.optimize(system_prompt, request.user_input)
         
         logger.info(f"🔍 Intent: {intent}, Prompt Type: {system_prompt_type}")
         logger.info(f"📝 System Prompt (first 200 chars): {system_prompt[:200]}...")
@@ -453,6 +459,10 @@ class ConversationEngine:
             task_type = self._map_intent_to_task_type(intent)
             system_prompt_type = self._map_intent_to_prompt_type(intent)
             system_prompt = prompt_engine.get_system_prompt(system_prompt_type)
+            
+            # Optimize prompt dynamically if enabled
+            if getattr(settings, "enable_prompt_optimizer", False):
+                system_prompt = await prompt_optimizer.optimize(system_prompt, request.user_input)
             
             # === Upgrade #1 & #5: Injections ===
             try:
