@@ -19,12 +19,8 @@ class FireworksProvider(BaseAIProvider):
             api_key=api_key,
             base_url="https://api.fireworks.ai/inference/v1"
         )
-<<<<<<< Updated upstream
-        self.default_model = "accounts/fireworks/models/llama-v3p3-70b-instruct"
-=======
         self.default_model = "accounts/fireworks/models/deepseek-v3p1"
         self.default_vision_model = "accounts/fireworks/models/llama-v3p2-11b-vision-instruct"
->>>>>>> Stashed changes
 
     async def generate(
         self,

@@ -264,17 +264,11 @@ class EdgeTTS:
     def synthesize(self, text: str, chunk_callback: Optional[Callable[[bytes], None]] = None) -> bytes:
         import asyncio
         
-<<<<<<< Updated upstream
-        # Select voice based on gender - using most natural sounding voices
-        if self.config.voice == "male":
-            voice = "en-GB-RyanNeural"  # British Male (Jarvis-like)
-=======
         # Select voice based on gender or current override
         if self.current_voice_id:
             voice = self.current_voice_id
         elif self.config.voice == "male":
-            voice = "en-US-BrianNeural" 
->>>>>>> Stashed changes
+            voice = "en-GB-RyanNeural" # Jarvis-like
         else:
             voice = "en-IN-NeerjaNeural"  # Indian English female voice - sounds very natural and human
             

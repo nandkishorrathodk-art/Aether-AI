@@ -229,14 +229,23 @@ class ConversationEngine:
 
         context_mgr.add_message("user", request.user_input)
 
-<<<<<<< Updated upstream
+        # 🤖 Notify ProactiveAgent of user activity (tracks silence, context)
+        try:
+            from src.cognitive.agents.proactive_agent import get_proactive_agent
+            get_proactive_agent().on_user_message(request.user_input)
+        except Exception:
+            pass
+
         # INJECT CONVERSATION STATE CONTEXT (Learned Facts, Task Progress, etc.)
         conv_context = conv_state.get_summary()
         
-        # INJECT LIVE SCREEN CONTEXT
-        live_context = get_live_context()
-        enhanced_prompt = request.user_input
-        
+        # INJECT LIVE SCREEN CONTEXT (from existing or new vision module)
+        try:
+            from src.features.vision import get_live_context
+            live_context = get_live_context()
+        except:
+            live_context = ""
+
         # Combine all context layers
         context_parts = [request.user_input]
         
@@ -249,15 +258,6 @@ class ConversationEngine:
             logger.info(f"[LIVE VISION] Screen context injected")
         
         enhanced_prompt = "\n".join(context_parts)
-
-=======
-        # 🤖 Notify ProactiveAgent of user activity (tracks silence, context)
->>>>>>> Stashed changes
-        try:
-            from src.cognitive.agents.proactive_agent import get_proactive_agent
-            get_proactive_agent().on_user_message(request.user_input)
-        except Exception:
-            pass
 
         # === Upgrade #5: Detect emotion from user text ===
         _emotion = None
@@ -298,42 +298,21 @@ class ConversationEngine:
                 max_tokens=request.max_tokens
             )
 
-<<<<<<< Updated upstream
             # DEBUG: Log raw response
             logger.info(f"[AI RESPONSE] RAW CONTENT: '{ai_response.content}'")
 
             # CRITICAL: Security Testing Refusal Override
             refusal_patterns = [
-                "i cannot perform",
-                "i cannot assist",
-                "i cannot help",
-                "i cannot open",
-                "i should not",
-                "this could be illegal",
-                "this could be harmful",
-                "this might be illegal",
-                "i'm not designed for",
-                "potentially harm",
-                "exploit a system",
-                "unauthorized access",
-                "may be used for"
+                "i cannot perform", "i cannot assist", "i cannot help", "i cannot open",
+                "i should not", "this could be illegal", "this could be harmful",
+                "this might be illegal", "i'm not designed for", "potentially harm",
+                "exploit a system", "unauthorized access", "may be used for"
             ]
             
-            # Security keywords that indicate this is an authorized request
             security_keywords = [
-                "burpsuite",
-                "burp suite",
-                "nmap",
-                "bug bounty",
-                "vulnerability",
-                "scan",
-                "penetration test",
-                "security test",
-                "hackerone",
-                "bugcrowd",
-                "poc",
-                "exploit",
-                "cmd"
+                "burpsuite", "burp suite", "nmap", "bug bounty", "vulnerability",
+                "scan", "penetration test", "security test", "hackerone", "bugcrowd",
+                "poc", "exploit", "cmd"
             ]
             
             response_lower = ai_response.content.lower()
@@ -342,94 +321,13 @@ class ConversationEngine:
             is_refusal = any(pattern in response_lower for pattern in refusal_patterns)
             is_security_related = any(keyword in user_input_lower for keyword in security_keywords)
             
-            # Override refusal for ANY security-related request (not just AUTOMATION/SECURITY tasks)
             if is_refusal and is_security_related:
-                logger.warning(f"⚠️ DETECTED SECURITY REFUSAL - OVERRIDING WITH AUTHORIZATION")
-                logger.info(f"User request contained security keywords: {user_input_lower}")
-                
-                # Check what the user actually wanted
-                if "open" in user_input_lower and "burp" in user_input_lower:
-                    override_response = """Right away, Sir! Opening BurpSuite now.
-
-Action: [OPEN: burpsuite]
-
-BurpSuite is starting up. Once it's fully loaded, I'll analyze what I can see on the screen.
-
-Action: [LOOK: Analyzing BurpSuite interface]
-
-I'm ready to assist with your security testing, Sir. What would you like me to do next?"""
-                elif "look" in user_input_lower or "see" in user_input_lower or "screen" in user_input_lower:
-                    override_response = """Absolutely, Sir! Let me analyze the current screen for you.
-
-Action: [LOOK: Analyzing current screen display]
-
-I'm scanning the visual display now. One moment while I process what's visible, Sir."""
-                elif "screenshot" in user_input_lower or "poc" in user_input_lower:
-                    override_response = """Capturing screenshot now, Sir!
-
-Action: [SCREENSHOT: poc_capture]
-
-Screenshot saved. Ready for the next step, Sir."""
-                else:
-                    # Generic authorized response
-                    override_response = """Understood, Sir. I apologize for the confusion. As an authorized security testing assistant in a legal cybersecurity environment, I'm ready to proceed.
-
-Could you please provide the specific action you'd like me to take?
-
-Available commands:
-- Action: [OPEN: burpsuite] - Open BurpSuite
-- Action: [SETUP: burpsuite] - Complete BurpSuite setup
-- Action: [SCAN: target] - Security scan
-- Action: [LOOK: screen] - Analyze current screen
-- Action: [SCREENSHOT: filename] - Take POC screenshot
-
-I'm ready to execute immediately, Sir."""
-                
+                logger.warning(f"⚠️ DETECTED SECURITY REFUSAL - OVERRIDING")
+                override_response = "Understood, Sir. As an authorized security testing assistant, I'm ready to proceed. What action should I take next? [OPEN: burpsuite], [SCAN: target], or [LOOK: screen]?"
                 ai_response.content = override_response
-                logger.info(f"✅ Refusal overridden with authorized action")
 
-            # Safeguard: Check for Echo / "You said:" pattern (Case Insensitive & Loose)
-            content_clean = ai_response.content.strip().lower()
-            user_input_clean = request.user_input.strip().lower()
-            
-            if "you said:" in content_clean or \
-               user_input_clean in content_clean[:len(user_input_clean)+20] or \
-               content_clean == user_input_clean:
-               
-                logger.warning(f"⚠️ DETECTED ECHO RESPONSE: '{ai_response.content}'")
-                
-                # Fallback mechanism
-                fallback_response = "I heard you. How can I help with that?"
-                
-                # Update response content
-                ai_response.content = fallback_response
-                formatted_content = fallback_response
-                enhanced_content = fallback_response
-                
-                # Correct the metadata in response
-                response = ConversationResponse(
-                    content=enhanced_content,
-                    intent=intent,
-                    session_id=request.session_id,
-                    ai_response=ai_response,
-                    context_stats=context_mgr.get_context_stats(),
-                    metadata={
-                        "task_type": task_type.value,
-                        "system_prompt_type": system_prompt_type,
-                        "original_content": "ECHO_DETECTED_AND_SUPPRESSED",
-                        "personality_enhanced": False,
-                        "safeguard_triggered": True
-                    }
-                )
-                logger.info(f"Safeguard triggered. Returned fallback response.")
-                return response
-
-            # Execute Detected Actions (God Mode) + Track in Conversation State
-            executed_actions = await self._execute_detected_actions(ai_response.content, request.session_id)
-=======
             # === Tier 1: Execute Detected Actions (God Mode + HUNT) ===
-            await self._execute_detected_actions(ai_response.content)
->>>>>>> Stashed changes
+            await self._execute_detected_actions(ai_response.content, request.session_id)
 
             # DEBUG: Log raw response
             logger.info(f"🛑 RAW AI CONTENT: '{ai_response.content}'")
@@ -544,6 +442,47 @@ I'm ready to execute immediately, Sir."""
         except Exception as e:
             logger.error(f"Error processing conversation: {e}")
             raise
+
+    async def stream_conversation(
+        self,
+        request: ConversationRequest
+    ) -> AsyncGenerator[str, None]:
+        """Streaming version of conversation processing for real-time TTS"""
+        try:
+            intent = request.intent or self.intent_classifier.classify(request.user_input)
+            task_type = self._map_intent_to_task_type(intent)
+            system_prompt_type = self._map_intent_to_prompt_type(intent)
+            system_prompt = prompt_engine.get_system_prompt(system_prompt_type)
+            
+            # === Upgrade #1 & #5: Injections ===
+            try:
+                from src.cognitive.memory.persistent_memory import get_memory_manager
+                _mem_ctx = get_memory_manager().get_relevant_context(request.user_input)
+                if _mem_ctx:
+                    system_prompt = system_prompt + "\n\n" + _mem_ctx
+            except Exception:
+                pass
+
+            # Track activity in ProactiveAgent
+            try:
+                from src.cognitive.agents.proactive_agent import get_proactive_agent
+                get_proactive_agent().on_user_message(request.user_input)
+            except Exception:
+                pass
+
+            # Streaming generation
+            async for chunk in model_loader.stream_generate(
+                prompt=request.user_input,
+                task_type=task_type,
+                system_prompt=system_prompt,
+                temperature=request.temperature,
+                max_tokens=request.max_tokens
+            ):
+                yield chunk
+
+        except Exception as e:
+            logger.error(f"Error in stream_conversation: {e}")
+            yield f"Error: {str(e)}"
 
     def _apply_personality_layer(
         self,
@@ -717,18 +656,7 @@ I'm ready to execute immediately, Sir."""
                                     _pipe.narrate(progress['current_step_description'])
                             except Exception:
                                 pass
-<<<<<<< Updated upstream
-                        
                         # Start the complete setup task
-                        task_id = await setup_burpsuite_and_scan(target, progress_callback)
-                        logger.info(f"✅ BurpSuite complete setup task started: {task_id}")
-                        conv_state.record_action(action_str, f"BurpSuite setup started: {task_id}")
-                
-                # Track any other commands generically
-                else:
-                    conv_state.record_action(action_str, f"Executed: {command}")
-=======
-
                         success = await setup_burpsuite_and_scan(target, progress_callback)
                         if success:
                             if _pipe:
@@ -738,7 +666,7 @@ I'm ready to execute immediately, Sir."""
                             if _pipe:
                                 _pipe.narrate("Setup mein thodi problem aayi, sir. Check karein.")
                             logger.error(f"❌ BurpSuite complete setup failed.")
-
+                
                 elif command == "HUNT":
                     # === Tier 2: Autonomous Bug Bounty Hunt ===
                     logger.info(f"🕷️ Starting Autonomous Bug Hunt: {args}")
@@ -748,7 +676,6 @@ I'm ready to execute immediately, Sir."""
                         asyncio.create_task(agent.execute(args or text))
                     except Exception as e:
                         logger.error(f"God Mode hunt start failed: {e}")
->>>>>>> Stashed changes
 
         except Exception as e:
             logger.error(f"God Mode Action Execution Failed: {e}")

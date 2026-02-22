@@ -17,21 +17,14 @@ class SpeechToText:
         api_key: Optional[str] = None,
         language: Optional[str] = None,
         device: str = "cpu",
-<<<<<<< Updated upstream
-        use_faster_whisper: bool = False
-=======
         compute_type: str = "int8" # Optimized for CPU
->>>>>>> Stashed changes
     ):
         self.model_name = model_name
         self.use_cloud = use_cloud
         self.language = language
         self.device = device
-<<<<<<< Updated upstream
-        self.use_faster_whisper = use_faster_whisper
-=======
         self.compute_type = compute_type
->>>>>>> Stashed changes
+        self.use_faster_whisper = True # Default to True now
         
         self.model = None
         self.client: Optional[OpenAI] = None
@@ -47,28 +40,11 @@ class SpeechToText:
     
     def _load_local_model(self):
         try:
-<<<<<<< Updated upstream
-            if self.use_faster_whisper:
-                try:
-                    from faster_whisper import WhisperModel
-                    logger.info(f"Loading Faster-Whisper model: {self.model_name} (5x speed boost!)")
-                    self.model = WhisperModel(self.model_name, device=self.device, compute_type="int8")
-                    logger.info(f"Faster-Whisper loaded on {self.device} - Ultra-fast transcription enabled!")
-                    return
-                except ImportError:
-                    logger.warning("faster-whisper not installed, falling back to standard whisper")
-                    self.use_faster_whisper = False
-            
-            logger.info(f"Loading Whisper model: {self.model_name}")
-            self.model = whisper.load_model(self.model_name, device=self.device)
-            logger.info(f"Whisper model loaded successfully on {self.device}")
-=======
             from faster_whisper import WhisperModel
             logger.info(f"Loading Faster-Whisper model: {self.model_name} on {self.device}")
             # Faster-whisper is much more efficient than standard whisper
             self.model = WhisperModel(self.model_name, device=self.device, compute_type=self.compute_type)
             logger.info(f"Faster-Whisper model loaded successfully")
->>>>>>> Stashed changes
         except Exception as e:
             logger.error(f"Failed to load Faster-Whisper model: {e}")
             raise
@@ -78,12 +54,6 @@ class SpeechToText:
         audio_data: Union[np.ndarray, str, Path],
         language: Optional[str] = None,
         task: str = "transcribe",
-<<<<<<< Updated upstream
-        temperature: float = 0.0,
-        best_of: int = 1,
-        beam_size: int = 1
-=======
->>>>>>> Stashed changes
     ) -> dict:
         language = language or self.language
         
@@ -123,65 +93,11 @@ class SpeechToText:
         audio_path: str,
         language: Optional[str],
         task: str,
-<<<<<<< Updated upstream
-        temperature: float,
-        best_of: int,
-        beam_size: int
-    ) -> dict:
-        if not os.path.exists(audio_path):
-            raise FileNotFoundError(f"Audio file not found: {audio_path}")
-        
-        if self.use_cloud:
-            return self._transcribe_cloud_from_file(audio_path, language)
-        else:
-            try:
-                audio = whisper.load_audio(audio_path)
-                if len(audio) == 0:
-                    logger.warning(f"Audio file {audio_path} loaded but is empty")
-                    return self._empty_result(error="Empty audio file")
-                return self._transcribe_local(audio, language, task, temperature, best_of, beam_size)
-            except Exception as e:
-                error_msg = str(e)
-                logger.error(f"Failed to load audio file {audio_path}: {error_msg}")
-                if "EBML" in error_msg or "Invalid data" in error_msg or "parsing failed" in error_msg:
-                    logger.warning("⚠️  Corrupted audio file detected (WebM header invalid)")
-                return self._empty_result(error=f"Audio load error: {error_msg}")
-
-    def _transcribe_local(
-        self,
-        audio: np.ndarray,
-        language: Optional[str],
-        task: str,
-        temperature: float,
-        best_of: int,
-        beam_size: int
-=======
->>>>>>> Stashed changes
     ) -> dict:
         if self.model is None:
             raise RuntimeError("Whisper model not loaded")
         
         try:
-<<<<<<< Updated upstream
-            options = {
-                "task": task,
-                "temperature": temperature,
-                "best_of": 1,
-                "beam_size": 1,
-                "fp16": False,
-                "no_speech_threshold": 0.6,
-                "condition_on_previous_text": False
-            }
-            
-            if language:
-                options["language"] = language
-            
-            logger.info(f"Starting Whisper transcription with options: {options}")
-            result = self.model.transcribe(audio, **options)
-            logger.info(f"Whisper transcription complete")
-            
-            confidence = self._calculate_confidence(result)
-=======
             # Faster-whisper returns a generator of segments
             segments, info = self.model.transcribe(
                 audio_path, 
@@ -201,7 +117,6 @@ class SpeechToText:
                     "text": segment.text,
                     "avg_logprob": segment.avg_logprob
                 })
->>>>>>> Stashed changes
             
             return {
                 "text": full_text.strip(),

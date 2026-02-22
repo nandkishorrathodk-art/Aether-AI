@@ -594,25 +594,9 @@ class VoicePipelineOrchestrator:
     
     def _is_hallucination(self, text: str) -> bool:
         """Check if text is a common Whisper hallucination"""
-<<<<<<< Updated upstream
         hallucinations = [
-            "This is a casual conversation",
-            "casual conversation in Hinglish",
-            "Hindi + English",
-            "Accurately transcribe",
-            "Thank you for watching",
-            "Please subscribe",
-            "Subtitles by",
-            "I'm sorry",
-            "Amara.org",
-            "MBC",
-            "Bu videoyu",
-            "izlediğiniz için",
-            "teşekkürler"
+            ""
         ]
-=======
-        hallucinations = []
->>>>>>> Stashed changes
         text_lower = text.lower()
         
         # Check known phrases

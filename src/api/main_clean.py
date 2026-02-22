@@ -16,6 +16,7 @@ from src.api.routes import (
 )
 from src.api.hybrid_api import router as hybrid_router
 from src.api.security_api import router as security_api_router
+from src.api.live_assistant_api import router as live_assistant_router
 from src.api.middleware import rate_limit_middleware
 
 logger = get_logger(__name__)
@@ -117,14 +118,21 @@ async def root():
         "status": "running",
         "description": "Ultimate Bug Bounty Hunter + Personal Assistant",
         "features": [
+            "🎙️ LIVE Voice Assistant (Talks while working, YouTube, Teaching, Multitasking)",
             "🐛 Bug Bounty Hunting (200k+ CVE database, Nuclei scanner, AI analysis)",
             "🤖 Personal Assistant (Voice, Proactive suggestions, Emotion detection)",
             "👁️ Advanced Vision (Multi-OCR, YOLO v8, Element detection)",
             "🚀 Production Ready (Docker, K8s, Prometheus, Grafana)",
             "🧠 AI Brain (CoT/ToT reasoning, Semantic memory)",
-            "📝 Professional Reports (HTML/Markdown/JSON with CVSS)"
+            "📝 Professional Reports (HTML/Markdown/JSON with CVSS)",
+            "🎓 Teaching Mode (Interactive code lessons with voice)",
+            "🌐 Desktop Control (Browser, YouTube, Apps, Search)"
         ],
         "endpoints": {
+            "live_assistant_voice_command": "/api/v1/live/command",
+            "live_assistant_tasks": "/api/v1/live/tasks",
+            "live_assistant_speak": "/api/v1/live/speak",
+            "live_assistant_websocket": "/api/v1/live/ws/live-updates",
             "chat": "/api/v1/chat",
             "hybrid_vision": "/api/v1/hybrid/vision/analyze",
             "security_cve_search": "/api/v1/security/cve/search",
@@ -187,6 +195,9 @@ app.include_router(desktop.router)
 # Hybrid routes (Aether + IronClaw)
 app.include_router(hybrid_router)
 app.include_router(security_api_router)
+
+# Live Voice Assistant (NEW!)
+app.include_router(live_assistant_router)
 
 
 if __name__ == "__main__":
