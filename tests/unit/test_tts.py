@@ -49,7 +49,7 @@ class TestTTSConfig:
         config = TTSConfig()
         assert config.provider == "pyttsx3"
         assert config.voice == "female"
-        assert config.rate == 175
+        assert config.rate == 160
         assert config.cache_enabled is True
     
     def test_custom_config(self):
@@ -154,7 +154,7 @@ class TestLocalTTS:
         tts = LocalTTS(tts_config)
         
         mock_engine.setProperty.assert_any_call('rate', 175)
-        mock_engine.setProperty.assert_any_call('volume', 0.9)
+        mock_engine.setProperty.assert_any_call('volume', 1.0)
     
     @patch('pyttsx3.init')
     def test_get_available_voices(self, mock_init):

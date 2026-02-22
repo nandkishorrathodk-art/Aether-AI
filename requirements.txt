@@ -5,6 +5,7 @@ sentence-transformers==3.3.1
 pyautogui==0.9.54
 psutil==6.1.1
 python-dotenv==1.0.1
+<<<<<<< Updated upstream
 sqlalchemy==2.0.36
 pydantic==2.10.3
 pydantic-settings==2.7.0
@@ -16,6 +17,22 @@ aiohttp==3.11.11
 python-multipart==0.0.20
 pillow==11.0.0
 opencv-python==4.10.0.84
+=======
+sqlalchemy==2.0.25
+pydantic==2.6.0
+pydantic-settings==2.1.0
+numpy==1.26.3
+scipy==1.12.0
+pandas==2.2.0
+requests==2.31.0
+aiohttp==3.9.3
+python-multipart==0.0.6
+pillow==10.2.0
+opencv-python==4.9.0.80
+ultralytics==8.3.0  # YOLO v8 for object detection - IRONCLAW
+openvino==2024.5.0  # Intel NPU acceleration - IRONCLAW
+openvino-tokenizers==2024.5.0  # For NPU-accelerated models
+>>>>>>> Stashed changes
 
 # OpenClaw - Web Scraping & Automation
 beautifulsoup4==4.12.3
@@ -43,11 +60,19 @@ pywin32==306; sys_platform == 'win32'
 pywinauto==0.6.8; sys_platform == 'win32'
 
 # AI Provider SDKs
+<<<<<<< Updated upstream
 openai==1.58.1
 anthropic==0.42.0
 google-generativeai==0.8.3
 groq==0.14.0
 litellm==1.54.14
+=======
+openai>=1.50.0
+anthropic>=0.30.0
+google-generativeai==0.3.2
+groq>=1.0.0
+litellm==1.30.0
+>>>>>>> Stashed changes
 
 # Security & Encryption
 cryptography==44.0.0
@@ -74,10 +99,19 @@ python-pptx==1.0.2
 # Multi-Language Support
 langdetect==1.0.9
 
+<<<<<<< Updated upstream
 # Screen Understanding & OCR
 pytesseract==0.3.13
 easyocr==1.7.2
 imagehash==4.3.1
+=======
+# Screen Understanding & OCR - IRONCLAW ENHANCEMENT
+pytesseract==0.3.10
+easyocr==1.7.0
+paddleocr==2.8.1  # Better handwriting & CJK support
+paddlepaddle==2.6.0; sys_platform != 'darwin'  # PaddleOCR backend
+paddlepaddle-macos==2.6.0; sys_platform == 'darwin'  # macOS support
+>>>>>>> Stashed changes
 
 # Discord Bot Integration (Mekio-style)
 
@@ -86,6 +120,7 @@ edge-tts==7.1.1
 nest-asyncio==1.6.0
 
 # v0.9.0 Dependencies - Screen Monitoring & PC Control
+<<<<<<< Updated upstream
 mss==10.0.0
 pynput==1.7.7
 schedule==1.2.2
@@ -121,3 +156,45 @@ pygetwindow==0.0.9
 PyQt6==6.8.0
 PyQt6-Qt6==6.8.1
 PyQt6-sip==13.9.0
+=======
+mss==9.0.1
+pynput==1.7.6
+schedule==1.2.0
+aiofiles==23.2.1
+watchdog==4.0.0
+
+# IRONCLAW Production Infrastructure
+asyncpg==0.29.0  # Async PostgreSQL client
+psycopg2-binary==2.9.9  # PostgreSQL adapter
+redis[hiredis]==5.0.1  # Redis client with performance boost
+qdrant-client==1.7.0  # Vector database for semantic memory
+motor==3.3.2  # Async MongoDB client (optional)
+
+# Monitoring & Observability
+prometheus-client==0.19.0  # Prometheus metrics
+prometheus-fastapi-instrumentator==6.1.0  # FastAPI integration
+opentelemetry-api==1.22.0  # OpenTelemetry tracing
+opentelemetry-sdk==1.22.0
+opentelemetry-instrumentation-fastapi==0.43b0
+opentelemetry-exporter-jaeger==1.22.0  # Jaeger exporter
+sentry-sdk[fastapi]==1.40.0  # Error tracking
+
+# Security & CVE Database
+nvdlib==0.7.4  # NIST NVD CVE database
+python-nmap==0.7.1  # Nmap integration
+scapy==2.5.0  # Packet manipulation
+
+# Testing & Quality
+locust==2.20.0  # Load testing
+hypothesis==6.98.0  # Property-based testing
+faker==22.6.0  # Test data generation
+
+# Performance
+orjson==3.9.12  # Ultra-fast JSON (5x faster than json)
+msgpack==1.0.7  # Binary serialization
+cachetools==5.3.2  # Caching utilities
+
+# Database ORM & Migration
+alembic==1.13.1  # Database migrations
+sqlmodel==0.0.14  # SQLModel (combines SQLAlchemy + Pydantic)
+>>>>>>> Stashed changes

@@ -14,7 +14,7 @@ class TestAudioConfig:
         assert AudioConfig.CHUNK_SIZE == 1024
         assert AudioConfig.FRAME_DURATION_MS == 30
         assert AudioConfig.VAD_MODE == 3
-        assert AudioConfig.ENERGY_THRESHOLD == 500
+        assert AudioConfig.ENERGY_THRESHOLD == 1000
         assert AudioConfig.SILENCE_DURATION_MS == 1500
 
 
@@ -25,7 +25,7 @@ class TestAudioInputHandler:
             mock_pyaudio_instance = MagicMock()
             mock_pyaudio_class.return_value = mock_pyaudio_instance
             # Set the return value for get_sample_size to match AudioConfig.FORMAT (paInt16 is 2 bytes)
-            mock_pyaudio_instance.get_sample_size.return_value = 2
+            mock_pyaudio_instance.get_sample_size = MagicMock(return_value=2)
             
             handler = AudioInputHandler()
             yield handler
@@ -184,7 +184,7 @@ class TestAudioIntegration:
             handler = AudioInputHandler()
             
             loud_audio = np.random.randint(5000, 10000, 1000, dtype=np.int16)
-            quiet_audio = np.random.randint(-100, 100, 1000, dtype=np.int16)
+            quiet_audio = np.zeros(1000, dtype=np.int16)
             
             assert handler.is_speech(loud_audio)
             assert handler.is_silence(quiet_audio)

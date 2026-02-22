@@ -77,6 +77,22 @@ def main():
         logger.info("\n🚀 Starting voice interaction pipeline...")
         pipeline.start()
         
+        # 🤖 Start Autonomous Proactive Agent (runs in background)
+        try:
+            from src.cognitive.agents.proactive_agent import start_autonomous_mode
+            proactive = start_autonomous_mode()
+            logger.info("🤖 Proactive Autonomous Agent started — Aether now self-directs!")
+        except Exception as e:
+            logger.warning(f"Proactive agent not started: {e}")
+
+        # 👁️ Start Real-Time Vision Loop (every 2s)
+        try:
+            from src.perception.vision.realtime_vision import start_realtime_vision
+            vision = start_realtime_vision()
+            logger.info("👁️ Real-Time Vision started — Aether can now see the screen live!")
+        except Exception as e:
+            logger.warning(f"Real-time vision not started: {e}")
+
         logger.info("\n✅ Aether AI is now listening!")
         logger.info(f"💡 Say '{settings.wake_word}' to activate")
         logger.info("Press Ctrl+C to stop\n")

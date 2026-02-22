@@ -38,15 +38,25 @@ class VisionSystem:
             return ""
 
     @staticmethod
+<<<<<<< Updated upstream
     def analyze_screen(prompt: str = "Describe this screen in detail.", max_retries: int = 3) -> str:
         """Analyze screen using OpenRouter (Gemini Flash) with retry logic"""
         if not settings.openrouter_api_key:
             return "Error: OpenRouter API Key is missing in .env"
 
+=======
+    def analyze_screen(prompt: str = "Describe this screen in detail.") -> str:
+        """Analyze screen using ModelRouter (Fireworks)"""
+        import asyncio
+        from src.cognitive.llm.model_router import router
+        from src.cognitive.llm.providers.base import TaskType
+        
+>>>>>>> Stashed changes
         base64_image = VisionSystem.capture_screen()
         if not base64_image:
             return "Error: Failed to capture screen."
         
+<<<<<<< Updated upstream
         headers = {
             "Authorization": f"Bearer {settings.openrouter_api_key}",
             "Content-Type": "application/json",
@@ -108,5 +118,36 @@ class VisionSystem:
         
         logger.error(f"❌ All {max_retries} vision attempts failed. Last error: {last_error}")
         return f"Screen analysis unavailable after {max_retries} attempts. Using fallback description: The screen shows a desktop interface with various windows and applications."
+=======
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}}
+                ]
+            }
+        ]
+        
+        try:
+            logger.info(f"Sending Vision Request via ModelRouter (TaskType.VISION)...")
+            # We use route_request which uses router_vision set to fireworks
+            response = asyncio.run(router.route_request(
+                messages=messages,
+                task_type=TaskType.VISION,
+                max_tokens=1000,
+                temperature=0.3
+            ))
+            
+            if response and hasattr(response, 'content'):
+                logger.info("Vision Analysis Received via Router.")
+                return response.content
+            else:
+                logger.error("Vision API Error: Router returned invalid response")
+                return "Vision Error: Invalid response from router"
+        except Exception as e:
+            logger.error(f"Vision Request Failed: {e}")
+            return f"Vision Request Failed: {str(e)}"
+>>>>>>> Stashed changes
 
 vision_system = VisionSystem()

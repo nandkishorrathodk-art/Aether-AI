@@ -87,10 +87,13 @@ def run_recon():
     print("  RECONNAISSANCE")
     print("="*60 + "\n")
     
-    domain = input("  Target domain: ").strip()
+    TARGET_DOMAIN_PROMPT = "  Target domain: "
+    DOMAIN_REQUIRED_ERR = "\n  ✗ Domain required"
+    
+    domain = input(TARGET_DOMAIN_PROMPT).strip()
     
     if not domain:
-        print("\n  ✗ Domain required")
+        print(DOMAIN_REQUIRED_ERR)
         return
     
     print(f"\n  Running reconnaissance on {domain}...")
@@ -158,7 +161,7 @@ def scan_target():
             
             vulns = data.get('vulnerabilities', [])
             if vulns:
-                print(f"\n  Top Findings:")
+                print("\n  Top Findings:")
                 for i, vuln in enumerate(vulns[:5], 1):
                     print(f"    {i}. {vuln.get('type')} - {vuln.get('severity')}")
                     print(f"       URL: {vuln.get('url')}")
@@ -217,11 +220,11 @@ def analyze_vuln():
             for i, step in enumerate(data.get('exploitation_steps', [])[:5], 1):
                 print(f"    {i}. {step}")
             
-            print(f"\n  Impact:")
+            print("\n  Impact:")
             print(f"    {data.get('impact_analysis', '')[:200]}...")
             
             if data.get('ai_insights'):
-                print(f"\n  AI Insights:")
+                print("\n  AI Insights:")
                 print(f"    {data['ai_insights'][:300]}...")
         else:
             print(f"\n  ✗ Failed: {response.status_code}")
@@ -384,7 +387,7 @@ def full_automation():
         output_dir = "./bug_bounty_results"
     
     print(f"\n  Starting full automation for {domain}")
-    print(f"  This will take a while (15-30 minutes)")
+    print("  This will take a while (15-30 minutes)")
     print(f"  Results will be saved to: {output_dir}")
     print("\n  Running in background...")
     

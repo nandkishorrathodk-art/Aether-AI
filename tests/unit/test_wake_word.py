@@ -47,7 +47,8 @@ class TestWakeWordDetector:
     def mock_audio_handler(self):
         with patch('src.perception.voice.wake_word.AudioInputHandler') as mock:
             handler = MagicMock()
-            handler.calculate_energy.return_value = 1500.0  # Default energy for mocks
+            handler.calculate_energy.return_value = 1500.0
+            mock.calculate_energy.return_value = 1500.0  # Static call support
             mock.return_value = handler
             yield handler
 
@@ -189,7 +190,8 @@ class TestWakeWordIntegration:
         assert isinstance(result, bool)
 
     def test_detector_fallback_to_energy(self):
-        with patch('src.perception.voice.wake_word.AudioInputHandler'):
+        with patch('src.perception.voice.wake_word.AudioInputHandler') as mock_handler:
+            mock_handler.calculate_energy.return_value = 2000.0
             detector = WakeWordDetector(
                 wake_word="test",
                 use_porcupine=False

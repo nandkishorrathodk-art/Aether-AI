@@ -5,18 +5,25 @@ from pathlib import Path
 from datetime import datetime
 from unittest.mock import Mock, patch, MagicMock
 
-from src.cognitive.memory.vector_store import VectorStore, MemoryManager
+from src.cognitive.memory.vector_store import VectorStore
 from src.cognitive.memory.conversation_history import ConversationHistory
 from src.cognitive.memory.user_profile import UserProfile, ProfileManager
 
 
 class MockEmbeddingFunction:
-    name = "mock_embedding"
+    def name(self):
+        return "mock_embedding"
     
     def __call__(self, input):
         if isinstance(input, str):
             input = [input]
         return [[0.1] * 384 for _ in input]
+    
+    def embed_query(self, text=None, input=None):
+        return [[0.1] * 384]
+        
+    def embed_documents(self, documents):
+        return [[0.1] * 384 for _ in documents]
 
 
 @pytest.fixture
@@ -28,18 +35,14 @@ def temp_dir():
 
 @pytest.fixture
 def vector_store(temp_dir):
-    with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
-        mock_embed.return_value = MockEmbeddingFunction()
-        return VectorStore(persist_directory=temp_dir / "chromadb")
+    return VectorStore(persist_directory=temp_dir / "chromadb")
 
 
 @pytest.fixture
 def conversation_history(temp_dir):
     db_path = temp_dir / "conversations.db"
-    with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
-        mock_embed.return_value = MockEmbeddingFunction()
-        vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
-        return ConversationHistory(db_path=db_path, vector_store=vector_store)
+    vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+    return ConversationHistory(db_path=db_path, vector_store=vector_store)
 
 
 @pytest.fixture
@@ -91,22 +94,24 @@ class TestVectorStore:
         
         memory = vector_store.get_memory("test_collection", memory_id)
         assert memory is not None
-        assert memory["text"] == "Retrieve this memory"
+        assert memory["content"] == "Retrieve this memory"
         assert memory["metadata"]["tag"] == "retrieval_test"
     
     def test_update_memory(self, vector_store):
         memory_id = vector_store.add_memory("test_collection", "Original text")
         
         success = vector_store.update_memory(
-            "test_collection",
-            memory_id,
-            text="Updated text"
+            collection_name="test_collection",
+            memory_id=memory_id,
+            text="Updated text",
+            metadata={"updated": True}
         )
         assert success is True
         
         memory = vector_store.get_memory("test_collection", memory_id)
-        assert memory["text"] == "Updated text"
-    
+        assert memory["content"] == "Updated text"
+        assert memory["metadata"]["updated"] is True
+
     def test_delete_memory(self, vector_store):
         memory_id = vector_store.add_memory("test_collection", "Delete me")
         
@@ -115,51 +120,28 @@ class TestVectorStore:
         
         memory = vector_store.get_memory("test_collection", memory_id)
         assert memory is None
-    
-    def test_collection_stats(self, vector_store):
-        vector_store.add_memories_batch("test_collection", ["A", "B", "C"])
-        
-        stats = vector_store.get_collection_stats("test_collection")
-        assert stats["name"] == "test_collection"
-        assert stats["count"] == 3
-    
+
     def test_list_collections(self, vector_store):
-        vector_store.get_or_create_collection("collection1")
-        vector_store.get_or_create_collection("collection2")
-        
+        vector_store.get_or_create_collection("extra_collection")
         collections = vector_store.list_collections()
-        assert "collection1" in collections
-        assert "collection2" in collections
+        assert "conversations" in collections
+        assert "extra_collection" in collections
 
-
-class TestMemoryManager:
-    @pytest.fixture
-    def memory_manager(self, temp_dir):
-        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
-            mock_embed.return_value = MockEmbeddingFunction()
-            return MemoryManager()
-    
-    def test_remember(self, memory_manager):
-        memory_id = memory_manager.remember("User likes Python", memory_type="user")
-        assert memory_id is not None
-    
-    def test_recall(self, memory_manager):
-        memory_manager.remember("Python is a programming language", memory_type="fact")
-        memory_manager.remember("JavaScript is also a language", memory_type="fact")
+    def test_get_collection_stats(self, vector_store):
+        vector_store.add_memory("test_stats", "Memory 1")
+        vector_store.add_memory("test_stats", "Memory 2")
         
-        memories = memory_manager.recall("programming language", memory_type="fact", n_results=2)
-        assert len(memories) > 0
-    
-    def test_forget(self, memory_manager):
-        memory_id = memory_manager.remember("Forget this", memory_type="user")
-        success = memory_manager.forget(memory_id, memory_type="user")
+        stats = vector_store.get_collection_stats("test_stats")
+        assert stats["name"] == "test_stats"
+        assert stats["count"] == 2
+
+    def test_delete_collection(self, vector_store):
+        vector_store.get_or_create_collection("to_delete")
+        assert "to_delete" in vector_store.list_collections()
+        
+        success = vector_store.delete_collection("to_delete")
         assert success is True
-    
-    def test_get_stats(self, memory_manager):
-        memory_manager.remember("Test memory", memory_type="user")
-        stats = memory_manager.get_stats()
-        assert "user_memories" in stats
-        assert stats["user_memories"]["count"] >= 1
+        assert "to_delete" not in vector_store.list_collections()
 
 
 class TestConversationHistory:
@@ -442,20 +424,6 @@ class TestProfileManager:
 
 
 class TestMemoryIntegration:
-    def test_full_memory_workflow(self, temp_dir):
-        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
-            mock_embed.return_value = MockEmbeddingFunction()
-            memory_manager = MemoryManager()
-            
-            memory_id1 = memory_manager.remember("I love Python programming", "user")
-            memory_id2 = memory_manager.remember("Python is great for data science", "fact")
-            
-            memories = memory_manager.recall("Python", n_results=5)
-            assert len(memories) >= 0
-            
-            success = memory_manager.forget(memory_id1, "user")
-            assert success is True
-    
     def test_conversation_with_memory(self, temp_dir):
         with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
             mock_embed.return_value = MockEmbeddingFunction()

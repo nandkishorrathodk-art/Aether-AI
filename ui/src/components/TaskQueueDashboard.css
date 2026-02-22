@@ -1,0 +1,284 @@
+/* Task Queue Dashboard - Jarvis-style HUD overlay */
+
+.task-dashboard {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 340px;
+    z-index: 9999;
+    background: linear-gradient(135deg, rgba(0, 5, 20, 0.92), rgba(0, 15, 40, 0.95));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-family: 'Courier New', monospace;
+    color: #c0e8ff;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 10, 30, 0.5);
+    animation: hud-appear 0.3s ease-out;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+@keyframes hud-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+    padding-bottom: 8px;
+}
+
+.jarvis-logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #00d4ff;
+    text-shadow: 0 0 12px rgba(0, 212, 255, 0.8);
+}
+
+.status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.bugs-badge {
+    background: linear-gradient(135deg, #ff4500, #ff8c00);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    animation: bug-pulse 1s ease-in-out infinite;
+    box-shadow: 0 0 12px rgba(255, 140, 0, 0.5);
+}
+
+@keyframes bug-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* ── Live narration bar ───────────────────────────────────────────────────── */
+.narration-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: rgba(0, 212, 255, 0.07);
+    border-left: 3px solid #00d4ff;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    animation: narration-slide 0.3s ease-out;
+}
+
+@keyframes narration-slide {
+    from {
+        opacity: 0;
+        transform: translateX(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.narration-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.narration-text {
+    color: #a0d8f0;
+    font-style: italic;
+}
+
+/* ── Task list ────────────────────────────────────────────────────────────── */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 212, 255, 0.12);
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.task-item.task-complete {
+    border-color: rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.04);
+}
+
+.task-item.task-error {
+    border-color: rgba(255, 68, 68, 0.3);
+    background: rgba(255, 68, 68, 0.04);
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.task-status-icon {
+    font-size: 13px;
+}
+
+.task-name {
+    font-size: 11px;
+    color: #80c8e8;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-step-count {
+    font-size: 10px;
+    color: #4a90b8;
+    background: rgba(0, 120, 180, 0.2);
+    padding: 1px 7px;
+    border-radius: 10px;
+}
+
+/* ── Progress bar ─────────────────────────────────────────────────────────── */
+.task-progress-bar {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.task-progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease-out;
+    box-shadow: 0 0 8px currentColor;
+}
+
+.task-narration {
+    font-size: 10px;
+    color: #607090;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* ── Scan progress ────────────────────────────────────────────────────────── */
+.scan-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.scan-label {
+    font-size: 10px;
+    color: #608090;
+    white-space: nowrap;
+}
+
+.scan-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.scan-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff, #0080ff);
+    border-radius: 4px;
+    transition: width 0.5s ease-out;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.scan-pct {
+    font-size: 10px;
+    color: #00d4ff;
+    min-width: 32px;
+}
+
+/* ── Multilingual & Thinking Styles ────────────────────────────────────────── */
+.language-hud-container {
+    margin-top: 12px;
+    border-top: 1px dashed rgba(0, 212, 255, 0.15) !important;
+}
+
+.thinking-pulse {
+    animation: thinking-glow 1.5s ease-in-out infinite;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(168, 85, 247, 0.1);
+}
+
+@keyframes thinking-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(168, 85, 247, 0.2);
+        opacity: 0.8;
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        opacity: 1;
+    }
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+.task-dashboard::-webkit-scrollbar {
+    width: 4px;
+}
+
+.task-dashboard::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.task-dashboard::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.3);
+    border-radius: 4px;
+}

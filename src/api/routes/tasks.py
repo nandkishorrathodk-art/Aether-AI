@@ -1,7 +1,10 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi.responses import StreamingResponse
 from typing import Dict, List, Optional
 import uuid
 import time
+import json
+import asyncio
 from datetime import datetime
 from src.api.schemas.tasks import (
     CreateTaskRequest,
@@ -13,17 +16,29 @@ from src.api.schemas.tasks import (
 )
 from src.utils.logger import get_logger
 
+<<<<<<< Updated upstream
 # REAL EXECUTION IMPORTS
 from src.features.automation import DesktopAutomation
 from src.features.browser import BrowserAutomation
 from src.features.vision import VisionSystem
 import subprocess
 import os
+=======
+from src.action.automation.command_registry import get_command_registry
+from src.action.automation.script_executor import SafeScriptExecutor
+from src.features.automation import DesktopAutomation
+from src.action.automation.file_operations import SafeFileOperations
+>>>>>>> Stashed changes
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/api/v1/tasks", tags=["tasks"])
 
 tasks_store: Dict[str, dict] = {}
+
+# Global executors
+registry = get_command_registry()
+script_executor = SafeScriptExecutor()
+file_ops = SafeFileOperations()
 
 
 class TaskExecutor:
@@ -35,6 +50,7 @@ class TaskExecutor:
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
+<<<<<<< Updated upstream
             
             logger.info(f"[REAL EXECUTION] Automation task {task_id}: {command}")
             
@@ -87,12 +103,27 @@ class TaskExecutor:
                 "parameters": parameters,
                 "output": result_output
             }
+=======
+            tasks_store[task_id].setdefault("logs", [])
+            logger.info(f"Executing automation task {task_id}: {command}")
             
-            tasks_store[task_id]["status"] = TaskStatus.completed
+            def log_callback(msg: str):
+                tasks_store[task_id]["logs"].append(msg)
+>>>>>>> Stashed changes
+            
+            log_callback(f"Starting {command} with params {parameters}")
+            result = registry.execute_command(command, **parameters)
+            
+            tasks_store[task_id]["status"] = TaskStatus.completed if result.success else TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
+<<<<<<< Updated upstream
             tasks_store[task_id]["result"] = result
             logger.info(f"[SUCCESS] Task {task_id} completed: {result_output}")
             
+=======
+            tasks_store[task_id]["result"] = result.to_dict()
+            tasks_store[task_id]["error"] = result.error
+>>>>>>> Stashed changes
         except Exception as e:
             logger.error(f"[FAILED] Task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
@@ -105,6 +136,7 @@ class TaskExecutor:
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
+<<<<<<< Updated upstream
             
             logger.info(f"[REAL EXECUTION] Script task {task_id}: {command}")
             
@@ -129,9 +161,25 @@ class TaskExecutor:
                 "return_code": result.returncode,
                 "success": result.returncode == 0
             }
+=======
+            tasks_store[task_id].setdefault("logs", [])
+            logger.info(f"Executing script task {task_id}: {command}")
             
-            tasks_store[task_id]["status"] = TaskStatus.completed
+            args = parameters.get("args", [])
+            timeout = parameters.get("timeout", 30)
+>>>>>>> Stashed changes
+            
+            def log_callback(msg: str):
+                tasks_store[task_id]["logs"].append(msg)
+                
+            execution_result = script_executor.execute_script(command, args=args, timeout=timeout, output_callback=log_callback)
+            
+            result = execution_result.to_dict()
+            result["command"] = command
+            
+            tasks_store[task_id]["status"] = TaskStatus.completed if execution_result.success else TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
+<<<<<<< Updated upstream
             tasks_store[task_id]["result"] = output
             logger.info(f"[SUCCESS] Script task {task_id} completed with code {result.returncode}")
             
@@ -140,6 +188,9 @@ class TaskExecutor:
             tasks_store[task_id]["status"] = TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
             tasks_store[task_id]["error"] = f"Command timed out after {timeout}s"
+=======
+            tasks_store[task_id]["result"] = result
+>>>>>>> Stashed changes
         except Exception as e:
             logger.error(f"[FAILED] Task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
@@ -152,6 +203,7 @@ class TaskExecutor:
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
+<<<<<<< Updated upstream
             
             logger.info(f"[REAL EXECUTION] GUI control task {task_id}: {command}")
             
@@ -183,13 +235,31 @@ class TaskExecutor:
                 "command": command,
                 "parameters": parameters,
                 "output": result_output
-            }
+=======
+            tasks_store[task_id].setdefault("logs", [])
+            logger.info(f"Executing GUI control task {task_id}: {command}")
             
-            tasks_store[task_id]["status"] = TaskStatus.completed
+            cmd_map = {
+                "type": "type_text",
+                "press": "press_key",
+                "click_at": "click",
+                "screenshot": "screenshot"
+>>>>>>> Stashed changes
+            }
+            mapped_cmd = cmd_map.get(command.lower(), command)
+            
+            result = registry.execute_command(mapped_cmd, **parameters)
+            
+            tasks_store[task_id]["status"] = TaskStatus.completed if result.success else TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
+<<<<<<< Updated upstream
             tasks_store[task_id]["result"] = result
             logger.info(f"[SUCCESS] GUI task {task_id} completed: {result_output}")
             
+=======
+            tasks_store[task_id]["result"] = result.to_dict()
+            tasks_store[task_id]["error"] = result.error
+>>>>>>> Stashed changes
         except Exception as e:
             logger.error(f"[FAILED] GUI task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
@@ -202,6 +272,7 @@ class TaskExecutor:
         try:
             tasks_store[task_id]["status"] = TaskStatus.running
             tasks_store[task_id]["started_at"] = datetime.now()
+<<<<<<< Updated upstream
             
             logger.info(f"[REAL EXECUTION] File operation task {task_id}: {command}")
             
@@ -261,13 +332,32 @@ class TaskExecutor:
                 "command": command,
                 "parameters": parameters,
                 "output": result_output
-            }
+=======
+            tasks_store[task_id].setdefault("logs", [])
+            logger.info(f"Executing file operation task {task_id}: {command}")
             
-            tasks_store[task_id]["status"] = TaskStatus.completed
+            cmd_map = {
+                "read": "read_file",
+                "write": "create_file",
+                "delete": "delete_file",
+                "list": "list_files",
+                "search": "search"
+>>>>>>> Stashed changes
+            }
+            mapped_cmd = cmd_map.get(command.lower(), command)
+            
+            result = registry.execute_command(mapped_cmd, **parameters)
+            
+            tasks_store[task_id]["status"] = TaskStatus.completed if result.success else TaskStatus.failed
             tasks_store[task_id]["completed_at"] = datetime.now()
+<<<<<<< Updated upstream
             tasks_store[task_id]["result"] = result
             logger.info(f"[SUCCESS] File task {task_id} completed: {result_output}")
             
+=======
+            tasks_store[task_id]["result"] = result.to_dict()
+            tasks_store[task_id]["error"] = result.error
+>>>>>>> Stashed changes
         except Exception as e:
             logger.error(f"[FAILED] File task {task_id} error: {e}")
             tasks_store[task_id]["status"] = TaskStatus.failed
@@ -276,9 +366,37 @@ class TaskExecutor:
     
     @staticmethod
     async def execute_system_command(task_id: str, command: str, parameters: dict):
+<<<<<<< Updated upstream
         """Execute REAL system commands - delegates to execute_script for actual execution"""
         # System commands are just subprocess executions
         await TaskExecutor.execute_script(task_id, command, parameters)
+=======
+        try:
+            tasks_store[task_id]["status"] = TaskStatus.running
+            tasks_store[task_id]["started_at"] = datetime.now()
+            tasks_store[task_id].setdefault("logs", [])
+            logger.info(f"Executing system command task {task_id}: {command}")
+            
+            args = parameters.get("args", [])
+            timeout = parameters.get("timeout", 30)
+            
+            def log_callback(msg: str):
+                tasks_store[task_id]["logs"].append(msg)
+                
+            execution_result = script_executor.execute_command(command, args=args, timeout=timeout, output_callback=log_callback)
+            
+            result = execution_result.to_dict()
+            result["command"] = command
+            
+            tasks_store[task_id]["status"] = TaskStatus.completed if execution_result.success else TaskStatus.failed
+            tasks_store[task_id]["completed_at"] = datetime.now()
+            tasks_store[task_id]["result"] = result
+        except Exception as e:
+            logger.error(f"Task {task_id} failed: {e}")
+            tasks_store[task_id]["status"] = TaskStatus.failed
+            tasks_store[task_id]["completed_at"] = datetime.now()
+            tasks_store[task_id]["error"] = str(e)
+>>>>>>> Stashed changes
 
 
 executor = TaskExecutor()
@@ -506,3 +624,46 @@ async def get_task_stats():
     except Exception as e:
         logger.error(f"Error getting task stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/{task_id}/stream")
+async def stream_task_events(task_id: str):
+    if task_id not in tasks_store:
+        raise HTTPException(status_code=404, detail="Task not found")
+        
+    async def event_generator():
+        task = tasks_store[task_id]
+        last_status = None
+        last_log_idx = 0
+        
+        while True:
+            current_status = task["status"]
+            
+            # Yield any new logs
+            logs = task.get("logs", [])
+            if len(logs) > last_log_idx:
+                new_logs = logs[last_log_idx:]
+                last_log_idx = len(logs)
+                for log_line in new_logs:
+                    yield f"data: {json.dumps({'type': 'log', 'content': log_line.strip()})}\n\n"
+                    
+            # Yield status change
+            if current_status != last_status:
+                payload = {
+                    'type': 'status', 
+                    'status': current_status
+                }
+                
+                # Only include result/error once it's done to prevent huge payloads every tick
+                if current_status in [TaskStatus.completed, TaskStatus.failed, TaskStatus.cancelled]:
+                    payload['result'] = task.get('result')
+                    payload['error'] = task.get('error')
+                    
+                yield f"data: {json.dumps(payload)}\n\n"
+                last_status = current_status
+                
+            if current_status in [TaskStatus.completed, TaskStatus.failed, TaskStatus.cancelled]:
+                break
+                
+            await asyncio.sleep(0.5)
+            
+    return StreamingResponse(event_generator(), media_type="text/event-stream")

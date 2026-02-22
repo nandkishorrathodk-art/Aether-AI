@@ -1,0 +1,85 @@
+# Alert rules for Aether AI API
+groups:
+  - name: api_alerts
+    interval: 30s
+    rules:
+      # High error rate
+      - alert: HighAPIErrorRate
+        expr: |
+          (
+            sum(rate(api_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(api_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "High API error rate detected"
+          description: "API error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+
+      # Slow responses
+      - alert: SlowAPIResponses
+        expr: |
+          histogram_quantile(0.99,
+            rate(api_request_duration_seconds_bucket[5m])
+          ) > 1.0
+        for: 10m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "Slow API responses detected"
+          description: "p99 latency is {{ $value }}s (threshold: 1s)"
+
+      # High memory usage
+      - alert: HighMemoryUsage
+        expr: |
+          (
+            process_resident_memory_bytes{job="aether-api"}
+            /
+            (8 * 1024 * 1024 * 1024)
+          ) > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value | humanizePercentage }} of 8GB limit"
+
+      # API down
+      - alert: APIDown
+        expr: up{job="aether-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "Aether AI API is down"
+          description: "API has been unreachable for more than 1 minute"
+
+      # High request rate
+      - alert: HighRequestRate
+        expr: |
+          sum(rate(api_requests_total[5m])) > 1000
+        for: 5m
+        labels:
+          severity: info
+          component: api
+        annotations:
+          summary: "High request rate detected"
+          description: "Request rate is {{ $value }} req/s (threshold: 1000 req/s)"
+
+      # Cost threshold exceeded
+      - alert: HighAICost
+        expr: |
+          increase(ai_cost_total_usd[1h]) > 50
+        for: 1h
+        labels:
+          severity: warning
+          component: ai
+        annotations:
+          summary: "High AI API cost detected"
+          description: "AI cost in last hour: ${{ $value }} (threshold: $50/hour)"

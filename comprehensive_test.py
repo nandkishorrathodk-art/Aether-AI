@@ -85,8 +85,8 @@ def test_memory_system():
         from src.cognitive.memory.conversation_history import ConversationHistory
         
         mem = MemoryManager()
-        profile = UserProfile(user_id="test_user")
-        history = ConversationHistory()
+        _profile = UserProfile(user_id="test_user")
+        _history = ConversationHistory()
         
         print("  - MemoryManager: initialized")
         print("  - UserProfile: initialized")
@@ -125,7 +125,7 @@ def test_voice_components():
         
         # Test TTS
         config = TTSConfig()
-        tts = TextToSpeech(config=config)
+        _tts = TextToSpeech(config=config)
         print("  - TTS: TextToSpeech initialized")
         
         print("  [OK] Voice components ready")

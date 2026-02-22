@@ -1,8 +1,8 @@
 {
   "mouse_click": {
-    "allowed": true,
+    "allowed": false,
     "require_confirmation": true,
-    "reason": "Default permission"
+    "reason": "Test block"
   },
   "mouse_move": {
     "allowed": false,

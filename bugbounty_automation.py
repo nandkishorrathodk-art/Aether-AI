@@ -34,7 +34,7 @@ class Finding:
     proof_of_concept: str
     recommendation: str
     status: str = "Open"
-    references: List[str] = None
+    references: Optional[List[str]] = None
     
     def __post_init__(self):
         if self.references is None:
@@ -123,7 +123,8 @@ class BugBountyAutomation:
                                 ]
                             )
                             self.findings.append(finding)
-            except:
+            except Exception as e:
+                # Log or handle exception properly
                 pass
                 
     def scan_injection_vulnerabilities(self):
@@ -151,8 +152,9 @@ class BugBountyAutomation:
             ]
         }
         
+        PYTHON_SRC_GLOB = "src/**/*.py"
         for vuln_type, patterns in injection_patterns.items():
-            for py_file in self.project_root.rglob("src/**/*.py"):
+            for py_file in self.project_root.rglob(PYTHON_SRC_GLOB):
                 if self._should_skip(py_file):
                     continue
                     
@@ -181,7 +183,7 @@ class BugBountyAutomation:
                                         references=[f"https://cwe.mitre.org/data/definitions/{cwe.split('-')[1]}.html"]
                                     )
                                     self.findings.append(finding)
-                except:
+                except Exception:
                     pass
                     
     def scan_authentication_issues(self):
@@ -208,12 +210,12 @@ class BugBountyAutomation:
                             description="API endpoints exposed without authentication middleware",
                             impact="Unauthorized users can access sensitive API functionality and data",
                             affected_files=[str(route_file.relative_to(self.project_root))],
-                            proof_of_concept=f"curl http://localhost:8000/api/v1/... -X POST (no auth required)",
+                            proof_of_concept="curl http://localhost:8000/api/v1/... -X POST (no auth required)",
                             recommendation="Implement JWT/OAuth authentication, add Depends(verify_token) to all routes",
                             references=["https://owasp.org/www-project-api-security/"]
                         )
                         self.findings.append(finding)
-            except:
+            except Exception:
                 pass
                 
     def scan_cryptography(self):
@@ -251,7 +253,7 @@ class BugBountyAutomation:
                                     references=[f"https://cwe.mitre.org/data/definitions/{cwe.split('-')[1]}.html"]
                                 )
                                 self.findings.append(finding)
-            except:
+            except Exception:
                 pass
                 
     def scan_data_exposure(self):
@@ -288,7 +290,7 @@ class BugBountyAutomation:
                                     )
                                     self.findings.append(finding)
                                     break
-            except:
+            except Exception:
                 pass
                 
     def scan_business_logic(self):
@@ -316,7 +318,7 @@ class BugBountyAutomation:
                             references=["https://owasp.org/www-project-api-security/"]
                         )
                         self.findings.append(finding)
-            except:
+            except Exception:
                 pass
                 
     def generate_professional_report(self):
@@ -359,12 +361,12 @@ class BugBountyAutomation:
             f.write(report_html)
             
         # Print summary
-        print(f"\n[+] Scan Complete!")
+        print("\n[+] Scan Complete!")
         print(f"    Duration: {duration:.1f} seconds")
         print(f"    Files Scanned: {self.scan_stats['files_scanned']}")
         print(f"    Lines Scanned: {self.scan_stats['lines_scanned']:,}")
         print(f"    Total Findings: {len(self.findings)}")
-        print(f"\n[+] Severity Breakdown:")
+        print("\n[+] Severity Breakdown:")
         print(f"    CRITICAL: {len(by_severity[Severity.CRITICAL])}")
         print(f"    HIGH: {len(by_severity[Severity.HIGH])}")
         print(f"    MEDIUM: {len(by_severity[Severity.MEDIUM])}")
@@ -389,7 +391,7 @@ class BugBountyAutomation:
         else:
             print("    Status: LOW RISK - Good security posture")
             
-        print(f"\n[+] Reports Generated:")
+        print("\n[+] Reports Generated:")
         print(f"    Markdown: {md_path.name}")
         print(f"    JSON: {json_path.name}")
         print(f"    HTML: {html_path.name}")

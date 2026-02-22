@@ -3,7 +3,7 @@ import os
 import sys
 import tempfile
 import time
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Callable
 from pathlib import Path
 import threading
 import queue
@@ -65,7 +65,8 @@ class ScriptExecutor:
         script_path: str,
         args: Optional[List[str]] = None,
         env_vars: Optional[Dict[str, str]] = None,
-        timeout: Optional[int] = None
+        timeout: Optional[int] = None,
+        output_callback: Optional[Callable[[str], None]] = None
     ) -> ScriptExecutionResult:
         timeout = timeout or self.timeout
         args = args or []
@@ -85,7 +86,7 @@ class ScriptExecutor:
             )
         
         try:
-            return self._execute_subprocess(script_path, args, env_vars, timeout)
+            return self._execute_subprocess(script_path, args, env_vars, timeout, output_callback)
         except Exception as e:
             logger.error(f"Script execution failed: {e}")
             return ScriptExecutionResult(
@@ -98,7 +99,8 @@ class ScriptExecutor:
         command: str,
         args: Optional[List[str]] = None,
         timeout: Optional[int] = None,
-        shell: bool = True
+        output_callback: Optional[Callable[[str], None]] = None,
+        **kwargs
     ) -> ScriptExecutionResult:
         timeout = timeout or self.timeout
         args = args or []
@@ -109,10 +111,10 @@ class ScriptExecutor:
                 error=f"Command not allowed: {command}"
             )
         
-        cmd_list = [command] + args if not shell else f"{command} {' '.join(args)}"
+        cmd_list = [command] + args
         
         try:
-            return self._execute_subprocess(cmd_list, [], {}, timeout, shell=shell)
+            return self._execute_subprocess(cmd_list, [], {}, timeout, output_callback, **kwargs)
         except Exception as e:
             logger.error(f"Command execution failed: {e}")
             return ScriptExecutionResult(
@@ -147,67 +149,97 @@ class ScriptExecutor:
         args: List[str],
         env_vars: Optional[Dict[str, str]],
         timeout: int,
-        shell: bool = False
+        output_callback: Optional[Callable[[str], None]] = None,
+        **kwargs
     ) -> ScriptExecutionResult:
         start_time = time.time()
         
+        shell = kwargs.get('shell', False)
         env = os.environ.copy()
         if env_vars:
             env.update(env_vars)
-        
-        if not shell and isinstance(command, (str, Path)):
-            cmd_list = [str(command)] + args
+
+        if not shell:
+            if isinstance(command, (str, Path)):
+                cmd_name = str(command).lower()
+                cmd_list = [str(command)] + args
+            elif isinstance(command, list) and len(command) > 0:
+                cmd_name = str(command[0]).lower()
+                cmd_list = command
+            else:
+                cmd_name = ""
+                cmd_list = command
+
+            if os.name == 'nt' and cmd_name in ['echo', 'dir', 'type', 'copy', 'move', 'del', 'mkdir', 'rmdir']:
+                cmd_list = ["cmd.exe", "/c"] + cmd_list
         else:
-            cmd_list = command
+            cmd_list = command if isinstance(command, str) else " ".join(map(str, command))
         
         try:
             process = subprocess.Popen(
                 cmd_list,
                 stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
                 cwd=self.working_directory,
                 env=env,
                 shell=shell,
-                text=True
+                text=True,
+                bufsize=1,
+                universal_newlines=True
             )
             
+            output_lines = []
+            
+            def read_output():
+                for line in iter(process.stdout.readline, ""):
+                    output_lines.append(line)
+                    if output_callback:
+                        output_callback(line)
+                process.stdout.close()
+            
+            reader_thread = threading.Thread(target=read_output)
+            reader_thread.start()
+            
             try:
-                stdout, stderr = process.communicate(timeout=timeout)
-                execution_time = time.time() - start_time
-                
-                if len(stdout) > self.max_output_size:
-                    stdout = stdout[:self.max_output_size] + "\n... (output truncated)"
-                if len(stderr) > self.max_output_size:
-                    stderr = stderr[:self.max_output_size] + "\n... (output truncated)"
-                
-                success = process.returncode == 0
-                
-                return ScriptExecutionResult(
-                    success=success,
-                    output=stdout,
-                    error=stderr,
-                    exit_code=process.returncode,
-                    execution_time=execution_time,
-                    timeout=False
-                )
+                process.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
                 process.kill()
-                stdout, stderr = process.communicate()
-                execution_time = time.time() - start_time
+                process.wait()
+                reader_thread.join()
                 
                 return ScriptExecutionResult(
                     success=False,
-                    output=stdout or "",
-                    error=f"Execution timed out after {timeout} seconds\n{stderr}",
-                    exit_code=-1,
-                    execution_time=execution_time,
-                    timeout=True
+                    output="".join(output_lines),
+                    error=f"Command timed out after {timeout} seconds",
+                    timeout=True,
+                    execution_time=timeout
                 )
+            
+            reader_thread.join()
+            execution_time = time.time() - start_time
+            
+            stdout = "".join(output_lines)
+            if len(stdout) > self.max_output_size:
+                stdout = stdout[:self.max_output_size] + "\n... (output truncated)"
+            
+            success = process.returncode == 0
+            
+            return ScriptExecutionResult(
+                success=success,
+                output=stdout,
+                error="" if success else "Command failed",
+                exit_code=process.returncode,
+                execution_time=execution_time,
+                timeout=False
+            )
+
         except Exception as e:
             execution_time = time.time() - start_time
+            logger.error(f"Subprocess execution failed: {e}")
             return ScriptExecutionResult(
                 success=False,
                 error=str(e),
+                exit_code=1,
                 execution_time=execution_time
             )
 

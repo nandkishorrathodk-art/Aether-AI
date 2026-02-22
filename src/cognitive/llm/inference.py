@@ -35,6 +35,7 @@ class IntentType(Enum):
     AUTOMATION = "automation"
     CREATIVE = "creative"
     SECURITY = "security"
+    HUNT = "hunt"          # Autonomous bug bounty hunting
     UNKNOWN = "unknown"
 
 
@@ -101,6 +102,11 @@ class IntentClassifier:
                  r'\b(scan|hack|exploit|vulnerability|pentest|recon|nmap)\b',
                  r'\b(log|monitor|alert|threat|security|soc|incident)\b',
                  r'\b(check ip|investigate|analyze traffic)\b',
+            ],
+            IntentType.HUNT: [
+                r'\b(hunt|bug bounty|hackerone|bugcrowd|autonomous|auto.?hunt)\b',
+                r'\b(find bugs|dhundo bug|bug dhundo|vulnerability dhundo)\b',
+                r'\b(earn money|paise|bounty|reward|program select)\b',
             ],
             IntentType.QUERY: [
                 r'\b(what|when|where|who|why|how|which)\b',
@@ -223,6 +229,7 @@ class ConversationEngine:
 
         context_mgr.add_message("user", request.user_input)
 
+<<<<<<< Updated upstream
         # INJECT CONVERSATION STATE CONTEXT (Learned Facts, Task Progress, etc.)
         conv_context = conv_state.get_summary()
         
@@ -243,7 +250,45 @@ class ConversationEngine:
         
         enhanced_prompt = "\n".join(context_parts)
 
+=======
+        # 🤖 Notify ProactiveAgent of user activity (tracks silence, context)
+>>>>>>> Stashed changes
         try:
+            from src.cognitive.agents.proactive_agent import get_proactive_agent
+            get_proactive_agent().on_user_message(request.user_input)
+        except Exception:
+            pass
+
+        # === Upgrade #5: Detect emotion from user text ===
+        _emotion = None
+        try:
+            from src.perception.voice.emotion_detector import get_emotion_detector, Emotion as _Em
+            _ed = get_emotion_detector()
+            _emotion, _conf = _ed.detect(request.user_input)
+            if str(_emotion) != str(_Em.NEUTRAL):
+                logger.info(f"🎭 Emotion detected: {_emotion.value}")
+        except Exception:
+            pass
+
+        try:
+            # === Tier 3: Announce Thinking (Streaming Narration) ===
+            try:
+                from src.pipeline.voice_pipeline import get_pipeline
+                _pipe = get_pipeline()
+                if _pipe and hasattr(_pipe, 'narrate'):
+                    _pipe.narrate("Hmm... soch raha hoon, sir...")
+            except Exception:
+                pass
+
+            # === Upgrade #1: Inject memory context into system_prompt ===
+            try:
+                from src.cognitive.memory.persistent_memory import get_memory_manager
+                _mem_ctx = get_memory_manager().get_relevant_context(request.user_input)
+                if _mem_ctx:
+                    system_prompt = system_prompt + "\n\n" + _mem_ctx
+            except Exception:
+                pass
+
             ai_response = await model_loader.generate(
                 prompt=enhanced_prompt,
                 task_type=task_type,
@@ -253,6 +298,7 @@ class ConversationEngine:
                 max_tokens=request.max_tokens
             )
 
+<<<<<<< Updated upstream
             # DEBUG: Log raw response
             logger.info(f"[AI RESPONSE] RAW CONTENT: '{ai_response.content}'")
 
@@ -380,6 +426,49 @@ I'm ready to execute immediately, Sir."""
 
             # Execute Detected Actions (God Mode) + Track in Conversation State
             executed_actions = await self._execute_detected_actions(ai_response.content, request.session_id)
+=======
+            # === Tier 1: Execute Detected Actions (God Mode + HUNT) ===
+            await self._execute_detected_actions(ai_response.content)
+>>>>>>> Stashed changes
+
+            # DEBUG: Log raw response
+            logger.info(f"🛑 RAW AI CONTENT: '{ai_response.content}'")
+
+            # Safeguard: Check for Echo / "You said:" pattern (Case Insensitive & Loose)
+            content_clean = ai_response.content.strip().lower()
+            user_input_clean = request.user_input.strip().lower()
+            
+            if "you said:" in content_clean or \
+               user_input_clean in content_clean[:len(user_input_clean)+20] or \
+               content_clean == user_input_clean:
+               
+                logger.warning(f"⚠️ DETECTED ECHO RESPONSE: '{ai_response.content}'")
+                
+                # Fallback mechanism
+                fallback_response = "I heard you. How can I help with that?"
+                
+                # Update response content
+                ai_response.content = fallback_response
+                formatted_content = fallback_response
+                enhanced_content = fallback_response
+                
+                # Correct the metadata in response
+                response = ConversationResponse(
+                    content=enhanced_content,
+                    intent=intent,
+                    session_id=request.session_id,
+                    ai_response=ai_response,
+                    context_stats=context_mgr.get_context_stats(),
+                    metadata={
+                        "task_type": task_type.value,
+                        "system_prompt_type": system_prompt_type,
+                        "original_content": "ECHO_DETECTED_AND_SUPPRESSED",
+                        "personality_enhanced": False,
+                        "safeguard_triggered": True
+                    }
+                )
+                logger.info(f"Safeguard triggered. Returned fallback response.")
+                return response
 
             formatted_content = self.formatter.format_response(
                 ai_response.content,
@@ -412,6 +501,26 @@ I'm ready to execute immediately, Sir."""
                 turn_completed=True,
                 action_executed=(len(executed_actions) > 0)
             )
+
+            # === Upgrade #1: Auto-save conversation to persistent memory ===
+            try:
+                from src.cognitive.memory.persistent_memory import get_memory_manager
+                get_memory_manager().save_conversation(
+                    user_msg=request.user_input,
+                    ai_response=ai_response.content,
+                    session_id=request.session_id
+                )
+            except Exception as _e:
+                logger.debug(f"Memory save skipped: {_e}")
+
+            # === Upgrade #5: Adapt response to detected emotion ===
+            if _emotion is not None:
+                try:
+                    from src.perception.voice.emotion_detector import get_emotion_detector
+                    _ed = get_emotion_detector()
+                    enhanced_content = _ed.adapt_response(enhanced_content, _emotion)
+                except Exception as _e:
+                    logger.debug(f"Emotion adapt skipped: {_e}")
 
             response = ConversationResponse(
                 content=enhanced_content,
@@ -585,32 +694,30 @@ I'm ready to execute immediately, Sir."""
                     logger.info(f"Log Analysis: {result[:200]}...")
                 
                 elif command == "SETUP":
-                    # Multi-step task execution
                     logger.info(f"⚡ Starting COMPLETE SETUP for: {args}")
-                    
+                    _pipe = None
+                    try:
+                        from src.pipeline.voice_pipeline import get_pipeline
+                        _pipe = get_pipeline()
+                    except Exception:
+                        pass
+
                     if "burp" in args.lower() or "burpsuite" in args.lower():
-                        # BurpSuite complete setup
                         from src.action.tasks.burpsuite_tasks import setup_burpsuite_and_scan
-                        
-                        # Extract target URL if provided
                         target = None
                         if "http" in args:
                             url_match = re.search(r'https?://[^\s]+', args)
                             if url_match:
                                 target = url_match.group(0)
-                        
-                        # Progress callback to speak updates
+
                         async def progress_callback(progress):
                             try:
-                                from src.pipeline.voice_pipeline import get_pipeline
-                                pipeline = get_pipeline()
-                                if pipeline and progress.get('current_step_description'):
-                                    pipeline.response_queue.put({
-                                        "text": f"Step {progress['current_step']}/{progress['total_steps']}: {progress['current_step_description']}",
-                                        "session_id": "task"
-                                    })
-                            except:
+                                nonlocal _pipe
+                                if _pipe and progress.get('current_step_description') and progress.get('status') == 'step_start':
+                                    _pipe.narrate(progress['current_step_description'])
+                            except Exception:
                                 pass
+<<<<<<< Updated upstream
                         
                         # Start the complete setup task
                         task_id = await setup_burpsuite_and_scan(target, progress_callback)
@@ -620,6 +727,28 @@ I'm ready to execute immediately, Sir."""
                 # Track any other commands generically
                 else:
                     conv_state.record_action(action_str, f"Executed: {command}")
+=======
+
+                        success = await setup_burpsuite_and_scan(target, progress_callback)
+                        if success:
+                            if _pipe:
+                                _pipe.narrate("Setup complete ho gaya, sir! BurpSuite ready hai. Ab kya karna hai?")
+                            logger.info(f"✅ BurpSuite complete setup finished successfully.")
+                        else:
+                            if _pipe:
+                                _pipe.narrate("Setup mein thodi problem aayi, sir. Check karein.")
+                            logger.error(f"❌ BurpSuite complete setup failed.")
+
+                elif command == "HUNT":
+                    # === Tier 2: Autonomous Bug Bounty Hunt ===
+                    logger.info(f"🕷️ Starting Autonomous Bug Hunt: {args}")
+                    try:
+                        from src.cognitive.agents.god_mode import get_god_mode_agent
+                        agent = get_god_mode_agent()
+                        asyncio.create_task(agent.execute(args or text))
+                    except Exception as e:
+                        logger.error(f"God Mode hunt start failed: {e}")
+>>>>>>> Stashed changes
 
         except Exception as e:
             logger.error(f"God Mode Action Execution Failed: {e}")
@@ -684,6 +813,7 @@ I'm ready to execute immediately, Sir."""
             IntentType.AUTOMATION: "automation",
             IntentType.CREATIVE: "conversation",
             IntentType.SECURITY: "security",
+            IntentType.HUNT: "automation",   # HUNT uses automation prompt (has HUNT command)
             IntentType.UNKNOWN: "default",
         }
         return mapping.get(intent, "default")

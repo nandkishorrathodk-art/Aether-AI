@@ -1,9 +1,7 @@
 import logging
 import numpy as np
-import whisper
-import tempfile
 import os
-from typing import Optional, Union
+from typing import Optional, Union, Callable, List
 from pathlib import Path
 from openai import OpenAI
 from .audio_utils import AudioInputHandler, AudioConfig
@@ -19,20 +17,29 @@ class SpeechToText:
         api_key: Optional[str] = None,
         language: Optional[str] = None,
         device: str = "cpu",
+<<<<<<< Updated upstream
         use_faster_whisper: bool = False
+=======
+        compute_type: str = "int8" # Optimized for CPU
+>>>>>>> Stashed changes
     ):
         self.model_name = model_name
         self.use_cloud = use_cloud
         self.language = language
         self.device = device
+<<<<<<< Updated upstream
         self.use_faster_whisper = use_faster_whisper
+=======
+        self.compute_type = compute_type
+>>>>>>> Stashed changes
         
-        self.model: Optional[whisper.Whisper] = None
+        self.model = None
         self.client: Optional[OpenAI] = None
         
         if use_cloud:
             if not api_key:
                 raise ValueError("API key required for cloud-based STT")
+            from openai import OpenAI
             self.client = OpenAI(api_key=api_key)
             logger.info("Using cloud-based OpenAI Whisper API")
         else:
@@ -40,6 +47,7 @@ class SpeechToText:
     
     def _load_local_model(self):
         try:
+<<<<<<< Updated upstream
             if self.use_faster_whisper:
                 try:
                     from faster_whisper import WhisperModel
@@ -54,8 +62,15 @@ class SpeechToText:
             logger.info(f"Loading Whisper model: {self.model_name}")
             self.model = whisper.load_model(self.model_name, device=self.device)
             logger.info(f"Whisper model loaded successfully on {self.device}")
+=======
+            from faster_whisper import WhisperModel
+            logger.info(f"Loading Faster-Whisper model: {self.model_name} on {self.device}")
+            # Faster-whisper is much more efficient than standard whisper
+            self.model = WhisperModel(self.model_name, device=self.device, compute_type=self.compute_type)
+            logger.info(f"Faster-Whisper model loaded successfully")
+>>>>>>> Stashed changes
         except Exception as e:
-            logger.error(f"Failed to load Whisper model: {e}")
+            logger.error(f"Failed to load Faster-Whisper model: {e}")
             raise
 
     def transcribe_audio(
@@ -63,45 +78,52 @@ class SpeechToText:
         audio_data: Union[np.ndarray, str, Path],
         language: Optional[str] = None,
         task: str = "transcribe",
+<<<<<<< Updated upstream
         temperature: float = 0.0,
         best_of: int = 1,
         beam_size: int = 1
+=======
+>>>>>>> Stashed changes
     ) -> dict:
         language = language or self.language
         
         if isinstance(audio_data, (str, Path)):
             audio_path = str(audio_data)
-            return self._transcribe_from_file(audio_path, language, task, temperature, best_of, beam_size)
         elif isinstance(audio_data, np.ndarray):
-            return self._transcribe_from_array(audio_data, language, task, temperature, best_of, beam_size)
+            # Convert to float32 if needed
+            if audio_data.dtype == np.int16:
+                audio_data = audio_data.astype(np.float32) / 32768.0
+            import tempfile
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+                audio_path = temp_file.name
+            
+            from .audio_utils import AudioInputHandler
+            audio_handler = AudioInputHandler()
+            # Convert back to int16 for wav saving
+            audio_int16 = (audio_data * 32768.0).astype(np.int16)
+            audio_handler.save_to_wav(audio_int16, audio_path)
+            # We'll delete this later
         else:
             raise ValueError("audio_data must be numpy array, file path, or Path object")
 
-    def _transcribe_from_array(
-        self,
-        audio_array: np.ndarray,
-        language: Optional[str],
-        task: str,
-        temperature: float,
-        best_of: int,
-        beam_size: int
-    ) -> dict:
-        if len(audio_array) == 0:
-            logger.warning("Empty audio array provided")
-            return self._empty_result()
-        
-        audio_float = audio_array.astype(np.float32) / 32768.0
-        
         if self.use_cloud:
-            return self._transcribe_cloud_from_array(audio_float, language)
+            result = self._transcribe_cloud_from_file(audio_path, language)
         else:
-            return self._transcribe_local(audio_float, language, task, temperature, best_of, beam_size)
+            result = self._transcribe_local(audio_path, language, task)
 
-    def _transcribe_from_file(
+        # Cleanup temp file if created
+        if isinstance(audio_data, np.ndarray):
+             try: os.unlink(audio_path)
+             except: pass
+
+        return result
+
+    def _transcribe_local(
         self,
         audio_path: str,
         language: Optional[str],
         task: str,
+<<<<<<< Updated upstream
         temperature: float,
         best_of: int,
         beam_size: int
@@ -133,11 +155,14 @@ class SpeechToText:
         temperature: float,
         best_of: int,
         beam_size: int
+=======
+>>>>>>> Stashed changes
     ) -> dict:
         if self.model is None:
             raise RuntimeError("Whisper model not loaded")
         
         try:
+<<<<<<< Updated upstream
             options = {
                 "task": task,
                 "temperature": temperature,
@@ -156,38 +181,37 @@ class SpeechToText:
             logger.info(f"Whisper transcription complete")
             
             confidence = self._calculate_confidence(result)
+=======
+            # Faster-whisper returns a generator of segments
+            segments, info = self.model.transcribe(
+                audio_path, 
+                beam_size=5,
+                language=language,
+                task=task,
+                initial_prompt="This is a casual conversation in Hinglish (Hindi + English). Accurately transcribe English and Hindi words."
+            )
+            
+            full_text = ""
+            segments_list = []
+            for segment in segments:
+                full_text += segment.text
+                segments_list.append({
+                    "start": segment.start,
+                    "end": segment.end,
+                    "text": segment.text,
+                    "avg_logprob": segment.avg_logprob
+                })
+>>>>>>> Stashed changes
             
             return {
-                "text": result["text"].strip(),
-                "language": result.get("language", language),
-                "segments": result.get("segments", []),
-                "confidence": confidence,
-                "source": "local"
+                "text": full_text.strip(),
+                "language": info.language,
+                "segments": segments_list,
+                "confidence": info.language_probability,
+                "source": "local_faster"
             }
         except Exception as e:
             logger.error(f"Local transcription error: {e}")
-            return self._empty_result(error=str(e))
-
-    def _transcribe_cloud_from_array(
-        self,
-        audio_array: np.ndarray,
-        language: Optional[str]
-    ) -> dict:
-        try:
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
-                temp_path = temp_file.name
-            
-            audio_handler = AudioInputHandler()
-            audio_int16 = (audio_array * 32768.0).astype(np.int16)
-            audio_handler.save_to_wav(audio_int16, temp_path)
-            
-            result = self._transcribe_cloud_from_file(temp_path, language)
-            
-            os.unlink(temp_path)
-            
-            return result
-        except Exception as e:
-            logger.error(f"Cloud transcription error: {e}")
             return self._empty_result(error=str(e))
 
     def _transcribe_cloud_from_file(
@@ -242,7 +266,7 @@ class SpeechToText:
             "language": None,
             "segments": [],
             "confidence": 0.0,
-            "source": "cloud" if self.use_cloud else "local"
+            "source": "cloud" if self.use_cloud else "local_faster"
         }
         if error:
             result["error"] = error

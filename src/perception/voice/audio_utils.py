@@ -157,22 +157,32 @@ class AudioInputHandler:
 
     def is_speech(self, audio_chunk: np.ndarray) -> bool:
         if not self.vad_enabled or self.vad is None:
-            return self.calculate_energy(audio_chunk) > AudioConfig.ENERGY_THRESHOLD
+            return bool(self.calculate_energy(audio_chunk) > AudioConfig.ENERGY_THRESHOLD)
         
         try:
+            # Energy safeguard - if energy is extremely low, it's definitely silence
+            energy = self.calculate_energy(audio_chunk)
+            if energy < 50: # Hard silence threshold
+                return False
+            
             audio_bytes = audio_chunk.tobytes()
             
             frame_size = int(self.sample_rate * AudioConfig.FRAME_DURATION_MS / 1000)
             if len(audio_chunk) < frame_size:
-                return False
+                # Force energy check for short chunks
+                return bool(energy > AudioConfig.ENERGY_THRESHOLD)
             
-            return self.vad.is_speech(audio_bytes[:frame_size * 2], self.sample_rate)
+            # VAD is primary
+            is_speech_vad = self.vad.is_speech(audio_bytes[:frame_size * 2], self.sample_rate)
+            
+            # Hybrid approach: VAD AND Energy (to avoid low-level electronic noise triggering VAD)
+            return bool(is_speech_vad and energy > (AudioConfig.ENERGY_THRESHOLD / 2))
         except Exception as e:
             logger.warning(f"VAD error, falling back to energy: {e}")
-            return self.calculate_energy(audio_chunk) > AudioConfig.ENERGY_THRESHOLD
+            return bool(self.calculate_energy(audio_chunk) > AudioConfig.ENERGY_THRESHOLD)
 
     def is_silence(self, audio_chunk: np.ndarray) -> bool:
-        return not self.is_speech(audio_chunk)
+        return bool(not self.is_speech(audio_chunk))
 
     @staticmethod
     def calculate_energy(audio_chunk: np.ndarray) -> float:

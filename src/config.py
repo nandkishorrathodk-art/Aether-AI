@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=".env" if not os.environ.get("AETHER_TESTING") and not os.environ.get("TESTING") else None,
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -34,12 +34,12 @@ class Settings(BaseSettings):
     enable_cost_tracking: bool = True
     max_cost_per_day_usd: float = 10.0
 
-    router_conversation: str = "groq"
-    router_analysis: str = "anthropic"
-    router_code: str = "groq"
-    router_creative: str = "groq"
-    router_fast: str = "groq"
-    router_vision: str = "anthropic"
+    router_conversation: str = "fireworks"
+    router_analysis: str = "fireworks"
+    router_code: str = "fireworks"
+    router_creative: str = "fireworks"
+    router_fast: str = "fireworks"
+    router_vision: str = "fireworks"
     router_reasoning: str = "fireworks"
 
     wake_word: str = "megumi"
@@ -77,7 +77,7 @@ class Settings(BaseSettings):
 
     # v0.9.0 - Screen Monitoring Settings
     enable_screen_monitoring: bool = False
-    screen_capture_interval: int = 30
+    screen_capture_interval: int = 5
     screen_monitor_save_screenshots: bool = False
     screen_monitor_data_path: Path = Path("./data/monitoring")
     

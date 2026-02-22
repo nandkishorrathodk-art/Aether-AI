@@ -67,7 +67,7 @@ class AuditLogEntry(BaseModel):
     def to_log_string(self) -> str:
         status = "SUCCESS" if self.success else "FAILED"
         confirmed_str = "CONFIRMED" if self.confirmed else "AUTO"
-        action_type_str = self.action_type.value if isinstance(self.action_type, ActionType) else self.action_type
+        action_type_str = self.action_type.value if hasattr(self.action_type, 'value') else self.action_type
         return (
             f"[{self.timestamp.isoformat()}] {status} | {confirmed_str} | "
             f"{action_type_str} | {self.parameters} | "

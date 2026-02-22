@@ -13,7 +13,6 @@ import logging
 from typing import List, Dict, Optional, Any
 from datetime import datetime
 import chromadb
-from chromadb.config import Settings
 from chromadb.utils import embedding_functions
 import json
 import os
@@ -50,7 +49,11 @@ class VectorStore:
         
         os.makedirs(persist_directory, exist_ok=True)
         
+<<<<<<< Updated upstream
         self.client = chromadb.PersistentClient(path=persist_directory)
+=======
+        self.client = chromadb.PersistentClient(path=str(persist_directory))
+>>>>>>> Stashed changes
         
         self.embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name=embedding_model
@@ -62,25 +65,88 @@ class VectorStore:
         logger.info(f"VectorStore initialized - Memory path: {persist_directory}")
     
     def _initialize_collections(self):
-        """Initialize all memory collections"""
-        collection_configs = {
-            "conversations": "User conversations and interactions",
-            "projects": "Bug bounty and coding projects",
-            "code_patterns": "Coding style, preferences, and snippets",
-            "vulnerabilities": "Discovered vulnerabilities and techniques",
-            "personal_facts": "User preferences, habits, and personal info"
+        """Initialize default collections"""
+        default_collections = [
+            "conversations", "projects", "code_patterns", 
+            "vulnerabilities", "personal_facts"
+        ]
+        for name in default_collections:
+            self.get_or_create_collection(name)
+    
+    def get_or_create_collection(self, name: str, description: Optional[str] = None):
+        """Get or create a collection by name"""
+        if name in self.collections:
+            return self.collections[name]
+        
+        try:
+            self.collections[name] = self.client.get_or_create_collection(
+                name=name,
+                embedding_function=self.embedding_function,
+                metadata={"description": description or f"Memory collection: {name}"}
+            )
+            return self.collections[name]
+        except Exception as e:
+            logger.error(f"Failed to get/create collection '{name}': {e}")
+            raise
+    
+    def add_memory(
+        self,
+        collection_name: str,
+        text: str,
+        metadata: Optional[Dict] = None,
+        memory_id: Optional[str] = None
+    ) -> str:
+        """
+        Generic method to add memory to any collection
+        """
+        timestamp = datetime.now().isoformat()
+        
+        meta = {
+            "timestamp": timestamp,
+            **(metadata or {})
         }
         
-        for name, description in collection_configs.items():
-            try:
-                self.collections[name] = self.client.get_or_create_collection(
-                    name=name,
-                    embedding_function=self.embedding_function,
-                    metadata={"description": description}
-                )
-                logger.info(f"Collection '{name}' ready")
-            except Exception as e:
-                logger.error(f"Failed to create collection '{name}': {e}")
+        if not memory_id:
+            memory_id = f"mem_{timestamp.replace(':', '-').replace('.', '-')}"
+            
+        collection = self.get_or_create_collection(collection_name)
+        collection.add(
+            documents=[text],
+            metadatas=[meta],
+            ids=[memory_id]
+        )
+        
+        return memory_id
+
+    def add_memories(
+        self,
+        collection_name: str,
+        texts: List[str],
+        metadatas: Optional[List[Dict]] = None,
+        ids: Optional[List[str]] = None
+    ) -> List[str]:
+        """
+        Add multiple memories in batch
+        """
+        if not ids:
+            timestamp = datetime.now().isoformat().replace(':', '-').replace('.', '-')
+            ids = [f"mem_{timestamp}_{i}" for i in range(len(texts))]
+            
+        if not metadatas:
+            metadatas = [{"timestamp": datetime.now().isoformat()} for _ in texts]
+            
+        collection = self.get_or_create_collection(collection_name)
+        collection.add(
+            documents=texts,
+            metadatas=metadatas,
+            ids=ids
+        )
+        
+        return ids
+
+    def add_memories_batch(self, *args, **kwargs):
+        """Alias for add_memories to match some test expectations"""
+        return self.add_memories(*args, **kwargs)
     
     def add_conversation(
         self,
@@ -286,46 +352,152 @@ Exploitation: {exploitation_technique}
     
     def search_memories(
         self,
-        query: str,
-        collection_name: str = "conversations",
-        n_results: int = 5
-    ) -> List[Dict[str, Any]]:
+        collection_name: str,
+        query: Optional[str] = None,
+        n_results: int = 5,
+        where: Optional[Dict] = None,
+        **kwargs
+    ) -> Dict[str, Any]:
         """
         Search memories using semantic similarity
         
         Args:
-            query: Search query
             collection_name: Which collection to search
+            query: Search query
             n_results: Number of results to return
+            where: Metadata filter
+            **kwargs: Support for 'query_text' and other aliases
             
         Returns:
-            List of matching memories with metadata
+            Dict containing memories, ids, and metadata
         """
+        # Handle aliases for query
+        search_query = query or kwargs.get('query_text') or kwargs.get('query_texts')
+        if isinstance(search_query, list) and search_query:
+            search_query = search_query[0]
+            
+        if not search_query:
+            logger.warning("Search query is empty")
+            return {"memories": [], "ids": [], "metadatas": [], "count": 0}
+
         if collection_name not in self.collections:
-            logger.error(f"Collection '{collection_name}' not found")
-            return []
+            self.get_or_create_collection(collection_name)
         
         try:
             results = self.collections[collection_name].query(
-                query_texts=[query],
-                n_results=n_results
+                query_texts=[search_query],
+                n_results=n_results,
+                where=where
             )
             
+            # Format results for consistent API
             memories = []
             for i in range(len(results['ids'][0])):
                 memories.append({
                     "id": results['ids'][0][i],
-                    "content": results['documents'][0][i],
+                    "text": results['documents'][0][i],
+                    "content": results['documents'][0][i], # support both
                     "metadata": results['metadatas'][0][i],
                     "distance": results['distances'][0][i] if 'distances' in results else None
                 })
             
-            logger.info(f"Found {len(memories)} memories for query: {query[:50]}")
-            return memories
+            logger.info(f"Found {len(memories)} memories in '{collection_name}' for query: {search_query[:50]}")
+            
+            # Return full structure for tests/document_rag
+            return {
+                "memories": memories,
+                "ids": results['ids'][0],
+                "documents": results['documents'][0],
+                "metadatas": results['metadatas'][0],
+                "count": len(memories)
+            }
         
         except Exception as e:
-            logger.error(f"Search failed: {e}")
+            logger.error(f"Search failed in '{collection_name}': {e}")
+            return {"memories": [], "ids": [], "metadatas": [], "count": 0}
+
+    def get_memory(self, collection_name: str, memory_id: str) -> Optional[Dict]:
+        """Retrieve a specific memory by ID"""
+        try:
+            collection = self.get_or_create_collection(collection_name)
+            result = collection.get(ids=[memory_id])
+            
+            if not result['ids']:
+                return None
+                
+            return {
+                "id": result['ids'][0],
+                "text": result['documents'][0],
+                "content": result['documents'][0],
+                "metadata": result['metadatas'][0]
+            }
+        except Exception as e:
+            logger.error(f"Failed to get memory {memory_id}: {e}")
+            return None
+
+    def update_memory(self, collection_name: str, memory_id: str, text: Optional[str] = None, metadata: Optional[Dict[str, Any]] = None):
+        """Update an existing memory"""
+        collection = self.get_or_create_collection(collection_name)
+        
+        update_data = {}
+        if text:
+            update_data["documents"] = [text]
+        if metadata:
+            update_data["metadatas"] = [metadata]
+            
+        if not update_data:
+            return False
+            
+        try:
+            collection.update(ids=[memory_id], **update_data)
+            return True
+        except Exception as e:
+            logger.error(f"Failed to update memory: {e}")
+            return False
+
+    def delete_memory(self, collection_name: str, memory_id: str) -> bool:
+        """Delete a memory by ID"""
+        try:
+            collection = self.get_or_create_collection(collection_name)
+            collection.delete(ids=[memory_id])
+            return True
+        except Exception as e:
+            logger.error(f"Failed to delete memory: {e}")
+            return False
+
+    def delete_collection(self, name: str) -> bool:
+        """Delete an entire collection"""
+        try:
+            self.client.delete_collection(name)
+            if name in self.collections:
+                del self.collections[name]
+            return True
+        except Exception as e:
+            logger.error(f"Failed to delete collection {name}: {e}")
+            return False
+
+    def list_collections(self) -> List[str]:
+        """List all collection names"""
+        try:
+            collections = self.client.list_collections()
+            return [c.name for c in collections]
+        except Exception as e:
+            logger.error(f"Failed to list collections: {e}")
             return []
+
+    def get_collection_stats(self, name: str) -> Dict[str, Any]:
+        """Get statistics for a collection"""
+        try:
+            collection = self.get_or_create_collection(name)
+            count = collection.count()
+            return {
+                "name": name,
+                "count": count,
+                "metadata": collection.metadata
+            }
+        except Exception as e:
+            logger.error(f"Failed to get collection stats: {e}")
+            return {"name": name, "count": 0, "error": str(e)}
     
     def search_all_collections(
         self,
@@ -392,16 +564,6 @@ Exploitation: {exploitation_technique}
         except Exception as e:
             logger.error(f"Failed to get recent memories: {e}")
             return []
-    
-    def delete_memory(self, memory_id: str, collection_name: str) -> bool:
-        """Delete a specific memory"""
-        try:
-            self.collections[collection_name].delete(ids=[memory_id])
-            logger.info(f"Deleted memory: {memory_id}")
-            return True
-        except Exception as e:
-            logger.error(f"Failed to delete memory: {e}")
-            return False
     
     def get_stats(self) -> Dict[str, int]:
         """Get memory statistics"""

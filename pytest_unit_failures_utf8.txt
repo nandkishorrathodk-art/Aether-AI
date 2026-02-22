@@ -1,0 +1,567 @@
+﻿
+> run-last-failure: rerun previous 35 failures
+  
+  tests/unit/test_audio_utils.py::TestAudioCon
+fig::test_config_values FAILED [  2%]
+  tests/unit/test_audio_utils.py::TestAudioInt
+egration::test_energy_threshold_detection 
+FAILED [  5%]
+  tests/unit/test_auto_hunter.py::TestBurpCont
+roller::test_start_scan_async FAILED [  8%]
+  tests/unit/test_auto_hunter.py::TestAutoHunt
+er::test_start_auto_hunt_success FAILED [ 11%]
+  tests/unit/test_auto_hunter.py::TestAutoHunt
+er::test_generate_summary FAILED [ 14%]
+  tests/unit/test_automation.py::TestScriptExe
+cutor::test_execute_simple_command FAILED [ 
+17%]
+  tests/unit/test_automation.py::TestSafeScrip
+tExecutor::test_allow_safe_command FAILED [ 
+20%]
+  tests/unit/test_config.py::TestConfigV090::t
+est_default_values FAILED    [ 22%]
+  tests/unit/test_config.py::TestConfigV090::t
+est_bugbounty_autopilot_defaults FAILED [ 25%]
+  tests/unit/test_config.py::TestConfigV090::t
+est_ai_provider_settings FAILED [ 28%]
+  tests/unit/test_config.py::TestConfigV090::t
+est_voice_settings FAILED    [ 31%]
+  tests/unit/test_conversation_engine.py::Test
+SessionContextManager::test_get_all_sessions_s
+tats FAILED [ 34%]
+  tests/unit/test_conversation_engine.py::Test
+PromptEngine::test_get_system_prompt_default 
+FAILED [ 37%]
+  tests/unit/test_conversation_engine.py::Test
+PromptEngine::test_get_system_prompt_conversat
+ion FAILED [ 40%]
+  tests/unit/test_conversation_engine.py::Test
+PromptEngine::test_get_system_prompt_analysis 
+FAILED [ 42%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_create_collection FAILED [ 45%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_add_memory FAILED       [ 48%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_add_memories_batch FAILED [ 51%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_search_memories FAILED  [ 54%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_get_memory FAILED       [ 57%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_update_memory FAILED    [ 60%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_delete_memory FAILED    [ 62%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_collection_stats FAILED [ 65%]
+  tests/unit/test_memory.py::TestVectorStore::
+test_list_collections FAILED [ 68%]
+  tests/unit/test_memory.py::TestConversationH
+istory::test_important_message_detection 
+FAILED [ 71%]
+  tests/unit/test_memory.py::TestConversationH
+istory::test_search_relevant_context FAILED [ 
+74%]
+  tests/unit/test_memory.py::TestConversationH
+istory::test_rag_context FAILED [ 77%]
+  tests/unit/test_memory.py::TestMemoryIntegra
+tion::test_full_memory_workflow FAILED [ 80%]
+  tests/unit/test_memory.py::TestMemoryIntegra
+tion::test_conversation_with_memory FAILED [ 
+82%]
+  tests/unit/test_tts.py::TestTTSConfig::test_
+default_config FAILED        [ 85%]
+  tests/unit/test_tts.py::TestLocalTTS::test_e
+ngine_configuration FAILED   [ 88%]
+  tests/unit/test_wake_word.py::TestWakeWordDe
+tector::test_detect_energy_based_high_energy 
+FAILED [ 91%]
+  tests/unit/test_wake_word.py::TestWakeWordDe
+tector::test_detect_energy_based_low_energy 
+FAILED [ 94%]
+  tests/unit/test_wake_word.py::TestWakeWordDe
+tector::test_detect_from_audio_energy_based 
+FAILED [ 97%]
+  tests/unit/test_wake_word.py::TestWakeWordIn
+tegration::test_detector_fallback_to_energy 
+FAILED [100%]
+  
+> ================================== FAILURES 
+===================================
+  _____________________ 
+TestAudioConfig.test_config_values 
+______________________
+  
+  self = 
+<tests.unit.test_audio_utils.TestAudioConfig 
+object at 0x000001458806CF20>
+  
+      def test_config_values(self):
+          assert AudioConfig.SAMPLE_RATE == 
+16000
+          assert AudioConfig.CHANNELS == 1
+          assert AudioConfig.CHUNK_SIZE == 
+1024
+          assert 
+AudioConfig.FRAME_DURATION_MS == 30
+          assert AudioConfig.VAD_MODE == 3
+  >       assert AudioConfig.ENERGY_THRESHOLD 
+== 500
+  E       assert 1000 == 500
+  E        +  where 1000 = 
+AudioConfig.ENERGY_THRESHOLD
+  
+  tests\unit\test_audio_utils.py:17: 
+AssertionError
+  ____________ TestAudioIntegration.test_energ
+y_threshold_detection _____________
+  
+  self = <tests.unit.test_audio_utils.TestAudi
+oIntegration object at 0x000001458806F5F0>
+  
+      def 
+test_energy_threshold_detection(self):
+          with patch('pyaudio.PyAudio'):
+              handler = AudioInputHandler()
+      
+              loud_audio = 
+np.random.randint(5000, 10000, 1000, 
+dtype=np.int16)
+              quiet_audio = 
+np.random.randint(-100, 100, 1000, 
+dtype=np.int16)
+      
+              assert 
+handler.is_speech(loud_audio)
+  >           assert 
+handler.is_silence(quiet_audio)
+  E           assert False
+  E            +  where False = 
+is_silence(array([  87,  -45,  -66,   72,   
+79,  -92,   59,  -72,   90,   82,   30,\n     
+    78,   38,  -76,   17,  -84,   -9,   66,  
+-69,  -41,   91,  -61,\n         -1,  -98,  
+-54,   99,   66,  -85,  -19,    2,   -4,  
+-45,  -97,\n          5,  -27,  -30,  -61,   
+87,   71,   -1,   46,    5,   78,   78,\n     
+    75,   25,  -71,  -48,   23,  -70,   59,   
+89,   -6,  -16,  -99,\n        -43,   -6,   
+27,   70,   23,   21,   76,  -49,  -36,   66, 
+  52,\n         93,  -30,  -57,  -90,  -99,   
+42,   44,   54,  -50,   41,  -78,\n        
+-13,  -13,   33,   77,  -28,   84,  -92,  
+-66,   75,   48,   65,\n         18,    1,   
+70,   -6,  -40,   16,   43,  -81,   95,   40, 
+ -95,\n        -37,  -70,   13,  -98,    6,  
+-44,   -8,   37,   69,   71,  -95,\n        
+-13,  -53,  -25,  -31,   96,   60,  -87,   
+-2,  -91,   91,  -83,\n         92,  -77,   
+60,  -59,   67,   72,   96,   63,  -55,  -55, 
+  27,\n         66,   70,   13,   -3,  -57,  
+-44,  -30,   55,   18,   -2,  -45,\n        
+-55,    4,  -48,  -63,   47,    6,  -43,   
+67,  -62,   55,  -48,\n         83,   22,  
+-72,   -4,   -6,   12,   -8,   25,   73,  
+-24,   24,\n         58,   78,  -83,   96,  
+-27,   18,   48,   33,   72,  -60,   89,\n    
+     39,   91,   54,  -32,...  22,   16,   
+11,\n         13,    5,   93,   29,   45,  
+-47,  -96,   78,   13,   94,   69,\n         
+80,   61,  -12,   92,   46,  -74,  -47,   95, 
+ -76,   38,   31,\n        -28,  -60,  -78,  
+-99,   49,  -94,   69,  -54,  -41,  -17,   
+87,\n         26,  -24,  -55,   64,   87,  
+-34,  -34,    7,  -96,  -18,   71,\n         
+24,  -89,    1,  -18,  -49,  -69,  -50,  -24, 
+ -23,   39,   91,\n         97,   94,  -29,  
+-28,   -3,   96,  -61,    9,  -51,  -74,   
+14,\n         53,  -55,  -48,  -43,    0,  
+-62,  -54,   72,   33,   54,   76,\n        
+-73,  -56,  -32,   45,   92,  -79,  -35,    
+2,   20,   90,  -25,\n         28,  -67,  
+-58,  -53,   67,  -74,   65,  -19,  -85,  
+-57,  -76,\n         -6,  -67,  -21,  -54,  
+-31,   48,    7,   73,   18,   73,  -96,\n    
+     82,  -72,   95,   35,   26,  -35,  -33,  
+-39,   39,   67,   15,\n         72,   85,   
+52,  -81,   88,  -49,   73,   35,  -68,  -20, 
+ -78,\n        -92,   38,   19,  -99,   31,   
+88,   68,  -99,    1,  -91,  -56,\n         
+-4,  -82,  -40,  -47,   -3,   91,  -51,   47, 
+   3,  -35,  -10,\n         72,    4,  -85,   
+55,   17,  -45,  -37,  -83,   59,   50,   
+35,\n         49,   87,   15,   48,   14,   
+70,   42,   90,   97,   72],\n      
+dtype=int16))
+  E            +    where is_silence = <src.pe
+rception.voice.audio_utils.AudioInputHandler 
+object at 0x000001458CDF5040>.is_silence
+  
+  tests\unit\test_audio_utils.py:190: 
+AssertionError
+  __________________ 
+TestBurpController.test_start_scan_async 
+___________________
+  
+  self = <tests.unit.test_auto_hunter.TestBurp
+Controller object at 0x000001458AFBE5A0>
+  mock_burp_client = <MagicMock 
+name='BurpSuiteClient' id='1398227975680'>
+  
+      @pytest.mark.asyncio
+      async def test_start_scan_async(self, 
+mock_burp_client):
+          mock_client = Mock()
+          mock_client.start_scan.return_value 
+= "scan_456"
+          mock_burp_client.return_value = 
+mock_client
+      
+          controller = BurpController()
+      
+  >       scan_id = await 
+controller.start_scan_async(
+              urls=["https://example.com"],
+              scan_type="CrawlAndAudit"
+          )
+  
+  tests\unit\test_auto_hunter.py:149: 
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  src\bugbounty\burp_controller.py:103: in 
+start_scan_async
+      return await loop.run_in_executor(
+  C:\Program Files\WindowsApps\PythonSoftwareF
+oundation.Python.3.12_3.12.2800.0_x64__qbz5n2k
+fra8p0\Lib\concurrent\futures\thread.py:59: 
+in run
+      result = self.fn(*self.args, 
+**self.kwargs)
+               
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  src\bugbounty\burp_controller.py:119: in 
+_start_scan_sync
+      scan_type=ScanType[scan_type.upper()] 
+if isinstance(scan_type, str) else scan_type,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  
+  cls = <enum 'ScanType'>, name = 
+'CRAWLANDAUDIT'
+  
+      def __getitem__(cls, name):
+          """
+          Return the member matching `name`.
+          """
+  >       return cls._member_map_[name]
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  E       KeyError: 'CRAWLANDAUDIT'
+  
+  C:\Program Files\WindowsApps\PythonSoftwareF
+oundation.Python.3.12_3.12.2800.0_x64__qbz5n2k
+fra8p0\Lib\enum.py:813: KeyError
+  _________________ 
+TestAutoHunter.test_start_auto_hunt_success 
+_________________
+  
+  self = 
+<tests.unit.test_auto_hunter.TestAutoHunter 
+object at 0x000001458AFBD970>
+  mock_components = (<Mock 
+spec='BurpController' id='1398228253872'>, 
+<Mock spec='ScannerManager' 
+id='1398228254688'>, <Mock 
+spec='PoCGenerator' id='1398228251616'>, 
+<Mock spec='ReportBuilder' 
+id='1398229041952'>)
+  
+      @pytest.mark.asyncio
+      async def 
+test_start_auto_hunt_success(self, 
+mock_components):
+          burp, scanner, poc_gen, 
+report_builder = mock_components
+      
+          hunter = AutoHunter(
+              burp_controller=burp,
+              scanner_manager=scanner,
+              poc_generator=poc_gen,
+              report_builder=report_builder
+          )
+      
+          result = await 
+hunter.start_auto_hunt(
+              
+target_url="https://example.com",
+              auto_poc=True,
+              auto_report=True
+          )
+      
+  >       assert result.status == 
+ScanStatus.COMPLETED
+  E       assert <ScanStatus.FAILED: 
+'failed'> == <ScanStatus.COMPLETED: 
+'completed'>
+  E        +  where <ScanStatus.FAILED: 
+'failed'> = 
+AutoScanResult(scan_id='hunt_1771586996', 
+target_url='https://example.com', 
+status=<ScanStatus.FAILED: 'failed'>, 
+burp_running=True, scan_started_at=None, 
+scan_completed_at=None, 
+vulnerabilities=[Vulnerability(id='v1', 
+title='XSS', 
+vuln_type=<VulnerabilityType.XSS: 'Cross-Site 
+Scripting'>, 
+severity=<VulnerabilitySeverity.HIGH: 
+'high'>, url='https://example.com', 
+parameter=None, description='', evidence='', 
+remediation='', confidence='Certain', 
+cvss_score=0.0, cwe_id=None, references=[], 
+detected_at=datetime.datetime(2026, 2, 20, 
+16, 59, 56, 218675), false_positive=False)], 
+reports_generated=[], total_issues_found=1, 
+critical_count=0, high_count=1, 
+medium_count=0, low_count=0, info_count=0, 
+estimated_total_payout=0, 
+error_message="'Mock' object is not 
+iterable").status
+  E        +  and   <ScanStatus.COMPLETED: 
+'completed'> = ScanStatus.COMPLETED
+  
+  tests\unit\test_auto_hunter.py:490: 
+AssertionError
+  ------------------------------ Captured log 
+call ------------------------------
+  ERROR    
+src.bugbounty.auto_hunter:auto_hunter.py:279 
+Auto hunt failed: 'Mock' object is not 
+iterable
+  Traceback (most recent call last):
+    File "C:\Users\nandk\Aether-AI\src\bugboun
+ty\auto_hunter.py", line 186, in 
+start_auto_hunt
+      v for v in high_priority_vulns
+                 ^^^^^^^^^^^^^^^^^^^
+  TypeError: 'Mock' object is not iterable
+  ____________________ 
+TestAutoHunter.test_generate_summary 
+_____________________
+  
+  self = 
+<tests.unit.test_auto_hunter.TestAutoHunter 
+object at 0x000001458AFEC560>
+  
+      def test_generate_summary(self):
+          hunter = AutoHunter()
+      
+          result = AutoScanResult(
+              scan_id="test",
+              
+target_url="https://example.com",
+              status=ScanStatus.COMPLETED,
+              scan_started_at=datetime.now(),
+              
+scan_completed_at=datetime.now(),
+              critical_count=2,
+              high_count=3,
+              medium_count=5
+          )
+          result.update_counts()
+      
+          summary = 
+hunter.generate_summary(result)
+      
+          assert "Completed Successfully" in 
+summary
+          assert "https://example.com" in 
+summary
+  >       assert "Critical: 2" in summary
+  E       AssertionError: assert 'Critical: 
+2' in '\u2705 Auto Hunt Completed 
+Successfully!\\n\\n\U0001f3af Target: 
+https://example.com\\n\u23f1\ufe0f Duration: 
+0.0 minutes\\n\\n\U0001f4ca Vulnerabilities 
+Found:\\n  \U0001f534 Critical: 0\\n  
+\U0001f7e0 High: 0\\n  \U0001f7e1 Medium: 
+0\\n  \U0001f535 Low: 0\\n  \u26aa Info: 0\\n 
+ \\n\U0001f4dd Reports Generated: 
+0\\n\U0001f4b0 Estimated Total Payout: 
+$0\\n\\n'
+  
+  tests\unit\test_auto_hunter.py:531: 
+AssertionError
+  _______________ TestScriptExecutor.test_exec
+ute_simple_command ________________
+  
+  self = <tests.unit.test_automation.TestScrip
+tExecutor object at 0x000001458C46CAA0>
+  
+      def test_execute_simple_command(self):
+          executor = 
+ScriptExecutor(timeout=10)
+          result = 
+executor.execute_command("echo", args=["Hello 
+World"], shell=True)
+      
+  >       assert result.success
+  E       assert False
+  E        +  where False = 
+ScriptExecutionResult(success=False, 
+exit_code=0, time=0.00s).success
+  
+  tests\unit\test_automation.py:29: 
+AssertionError
+  _______________ TestSafeScriptExecutor.test_
+allow_safe_command ________________
+  
+  self = <tests.unit.test_automation.TestSafeS
+criptExecutor object at 0x000001458C46DAF0>
+  
+      def test_allow_safe_command(self):
+          executor = 
+SafeScriptExecutor(timeout=5)
+          result = 
+executor.execute_command("echo", args=["Safe 
+command"], shell=True)
+      
+  >       assert result.success
+  E       assert False
+  E        +  where False = 
+ScriptExecutionResult(success=False, 
+exit_code=0, time=0.00s).success
+  
+  tests\unit\test_automation.py:88: 
+AssertionError
+  _____________________ 
+TestConfigV090.test_default_values 
+______________________
+  
+  self = 
+<tests.unit.test_config.TestConfigV090 object 
+at 0x000001458C46E2D0>
+  
+      def test_default_values(self):
+          settings = Settings()
+      
+          assert settings.app_name == "Aether 
+AI"
+  >       assert settings.app_version == 
+"0.9.0"
+  E       AssertionError: assert '2.0.0' == 
+'0.9.0'
+  E         
+  E         - 0.9.0
+  E         + 2.0.0
+  
+  tests\unit\test_config.py:15: AssertionError
+  ---------------------------- Captured 
+stdout call -----------------------------
+  \u26a0\ufe0f WARNING: Using auto-generated 
+secret key for development
+  ______________ TestConfigV090.test_bugbounty
+_autopilot_defaults _______________
+  
+  self = 
+<tests.unit.test_config.TestConfigV090 object 
+at 0x000001458C489400>
+  
+      def 
+test_bugbounty_autopilot_defaults(self):
+          settings = Settings()
+      
+          assert 
+settings.enable_bugbounty_autopilot == False
+          assert settings.burpsuite_api_url 
+== "http://127.0.0.1:1337"
+  >       assert settings.burpsuite_api_key 
+is None
+  E       AssertionError: assert 
+'your-burp-api-key-here' is None
+  E        +  where 'your-burp-api-key-here' 
+= Settings(app_name='Aether AI', 
+app_version='2.0.0', 
+environment='development', 
+api_host='127.0.0.1', api_port=8000, openai_ap
+i_key='sk-proj-dIwAYH681WOVNS-RdGQZfdo2OvoJR8N
+7qDwAm208mKRszWiDlx1J-18yD2lIPIvsGstgiG-W1ET3B
+lbkFJO_f2hZN1jv1AEO-yWCQqBnuFim9jNzkVeYL1BJdwl
+iXP0rYwh6ajTFDPntAK7BGpxueqdGynsA', 
+anthropic_api_key='your-new-key-here', 
+google_api_key='your-google-gemini-key-here', 
+groq_api_key='gsk_vSWQ8njG4bAr2Tr10F9MWGdyb3FY
+pzwvKGS0sNxGEvgmGlUh29BX', fireworks_api_key='
+fw_FBBHpyHVgPch5Twj8ik14Z', openrouter_api_key
+='sk-or-v1-49e98c7e141eb21533784b36e6a242e6c3c
+c05e929614fad0e2c2ead44fa74ba', 
+ai_provider='auto', 
+default_model='gpt-4-turbo-preview', 
+fallback_provider='fireworks', 
+enable_cost_tracking=True, 
+max_cost_per_day_usd=10.0, 
+router_conversation='fireworks', 
+router_analysis='claude', 
+router_code='gpt-4', 
+router_creative='gemini', 
+router_fast='fireworks', 
+router_vision='gpt-4-vision', 
+router_reasoning='fireworks', wake_word='hey 
+aether', voice_input_enabled=True, 
+voice_output_enabled=True, 
+voice_gender='female', voice_provider='edge', 
+tts_model='tts-1', stt_model='base', 
+porcupine_api_key=None, chromadb_path=WindowsP
+ath('data/memory/chroma'), conversation_histor
+y_db=WindowsP...key='your-burp-api-key-here', 
+bugbounty_auto_scan=False, bugbounty_target_pr
+ograms='apple,google,microsoft', bugbounty_rep
+ort_path=WindowsPath('data/bugbounty_reports')
+, 
+hackerone_username='your-hackerone-username', 
+hackerone_api_token='your-hackerone-api-token'
+, bugcrowd_email='your-bugcrowd-email', 
+bugcrowd_api_key='your-bugcrowd-api-key', inti
+griti_api_token='your-intigriti-api-token', ye
+swehack_api_token='your-yeswehack-api-token', 
+personality_mode='friendly', 
+personality_enable_hindi_english=True, 
+personality_emoji_enabled=True, 
+personality_motivational_enabled=True, 
+personality_humor_enabled=True, 
+enable_daily_reports=True, 
+daily_report_time='20:00', daily_report_path=W
+indowsPath('data/daily_reports'), 
+enable_trend_analysis=True, 
+enable_wealth_tracking=True, 
+enable_autonomous_mode=False, 
+autonomous_require_auth=True, 
+autonomous_allowed_targets='', 
+autonomous_max_duration=8, 
+enable_self_improvement=True, 
+self_improvement_schedule='daily', 
+self_improvement_time='03:00', 
+enable_user_learning=True, 
+enable_performance_monitoring=True, 
+performance_metrics_interval=300, 
+auto_apply_safe_improvements=True, 
+require_approval_for_major_changes=True, impro
+vement_backup_retention_days=30).burpsuite_api
+_key
+  
+  tests\unit\test_config.py:71: AssertionError
+  ---------------------------- Captured 
+stdout call -----------------------------
+  \u26a0\ufe0f WARNING: Using auto-generated 
+secret key for development
+  __________________ 
+TestConfigV090.test_ai_provider_settings 
+___________________
+  
+  self = 
+<tests.unit.test_config.TestConfigV090 object 
+at 0x000001458C48B980>
+  
+      def test_ai_provider_settings(self):
+
+

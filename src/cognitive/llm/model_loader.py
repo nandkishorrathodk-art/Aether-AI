@@ -57,7 +57,9 @@ class ModelLoader:
             logger.info(
                 f"Generated response: {response.provider}/{response.model}, "
                 f"{response.tokens_used} tokens, ${response.cost_usd:.4f}, "
-                f"{response.latency_ms:.0f}ms"
+                f"{response.latency_ms:.0f}ms\n"
+                f"DEBUG PROMPT: {prompt[:100]}...\n"
+                f"DEBUG RESPONSE: {response.content[:100]}..."
             )
 
             return response

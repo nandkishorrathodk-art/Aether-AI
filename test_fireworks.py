@@ -6,12 +6,11 @@ API_KEY = "fw_GzB2Zvh5tiZ8cQ31Hud8NJ"
 BASE_URL = "https://api.fireworks.ai/inference/v1/chat/completions"
 
 models_to_test = [
-    "accounts/fireworks/models/deepseek-v2p5",
-    "accounts/fireworks/models/deepseek-v3",
-    "accounts/fireworks/models/llama-v3p1-70b-instruct",
-    "accounts/fireworks/models/llama-v3p1-8b-instruct",
-    "accounts/fireworks/models/mixtral-8x7b-instruct",
-    "accounts/fireworks/models/firellava-13b",
+    "accounts/fireworks/models/deepseek-v3p1",
+    "accounts/fireworks/models/deepseek-v3p2",
+    "accounts/fireworks/models/mixtral-8x22b-instruct",
+    "accounts/fireworks/models/kimi-k2p5",
+    "accounts/fireworks/models/glm-5",
 ]
 
 headers = {

@@ -33,7 +33,7 @@ def count_files():
                 total_size += size
                 by_extension[ext]['count'] += 1
                 by_extension[ext]['size'] += size
-            except:
+            except Exception:
                 pass
     
     # Sort by count
@@ -100,7 +100,7 @@ def count_files():
             try:
                 size = file_path.stat().st_size
                 all_files.append((file_path, size))
-            except:
+            except Exception:
                 pass
     
     all_files.sort(key=lambda x: x[1], reverse=True)
@@ -128,7 +128,7 @@ def count_files():
                         lines = len(f.readlines())
                         total_lines += lines
                         code_files += 1
-                except:
+                except Exception:
                     pass
     
     print(f"\n[+] Code Files: {code_files:,}")

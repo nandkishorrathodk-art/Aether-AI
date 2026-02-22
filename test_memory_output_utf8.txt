@@ -1,0 +1,1174 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\nandk\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\nandk\Aether-AI
+configfile: pytest.ini
+plugins: anyio-4.12.1, langsmith-0.6.8, asyncio-1.3.0, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 41 items
+
+tests/unit/test_memory.py::TestVectorStore::test_initialization ERROR    [  2%]
+tests/unit/test_memory.py::TestVectorStore::test_create_collection ERROR [  4%]
+tests/unit/test_memory.py::TestVectorStore::test_add_memory ERROR        [  7%]
+tests/unit/test_memory.py::TestVectorStore::test_add_memories_batch ERROR [  9%]
+tests/unit/test_memory.py::TestVectorStore::test_search_memories ERROR   [ 12%]
+tests/unit/test_memory.py::TestVectorStore::test_get_memory ERROR        [ 14%]
+tests/unit/test_memory.py::TestVectorStore::test_update_memory ERROR     [ 17%]
+tests/unit/test_memory.py::TestVectorStore::test_delete_memory ERROR     [ 19%]
+tests/unit/test_memory.py::TestVectorStore::test_collection_stats ERROR  [ 21%]
+tests/unit/test_memory.py::TestVectorStore::test_list_collections ERROR  [ 24%]
+tests/unit/test_memory.py::TestConversationHistory::test_initialization ERROR [ 26%]
+tests/unit/test_memory.py::TestConversationHistory::test_add_message ERROR [ 29%]
+tests/unit/test_memory.py::TestConversationHistory::test_get_session_history ERROR [ 31%]
+tests/unit/test_memory.py::TestConversationHistory::test_get_recent_context ERROR [ 34%]
+tests/unit/test_memory.py::TestConversationHistory::test_important_message_detection ERROR [ 36%]
+tests/unit/test_memory.py::TestConversationHistory::test_search_relevant_context ERROR [ 39%]
+tests/unit/test_memory.py::TestConversationHistory::test_rag_context ERROR [ 41%]
+tests/unit/test_memory.py::TestConversationHistory::test_session_info ERROR [ 43%]
+tests/unit/test_memory.py::TestConversationHistory::test_list_sessions ERROR [ 46%]
+tests/unit/test_memory.py::TestConversationHistory::test_delete_session ERROR [ 48%]
+tests/unit/test_memory.py::TestConversationHistory::test_statistics ERROR [ 51%]
+tests/unit/test_memory.py::TestUserProfile::test_initialization PASSED   [ 53%]
+tests/unit/test_memory.py::TestUserProfile::test_default_profile_structure PASSED [ 56%]
+tests/unit/test_memory.py::TestUserProfile::test_get_set PASSED          [ 58%]
+tests/unit/test_memory.py::TestUserProfile::test_get_default PASSED      [ 60%]
+tests/unit/test_memory.py::TestUserProfile::test_update PASSED           [ 63%]
+tests/unit/test_memory.py::TestUserProfile::test_preferences PASSED      [ 65%]
+tests/unit/test_memory.py::TestUserProfile::test_interests PASSED        [ 68%]
+tests/unit/test_memory.py::TestUserProfile::test_skills PASSED           [ 70%]
+tests/unit/test_memory.py::TestUserProfile::test_learn_pattern PASSED    [ 73%]
+tests/unit/test_memory.py::TestUserProfile::test_record_activity PASSED  [ 75%]
+tests/unit/test_memory.py::TestUserProfile::test_personalization_context PASSED [ 78%]
+tests/unit/test_memory.py::TestUserProfile::test_export_import PASSED    [ 80%]
+tests/unit/test_memory.py::TestUserProfile::test_reset_profile PASSED    [ 82%]
+tests/unit/test_memory.py::TestProfileManager::test_get_profile PASSED   [ 85%]
+tests/unit/test_memory.py::TestProfileManager::test_list_profiles PASSED [ 87%]
+tests/unit/test_memory.py::TestProfileManager::test_delete_profile PASSED [ 90%]
+tests/unit/test_memory.py::TestProfileManager::test_export_all_profiles PASSED [ 92%]
+tests/unit/test_memory.py::TestProfileManager::test_import_profile PASSED [ 95%]
+tests/unit/test_memory.py::TestMemoryIntegration::test_conversation_with_memory FAILED [ 97%]
+tests/unit/test_memory.py::TestMemoryIntegration::test_profile_with_memory PASSED [100%]
+
+=================================== ERRORS ====================================
+____________ ERROR at setup of TestVectorStore.test_initialization ____________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpa7drg181')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560103F680>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+__________ ERROR at setup of TestVectorStore.test_create_collection ___________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmptziorapg')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x00000256011A9AF0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+______________ ERROR at setup of TestVectorStore.test_add_memory ______________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpqmlmo4wm')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560125C260>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+__________ ERROR at setup of TestVectorStore.test_add_memories_batch __________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp6lk2ixwa')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x00000256011AB6B0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+___________ ERROR at setup of TestVectorStore.test_search_memories ____________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpinz9ah2i')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560125EBD0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+______________ ERROR at setup of TestVectorStore.test_get_memory ______________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpmbx7q5k4')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x0000025601269670>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+____________ ERROR at setup of TestVectorStore.test_update_memory _____________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp4enh_5g2')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560125FD70>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+____________ ERROR at setup of TestVectorStore.test_delete_memory _____________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp4c9kqeqt')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560126A1B0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+___________ ERROR at setup of TestVectorStore.test_collection_stats ___________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp61vf96h7')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x0000025601279400>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+___________ ERROR at setup of TestVectorStore.test_list_collections ___________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpapb9zgz4')
+
+    @pytest.fixture
+    def vector_store(temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           return VectorStore(persist_directory=temp_dir / "chromadb")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560119BD70>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+________ ERROR at setup of TestConversationHistory.test_initialization ________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpr8lt0sen')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560126BB00>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+_________ ERROR at setup of TestConversationHistory.test_add_message __________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpz48_l047')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x00000256012AC1A0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+_____ ERROR at setup of TestConversationHistory.test_get_session_history ______
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp7qk7sxj3')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560103C8F0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+______ ERROR at setup of TestConversationHistory.test_get_recent_context ______
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmppjo9ve97')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x00000256012ADC10>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+_ ERROR at setup of TestConversationHistory.test_important_message_detection __
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp0y5uqoyy')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560127B140>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+___ ERROR at setup of TestConversationHistory.test_search_relevant_context ____
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpqdarq2d9')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x0000025601269A00>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+_________ ERROR at setup of TestConversationHistory.test_rag_context __________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpje5mqxdr')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x00000256012519A0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+_________ ERROR at setup of TestConversationHistory.test_session_info _________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpz7kho6x8')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560103E000>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+________ ERROR at setup of TestConversationHistory.test_list_sessions _________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmp2syfaads')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x0000025601268A10>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+________ ERROR at setup of TestConversationHistory.test_delete_session ________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpstuzuf0f')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x00000255FFCDDFA0>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+__________ ERROR at setup of TestConversationHistory.test_statistics __________
+
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpzdpzjb69')
+
+    @pytest.fixture
+    def conversation_history(temp_dir):
+        db_path = temp_dir / "conversations.db"
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+>           vector_store = VectorStore(persist_directory=temp_dir / "chromadb")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_memory.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x000002560126C140>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+----------------------------- Captured log setup ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+================================== FAILURES ===================================
+_____________ TestMemoryIntegration.test_conversation_with_memory _____________
+
+self = <tests.unit.test_memory.TestMemoryIntegration object at 0x000002560106EF00>
+temp_dir = WindowsPath('C:/Users/nandk/AppData/Local/Temp/tmpiix3cxps')
+
+    def test_conversation_with_memory(self, temp_dir):
+        with patch('chromadb.utils.embedding_functions.SentenceTransformerEmbeddingFunction') as mock_embed:
+            mock_embed.return_value = MockEmbeddingFunction()
+            conversation_history = ConversationHistory(
+                db_path=temp_dir / "test.db",
+>               vector_store=VectorStore(persist_directory=temp_dir / "chromadb")
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            )
+
+tests\unit\test_memory.py:420: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\memory\vector_store.py:59: in __init__
+    self._initialize_collections()
+src\cognitive\memory\vector_store.py:70: in _initialize_collections
+    self.get_or_create_collection(name)
+src\cognitive\memory\vector_store.py:78: in get_or_create_collection
+    self.collections[name] = self.client.get_or_create_collection(
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\client.py:251: in get_or_create_collection
+    validate_embedding_function_conflict_on_get(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+embedding_function = <tests.unit.test_memory.MockEmbeddingFunction object at 0x0000025601252B40>
+persisted_ef_config = {'type': 'legacy'}
+
+    def validate_embedding_function_conflict_on_get(
+        embedding_function: Optional[EmbeddingFunction],  # type: ignore
+        persisted_ef_config: Optional[Dict[str, Any]],
+    ) -> None:
+        """
+        Validates that there are no conflicting embedding functions between function parameter
+        and collection configuration.
+        """
+        if persisted_ef_config is not None and embedding_function is not None:
+            if (
+>               embedding_function.name() != "default"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+                and persisted_ef_config.get("name") is not None
+                and persisted_ef_config.get("name") != embedding_function.name()
+            ):
+E           TypeError: 'str' object is not callable
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:789: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+------------------------------ Captured log call ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:85 Failed to get/create collection 'conversations': 'str' object is not callable
+============================== warnings summary ===============================
+tests/unit/test_memory.py: 22 warnings
+  C:\Users\nandk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:325: DeprecationWarning: legacy embedding function config: 'MockEmbeddingFunction' object has no attribute 'is_legacy'
+    return json.dumps(create_collection_configuration_to_json(config, metadata))
+
+tests/unit/test_memory.py: 24 warnings
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:39: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "created_at": datetime.utcnow().isoformat(),
+
+tests/unit/test_memory.py: 24 warnings
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:40: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "updated_at": datetime.utcnow().isoformat(),
+
+tests/unit/test_memory.py: 25 warnings
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:82: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    self.profile_data["updated_at"] = datetime.utcnow().isoformat()
+
+tests/unit/test_memory.py::TestUserProfile::test_record_activity
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:180: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    stats["last_active"] = datetime.utcnow().isoformat()
+
+tests/unit/test_memory.py::TestUserProfile::test_export_import
+tests/unit/test_memory.py::TestProfileManager::test_import_profile
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:201: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    profile_data["updated_at"] = datetime.utcnow().isoformat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/unit/test_memory.py::TestMemoryIntegration::test_conversation_with_memory
+ERROR tests/unit/test_memory.py::TestVectorStore::test_initialization - TypeE...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_create_collection - Ty...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_add_memory - TypeError...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_add_memories_batch - T...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_search_memories - Type...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_get_memory - TypeError...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_update_memory - TypeEr...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_delete_memory - TypeEr...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_collection_stats - Typ...
+ERROR tests/unit/test_memory.py::TestVectorStore::test_list_collections - Typ...
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_initialization
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_add_message - ...
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_get_session_history
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_get_recent_context
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_important_message_detection
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_search_relevant_context
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_rag_context - ...
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_session_info
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_list_sessions
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_delete_session
+ERROR tests/unit/test_memory.py::TestConversationHistory::test_statistics - T...
+============ 1 failed, 19 passed, 98 warnings, 21 errors in 14.06s ============

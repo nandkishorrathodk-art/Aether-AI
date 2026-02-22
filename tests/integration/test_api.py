@@ -1,13 +1,40 @@
 import pytest
 from fastapi.testclient import TestClient
+import httpx
 from src.api.main import app
 from src.api.schemas.tasks import TaskType, TaskStatus
+from src.cognitive.llm.providers.base import AIResponse
 import json
+
+
+@pytest.fixture(autouse=True)
+def mock_ai_responses(monkeypatch):
+    async def mock_generate(*args, **kwargs):
+        content = kwargs.get("prompt", "Mock response")
+        return AIResponse(
+            content=f"Echo: {content}",
+            provider="mock_provider",
+            model="mock_model",
+            total_tokens=10,
+            completion_time=0.1
+        )
+    
+    async def mock_stream_generate(*args, **kwargs):
+        yield "Echo "
+        yield "stream"
+        
+    try:
+        from src.cognitive.llm.model_loader import model_loader
+        monkeypatch.setattr(model_loader, "generate", mock_generate)
+        monkeypatch.setattr(model_loader, "stream_generate", mock_stream_generate)
+    except ImportError:
+        pass
 
 
 @pytest.fixture
 def client():
-    with TestClient(app) as c:
+    transport = httpx.ASGITransport(app=app)
+    with httpx.Client(transport=transport, base_url="http://testserver") as c:
         yield c
 
 

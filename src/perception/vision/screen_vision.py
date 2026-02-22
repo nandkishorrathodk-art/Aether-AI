@@ -1,15 +1,35 @@
 """
 Screen Vision & OCR - See and understand everything on screen
 Real-time screen analysis with element detection and auto-navigation
+
+IRONCLAW ENHANCEMENT: Multi-monitor support with MSS (<100ms capture)
 """
 import cv2
 import numpy as np
-from PIL import ImageGrab, Image
+from PIL import Image
 import pytesseract
+import mss
+import time
 from typing import Dict, List, Tuple, Optional, Any
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 import re
+from pathlib import Path
+
+@dataclass
+class Monitor:
+    """Monitor information for multi-monitor setups."""
+    id: int
+    left: int
+    top: int
+    width: int
+    height: int
+    is_primary: bool = False
+
+    @property
+    def bounds(self) -> Dict[str, int]:
+        """Get monitor bounds for MSS."""
+        return {"left": self.left, "top": self.top, "width": self.width, "height": self.height}
 
 @dataclass
 class ScreenElement:
@@ -25,41 +45,167 @@ class OCRResult:
     position: Tuple[int, int, int, int]
     language: str
 
+@dataclass
+class Screenshot:
+    """Screenshot data with metadata."""
+    image: Image.Image
+    timestamp: datetime
+    monitor_id: Optional[int] = None
+    region: Optional[Dict[str, int]] = None
+    capture_time_ms: float = 0.0
+
+    @property
+    def numpy_array(self) -> np.ndarray:
+        """Convert to numpy array."""
+        return np.array(self.image)
+
+    def save(self, path: Path, format: str = "PNG") -> Path:
+        """Save screenshot to file."""
+        self.image.save(path, format=format)
+        return path
+
 class ScreenCapture:
-    def __init__(self):
+    """
+    IRONCLAW ENHANCEMENT: MSS-based screen capture with multi-monitor support.
+    Target: <100ms capture time per monitor.
+    """
+    def __init__(self, screenshot_dir: Optional[Path] = None):
+        self.screenshot_dir = screenshot_dir or Path("./data/screenshots")
+        self.screenshot_dir.mkdir(parents=True, exist_ok=True)
+        
         self.last_screenshot = None
         self.screenshot_history = []
-    
-    def capture_screen(self, region: Optional[Tuple[int, int, int, int]] = None) -> np.ndarray:
-        if region:
-            screenshot = ImageGrab.grab(bbox=region)
-        else:
-            screenshot = ImageGrab.grab()
         
-        self.last_screenshot = screenshot
+        self._sct: Optional[mss.mss] = None
+        self._monitors: List[Monitor] = []
+        self._monitor_cache_time: float = 0.0
+        self._cache_ttl: float = 60.0  # Refresh monitors every 60 seconds
+    
+    def _get_sct(self) -> mss.mss:
+        """Get or create MSS instance."""
+        if self._sct is None:
+            self._sct = mss.mss()
+        return self._sct
+    
+    def _refresh_monitors(self) -> None:
+        """Refresh monitor information (cached for performance)."""
+        current_time = time.time()
+        if current_time - self._monitor_cache_time < self._cache_ttl:
+            return
+
+        sct = self._get_sct()
+        self._monitors = []
+
+        # MSS monitor 0 is all monitors combined, skip it
+        for i, monitor in enumerate(sct.monitors[1:], start=1):
+            self._monitors.append(
+                Monitor(
+                    id=i,
+                    left=monitor["left"],
+                    top=monitor["top"],
+                    width=monitor["width"],
+                    height=monitor["height"],
+                    is_primary=(i == 1),  # First monitor is usually primary
+                )
+            )
+
+        self._monitor_cache_time = current_time
+    
+    def get_monitors(self) -> List[Monitor]:
+        """Get list of available monitors."""
+        self._refresh_monitors()
+        return self._monitors.copy()
+    
+    def capture_screen(self, region: Optional[Tuple[int, int, int, int]] = None, 
+                      monitor_id: Optional[int] = None) -> np.ndarray:
+        """
+        Capture screen using MSS (backward compatible with existing code).
+        
+        Args:
+            region: Optional region (left, top, right, bottom)
+            monitor_id: Optional monitor ID (1-indexed)
+        
+        Returns:
+            Screenshot as numpy array
+        """
+        start_time = time.time()
+        sct = self._get_sct()
+        
+        if region:
+            # Convert (left, top, right, bottom) to MSS format
+            capture_region = {
+                "left": region[0],
+                "top": region[1],
+                "width": region[2] - region[0],
+                "height": region[3] - region[1]
+            }
+            sct_img = sct.grab(capture_region)
+        elif monitor_id:
+            sct_img = sct.grab(sct.monitors[monitor_id])
+        else:
+            # Capture primary monitor
+            sct_img = sct.grab(sct.monitors[1])
+        
+        # Convert to PIL Image then numpy
+        img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
+        numpy_img = np.array(img)
+        
+        # Update history
+        self.last_screenshot = img
         self.screenshot_history.append({
-            'image': screenshot,
-            'timestamp': datetime.now()
+            'image': img,
+            'timestamp': datetime.now(),
+            'capture_time_ms': (time.time() - start_time) * 1000
         })
         
         if len(self.screenshot_history) > 10:
             self.screenshot_history.pop(0)
         
-        return np.array(screenshot)
+        return numpy_img
+    
+    def capture_all_monitors(self) -> List[Screenshot]:
+        """Capture screenshots of all monitors."""
+        start_time = time.time()
+        self._refresh_monitors()
+        sct = self._get_sct()
+
+        screenshots = []
+        for monitor in self._monitors:
+            monitor_data = sct.monitors[monitor.id]
+            sct_img = sct.grab(monitor_data)
+            img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
+
+            screenshot = Screenshot(
+                image=img,
+                timestamp=datetime.now(),
+                monitor_id=monitor.id,
+                region=monitor.bounds,
+                capture_time_ms=(time.time() - start_time) * 1000,
+            )
+            screenshots.append(screenshot)
+
+        return screenshots
     
     def capture_window(self, window_title: str) -> Optional[np.ndarray]:
+        """Capture specific window by title (backward compatible)."""
         try:
             import pygetwindow as gw
             windows = gw.getWindowsWithTitle(window_title)
             
             if windows:
                 window = windows[0]
-                bbox = (window.left, window.top, window.right, window.bottom)
-                return self.capture_screen(region=bbox)
-        except:
+                region = (window.left, window.top, window.right, window.bottom)
+                return self.capture_screen(region=region)
+        except Exception:
             pass
         
         return None
+    
+    def cleanup(self) -> None:
+        """Clean up MSS resources."""
+        if self._sct is not None:
+            self._sct.close()
+            self._sct = None
 
 class OCREngine:
     def __init__(self, tesseract_cmd: str = None):

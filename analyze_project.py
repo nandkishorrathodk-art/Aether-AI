@@ -15,7 +15,7 @@ def get_file_hash(filepath):
     try:
         with open(filepath, 'rb') as f:
             return hashlib.md5(f.read()).hexdigest()
-    except:
+    except Exception as e:
         return None
 
 def analyze_project():
@@ -64,7 +64,7 @@ def analyze_project():
                     if file_hash:
                         duplicate_hashes[file_hash].append(str(filepath))
                         
-            except Exception as e:
+            except Exception:
                 pass
             
             # Progress indicator
@@ -196,11 +196,11 @@ def analyze_project():
     
     # Save detailed report
     with open("ANALYSIS_REPORT.txt", "w", encoding="utf-8") as f:
-        f.write(f"AETHER AI - PROJECT ANALYSIS\n")
+        f.write("AETHER AI - PROJECT ANALYSIS\n")
         f.write(f"{'=' * 80}\n\n")
         f.write(f"Total Files: {total_files:,}\n")
         f.write(f"Total Size: {total_size / (1024**3):.2f} GB\n\n")
-        f.write(f"Top Directories:\n")
+        f.write("Top Directories:\n")
         for dir_path, count in sorted_dirs[:50]:
             size_mb = directory_sizes[dir_path] / (1024**2)
             f.write(f"  {count:6} files | {size_mb:8.1f} MB | {dir_path}\n")

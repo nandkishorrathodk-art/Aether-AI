@@ -1,0 +1,82 @@
+{
+  "passed": 10,
+  "failed": 5,
+  "skipped": 0,
+  "tests": [
+    {
+      "name": "Server Health",
+      "status": "PASS",
+      "message": "Status: healthy"
+    },
+    {
+      "name": "Provider List",
+      "status": "FAIL",
+      "message": "Found 0 providers"
+    },
+    {
+      "name": "Chat Conversation",
+      "status": "FAIL",
+      "message": "HTTP 500: {\"detail\":\"All providers failed. Last error: Error code: 429 - {'error': {'message': 'You exceeded y"
+    },
+    {
+      "name": "OpenClaw Scraping",
+      "status": "FAIL",
+      "message": "HTTP 500"
+    },
+    {
+      "name": "Security Module",
+      "status": "PASS",
+      "message": "Status: active"
+    },
+    {
+      "name": "  BurpSuite Connection",
+      "status": "PASS",
+      "message": "Status: offline"
+    },
+    {
+      "name": "  AI Analyzer",
+      "status": "PASS",
+      "message": "Status: active"
+    },
+    {
+      "name": "Vulnerability Analysis",
+      "status": "PASS",
+      "message": "CVSS: 8.0"
+    },
+    {
+      "name": "  CWE Mapping",
+      "status": "PASS",
+      "message": "CWE: CWE-89"
+    },
+    {
+      "name": "  OWASP Category",
+      "status": "PASS",
+      "message": "A1:2021-Broken Access Control"
+    },
+    {
+      "name": "  Exploitation Steps",
+      "status": "PASS",
+      "message": "5 steps"
+    },
+    {
+      "name": "Payload Generation",
+      "status": "FAIL",
+      "message": "HTTP 500"
+    },
+    {
+      "name": "Add Target",
+      "status": "PASS",
+      "message": "Domain: None"
+    },
+    {
+      "name": "Cost Tracking",
+      "status": "PASS",
+      "message": "Total: $0.0000"
+    },
+    {
+      "name": "  Request Count",
+      "status": "FAIL",
+      "message": "0 requests"
+    }
+  ]
+}

@@ -1,0 +1,1295 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\nandk\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\nandk\Aether-AI
+configfile: pytest.ini
+plugins: anyio-4.12.1, langsmith-0.6.8, asyncio-1.3.0, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 400 items
+
+tests/unit/test_aether_crypto.py::test_rust_optimization_encryption PASSED [  0%]
+tests/unit/test_aether_crypto.py::test_large_payload PASSED              [  0%]
+tests/unit/test_aether_crypto.py::test_key_derivation PASSED             [  0%]
+tests/unit/test_audio_utils.py::TestAudioConfig::test_config_values PASSED [  1%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_initialization PASSED [  1%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_initialization_without_vad PASSED [  1%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_calculate_energy PASSED [  1%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_calculate_energy_silent PASSED [  2%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_normalize_audio PASSED [  2%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_normalize_audio_silent PASSED [  2%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_apply_noise_reduction PASSED [  2%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_apply_noise_reduction_short_audio PASSED [  3%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_is_speech_with_high_energy PASSED [  3%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_is_silence_with_low_energy PASSED [  3%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_audio_to_bytes PASSED [  3%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_read_chunk_empty_buffer PASSED [  4%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_read_audio_empty_buffer PASSED [  4%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_start_stream PASSED [  4%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_stop_stream PASSED [  4%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_context_manager PASSED [  5%]
+tests/unit/test_audio_utils.py::TestAudioInputHandler::test_list_audio_devices PASSED [  5%]
+tests/unit/test_audio_utils.py::TestAudioIntegration::test_buffer_operations PASSED [  5%]
+tests/unit/test_audio_utils.py::TestAudioIntegration::test_energy_threshold_detection PASSED [  5%]
+tests/unit/test_auto_hunter.py::TestVulnerabilityModel::test_vulnerability_creation PASSED [  6%]
+tests/unit/test_auto_hunter.py::TestVulnerabilityModel::test_vulnerability_to_dict PASSED [  6%]
+tests/unit/test_auto_hunter.py::TestVulnerabilityModel::test_payout_estimation PASSED [  6%]
+tests/unit/test_auto_hunter.py::TestVulnerabilityModel::test_severity_to_emoji PASSED [  6%]
+tests/unit/test_auto_hunter.py::TestBurpController::test_burp_controller_initialization PASSED [  7%]
+tests/unit/test_auto_hunter.py::TestBurpController::test_is_burp_running_success PASSED [  7%]
+tests/unit/test_auto_hunter.py::TestBurpController::test_is_burp_running_failure PASSED [  7%]
+tests/unit/test_auto_hunter.py::TestBurpController::test_parse_burp_issue_to_vulnerability PASSED [  7%]
+tests/unit/test_auto_hunter.py::TestBurpController::test_start_scan_async PASSED [  8%]
+tests/unit/test_auto_hunter.py::TestScannerManager::test_start_scan_session PASSED [  8%]
+tests/unit/test_auto_hunter.py::TestScannerManager::test_start_scan_session_burp_not_running PASSED [  8%]
+tests/unit/test_auto_hunter.py::TestScannerManager::test_filter_false_positives PASSED [  8%]
+tests/unit/test_auto_hunter.py::TestScannerManager::test_prioritize_vulnerabilities PASSED [  9%]
+tests/unit/test_auto_hunter.py::TestPoCGenerator::test_generate_xss_poc PASSED [  9%]
+tests/unit/test_auto_hunter.py::TestPoCGenerator::test_generate_sqli_poc PASSED [  9%]
+tests/unit/test_auto_hunter.py::TestPoCGenerator::test_generate_csrf_poc PASSED [  9%]
+tests/unit/test_auto_hunter.py::TestReportBuilder::test_build_report PASSED [ 10%]
+tests/unit/test_auto_hunter.py::TestReportBuilder::test_generate_markdown_report PASSED [ 10%]
+tests/unit/test_auto_hunter.py::TestReportBuilder::test_generate_html_report PASSED [ 10%]
+tests/unit/test_auto_hunter.py::TestReportBuilder::test_generate_json_report PASSED [ 10%]
+tests/unit/test_auto_hunter.py::TestReportBuilder::test_save_report PASSED [ 11%]
+tests/unit/test_auto_hunter.py::TestAutoHunter::test_auto_hunter_initialization PASSED [ 11%]
+tests/unit/test_auto_hunter.py::TestAutoHunter::test_start_auto_hunt_success FAILED [ 11%]
+tests/unit/test_auto_hunter.py::TestAutoHunter::test_start_auto_hunt_burp_not_running PASSED [ 11%]
+tests/unit/test_auto_hunter.py::TestAutoHunter::test_generate_summary PASSED [ 12%]
+tests/unit/test_automation.py::TestScriptExecutor::test_execute_simple_command FAILED [ 12%]
+tests/unit/test_automation.py::TestScriptExecutor::test_execute_command_timeout PASSED [ 12%]
+tests/unit/test_automation.py::TestScriptExecutor::test_execute_invalid_command PASSED [ 12%]
+tests/unit/test_automation.py::TestScriptExecutor::test_execute_python_code SKIPPED [ 13%]
+tests/unit/test_automation.py::TestScriptExecutor::test_script_execution_result_to_dict PASSED [ 13%]
+tests/unit/test_automation.py::TestSafeScriptExecutor::test_block_dangerous_command PASSED [ 13%]
+tests/unit/test_automation.py::TestSafeScriptExecutor::test_allow_safe_command FAILED [ 13%]
+tests/unit/test_automation.py::TestSafeScriptExecutor::test_blocked_dangerous_commands PASSED [ 14%]
+tests/unit/test_automation.py::TestGUIController::test_get_screen_size PASSED [ 14%]
+tests/unit/test_automation.py::TestGUIController::test_get_mouse_position PASSED [ 14%]
+tests/unit/test_automation.py::TestGUIController::test_move_mouse PASSED [ 14%]
+tests/unit/test_automation.py::TestGUIController::test_click PASSED      [ 15%]
+tests/unit/test_automation.py::TestGUIController::test_type_text PASSED  [ 15%]
+tests/unit/test_automation.py::TestGUIController::test_press_key PASSED  [ 15%]
+tests/unit/test_automation.py::TestGUIController::test_hotkey PASSED     [ 15%]
+tests/unit/test_automation.py::TestGUIController::test_screenshot PASSED [ 16%]
+tests/unit/test_automation.py::TestApplicationLauncher::test_launch_notepad PASSED [ 16%]
+tests/unit/test_automation.py::TestApplicationLauncher::test_launch_calculator PASSED [ 16%]
+tests/unit/test_automation.py::TestApplicationLauncher::test_close_application PASSED [ 16%]
+tests/unit/test_automation.py::TestApplicationLauncher::test_get_running_applications PASSED [ 17%]
+tests/unit/test_automation.py::TestWindowManager::test_get_all_windows PASSED [ 17%]
+tests/unit/test_automation.py::TestWindowManager::test_get_active_window_title PASSED [ 17%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_write_file PASSED [ 17%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_read_file PASSED [ 18%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_read_nonexistent_file PASSED [ 18%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_delete_file PASSED [ 18%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_copy_file PASSED [ 18%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_move_file PASSED [ 19%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_list_directory PASSED [ 19%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_create_directory PASSED [ 19%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_search_files PASSED [ 19%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_get_file_info PASSED [ 20%]
+tests/unit/test_automation.py::TestSafeFileOperations::test_dangerous_path_blocked PASSED [ 20%]
+tests/unit/test_automation.py::TestCommandRegistry::test_help_command PASSED [ 20%]
+tests/unit/test_automation.py::TestCommandRegistry::test_time_command PASSED [ 20%]
+tests/unit/test_automation.py::TestCommandRegistry::test_date_command PASSED [ 21%]
+tests/unit/test_automation.py::TestCommandRegistry::test_system_info_command PASSED [ 21%]
+tests/unit/test_automation.py::TestCommandRegistry::test_cpu_usage_command PASSED [ 21%]
+tests/unit/test_automation.py::TestCommandRegistry::test_memory_usage_command PASSED [ 21%]
+tests/unit/test_automation.py::TestCommandRegistry::test_create_and_read_file_commands PASSED [ 22%]
+tests/unit/test_automation.py::TestCommandRegistry::test_list_files_command PASSED [ 22%]
+tests/unit/test_automation.py::TestCommandRegistry::test_invalid_command PASSED [ 22%]
+tests/unit/test_automation.py::TestCommandRegistry::test_custom_command_registration PASSED [ 22%]
+tests/unit/test_automation.py::TestCommandRegistry::test_get_command_registry_singleton PASSED [ 23%]
+tests/unit/test_automation.py::TestCommandRegistry::test_execution_time_tracking PASSED [ 23%]
+tests/unit/test_automation.py::TestIntegrationScenarios::test_full_file_workflow PASSED [ 23%]
+tests/unit/test_automation.py::TestIntegrationScenarios::test_command_registry_workflow PASSED [ 23%]
+tests/unit/test_config.py::TestConfigV090::test_default_values PASSED    [ 24%]
+tests/unit/test_config.py::TestConfigV090::test_screen_monitoring_defaults PASSED [ 24%]
+tests/unit/test_config.py::TestConfigV090::test_proactive_mode_defaults PASSED [ 24%]
+tests/unit/test_config.py::TestConfigV090::test_proactive_suggestion_types_parsing PASSED [ 24%]
+tests/unit/test_config.py::TestConfigV090::test_pc_control_defaults PASSED [ 25%]
+tests/unit/test_config.py::TestConfigV090::test_pc_control_allowed_actions_parsing PASSED [ 25%]
+tests/unit/test_config.py::TestConfigV090::test_bugbounty_autopilot_defaults PASSED [ 25%]
+tests/unit/test_config.py::TestConfigV090::test_bugbounty_target_programs_parsing PASSED [ 25%]
+tests/unit/test_config.py::TestConfigV090::test_personality_defaults PASSED [ 26%]
+tests/unit/test_config.py::TestConfigV090::test_daily_intelligence_defaults PASSED [ 26%]
+tests/unit/test_config.py::TestConfigV090::test_allowed_origins_parsing PASSED [ 26%]
+tests/unit/test_config.py::TestConfigV090::test_directories_created PASSED [ 26%]
+tests/unit/test_config.py::TestConfigV090::test_config_from_env_vars PASSED [ 27%]
+tests/unit/test_config.py::TestConfigV090::test_custom_suggestion_types PASSED [ 27%]
+tests/unit/test_config.py::TestConfigV090::test_custom_allowed_actions PASSED [ 27%]
+tests/unit/test_config.py::TestConfigV090::test_custom_target_programs PASSED [ 27%]
+tests/unit/test_config.py::TestConfigV090::test_path_types PASSED        [ 28%]
+tests/unit/test_config.py::TestConfigV090::test_ai_provider_settings PASSED [ 28%]
+tests/unit/test_config.py::TestConfigV090::test_voice_settings PASSED    [ 28%]
+tests/unit/test_config.py::TestConfigV090::test_feature_flags PASSED     [ 28%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_query_intent PASSED [ 29%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_command_intent PASSED [ 29%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_analysis_intent PASSED [ 29%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_code_intent PASSED [ 29%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_automation_intent PASSED [ 30%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_creative_intent PASSED [ 30%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_chat_intent PASSED [ 30%]
+tests/unit/test_conversation_engine.py::TestIntentClassifier::test_classify_with_confidence PASSED [ 30%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_initialization FAILED [ 31%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_add_message FAILED [ 31%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_add_message_with_metadata FAILED [ 31%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_invalid_role_raises_error FAILED [ 31%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_get_history FAILED [ 32%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_get_history_with_max_messages FAILED [ 32%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_get_history_without_metadata FAILED [ 32%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_max_messages_limit FAILED [ 32%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_token_counting FAILED [ 33%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_clear_history FAILED [ 33%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_get_context_stats FAILED [ 33%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_get_messages_by_role FAILED [ 33%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_compressed_context FAILED [ 34%]
+tests/unit/test_conversation_engine.py::TestContextManager::test_export_import_history FAILED [ 34%]
+tests/unit/test_conversation_engine.py::TestSessionContextManager::test_create_session FAILED [ 34%]
+tests/unit/test_conversation_engine.py::TestSessionContextManager::test_get_existing_session FAILED [ 34%]
+tests/unit/test_conversation_engine.py::TestSessionContextManager::test_get_nonexistent_session FAILED [ 35%]
+tests/unit/test_conversation_engine.py::TestSessionContextManager::test_delete_session FAILED [ 35%]
+tests/unit/test_conversation_engine.py::TestSessionContextManager::test_list_sessions FAILED [ 35%]
+tests/unit/test_conversation_engine.py::TestSessionContextManager::test_get_all_sessions_stats FAILED [ 35%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_initialization PASSED [ 36%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_get_system_prompt_default PASSED [ 36%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_get_system_prompt_conversation PASSED [ 36%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_get_system_prompt_analysis PASSED [ 36%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_get_system_prompt_code PASSED [ 37%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_get_few_shot_examples PASSED [ 37%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_format_template_swot PASSED [ 37%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_format_template_data_analysis PASSED [ 37%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_format_template_code_generation PASSED [ 38%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_format_template_missing_parameter PASSED [ 38%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_build_prompt_simple PASSED [ 38%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_build_prompt_with_template PASSED [ 38%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_build_prompt_with_examples PASSED [ 39%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_add_custom_template PASSED [ 39%]
+tests/unit/test_conversation_engine.py::TestPromptEngine::test_add_custom_system_prompt PASSED [ 39%]
+tests/unit/test_conversation_engine.py::TestResponseFormatter::test_format_analysis PASSED [ 39%]
+tests/unit/test_conversation_engine.py::TestResponseFormatter::test_format_code PASSED [ 40%]
+tests/unit/test_conversation_engine.py::TestResponseFormatter::test_format_command PASSED [ 40%]
+tests/unit/test_conversation_engine.py::TestResponseFormatter::test_format_query PASSED [ 40%]
+tests/unit/test_intelligence.py::TestIntelligenceDatabase::test_database_initialization PASSED [ 40%]
+tests/unit/test_intelligence.py::TestIntelligenceDatabase::test_log_activity PASSED [ 41%]
+tests/unit/test_intelligence.py::TestIntelligenceDatabase::test_add_earning PASSED [ 41%]
+tests/unit/test_intelligence.py::TestIntelligenceDatabase::test_update_earning_status PASSED [ 41%]
+tests/unit/test_intelligence.py::TestIntelligenceDatabase::test_get_earnings_stats PASSED [ 41%]
+tests/unit/test_intelligence.py::TestIntelligenceDatabase::test_save_and_get_daily_summary PASSED [ 42%]
+tests/unit/test_intelligence.py::TestDailyReporter::test_generate_daily_report_empty PASSED [ 42%]
+tests/unit/test_intelligence.py::TestDailyReporter::test_generate_daily_report_with_activities PASSED [ 42%]
+tests/unit/test_intelligence.py::TestDailyReporter::test_report_with_earnings PASSED [ 42%]
+tests/unit/test_intelligence.py::TestDailyReporter::test_report_text_generation PASSED [ 43%]
+tests/unit/test_intelligence.py::TestDailyReporter::test_weekly_summary PASSED [ 43%]
+tests/unit/test_intelligence.py::TestDailyReporter::test_monthly_summary PASSED [ 43%]
+tests/unit/test_intelligence.py::TestTrendAnalyzer::test_analyze_bug_bounty_trends PASSED [ 43%]
+tests/unit/test_intelligence.py::TestTrendAnalyzer::test_analyze_youtube_trends PASSED [ 44%]
+tests/unit/test_intelligence.py::TestTrendAnalyzer::test_analyze_tech_job_trends PASSED [ 44%]
+tests/unit/test_intelligence.py::TestTrendAnalyzer::test_get_all_trends PASSED [ 44%]
+tests/unit/test_intelligence.py::TestTrendAnalyzer::test_trend_caching PASSED [ 44%]
+tests/unit/test_intelligence.py::TestWealthTracker::test_add_earning PASSED [ 45%]
+tests/unit/test_intelligence.py::TestWealthTracker::test_get_wealth_stats PASSED [ 45%]
+tests/unit/test_intelligence.py::TestWealthTracker::test_monthly_breakdown PASSED [ 45%]
+tests/unit/test_intelligence.py::TestWealthTracker::test_payout_prediction PASSED [ 45%]
+tests/unit/test_intelligence.py::TestWealthTracker::test_yearly_summary PASSED [ 46%]
+tests/unit/test_memory.py::TestVectorStore::test_initialization PASSED   [ 46%]
+tests/unit/test_memory.py::TestVectorStore::test_create_collection PASSED [ 46%]
+tests/unit/test_memory.py::TestVectorStore::test_add_memory PASSED       [ 46%]
+tests/unit/test_memory.py::TestVectorStore::test_add_memories_batch PASSED [ 47%]
+tests/unit/test_memory.py::TestVectorStore::test_search_memories FAILED  [ 47%]
+tests/unit/test_memory.py::TestVectorStore::test_get_memory PASSED       [ 47%]
+tests/unit/test_memory.py::TestVectorStore::test_update_memory PASSED    [ 47%]
+tests/unit/test_memory.py::TestVectorStore::test_delete_memory PASSED    [ 48%]
+tests/unit/test_memory.py::TestVectorStore::test_list_collections PASSED [ 48%]
+tests/unit/test_memory.py::TestVectorStore::test_get_collection_stats PASSED [ 48%]
+tests/unit/test_memory.py::TestVectorStore::test_delete_collection PASSED [ 48%]
+tests/unit/test_memory.py::TestConversationHistory::test_initialization PASSED [ 49%]
+tests/unit/test_memory.py::TestConversationHistory::test_add_message PASSED [ 49%]
+tests/unit/test_memory.py::TestConversationHistory::test_get_session_history PASSED [ 49%]
+tests/unit/test_memory.py::TestConversationHistory::test_get_recent_context PASSED [ 49%]
+tests/unit/test_memory.py::TestConversationHistory::test_important_message_detection PASSED [ 50%]
+tests/unit/test_memory.py::TestConversationHistory::test_search_relevant_context PASSED [ 50%]
+tests/unit/test_memory.py::TestConversationHistory::test_rag_context PASSED [ 50%]
+tests/unit/test_memory.py::TestConversationHistory::test_session_info PASSED [ 50%]
+tests/unit/test_memory.py::TestConversationHistory::test_list_sessions PASSED [ 51%]
+tests/unit/test_memory.py::TestConversationHistory::test_delete_session PASSED [ 51%]
+tests/unit/test_memory.py::TestConversationHistory::test_statistics PASSED [ 51%]
+tests/unit/test_memory.py::TestUserProfile::test_initialization PASSED   [ 51%]
+tests/unit/test_memory.py::TestUserProfile::test_default_profile_structure PASSED [ 52%]
+tests/unit/test_memory.py::TestUserProfile::test_get_set PASSED          [ 52%]
+tests/unit/test_memory.py::TestUserProfile::test_get_default PASSED      [ 52%]
+tests/unit/test_memory.py::TestUserProfile::test_update PASSED           [ 52%]
+tests/unit/test_memory.py::TestUserProfile::test_preferences PASSED      [ 53%]
+tests/unit/test_memory.py::TestUserProfile::test_interests PASSED        [ 53%]
+tests/unit/test_memory.py::TestUserProfile::test_skills PASSED           [ 53%]
+tests/unit/test_memory.py::TestUserProfile::test_learn_pattern PASSED    [ 53%]
+tests/unit/test_memory.py::TestUserProfile::test_record_activity PASSED  [ 54%]
+tests/unit/test_memory.py::TestUserProfile::test_personalization_context PASSED [ 54%]
+tests/unit/test_memory.py::TestUserProfile::test_export_import PASSED    [ 54%]
+tests/unit/test_memory.py::TestUserProfile::test_reset_profile PASSED    [ 54%]
+tests/unit/test_memory.py::TestProfileManager::test_get_profile PASSED   [ 55%]
+tests/unit/test_memory.py::TestProfileManager::test_list_profiles PASSED [ 55%]
+tests/unit/test_memory.py::TestProfileManager::test_delete_profile PASSED [ 55%]
+tests/unit/test_memory.py::TestProfileManager::test_export_all_profiles PASSED [ 55%]
+tests/unit/test_memory.py::TestProfileManager::test_import_profile PASSED [ 56%]
+tests/unit/test_memory.py::TestMemoryIntegration::test_conversation_with_memory PASSED [ 56%]
+tests/unit/test_memory.py::TestMemoryIntegration::test_profile_with_memory PASSED [ 56%]
+tests/unit/test_monitoring.py::TestMonitoringBridge::test_start_monitoring PASSED [ 56%]
+tests/unit/test_monitoring.py::TestMonitoringBridge::test_stop_monitoring PASSED [ 57%]
+tests/unit/test_monitoring.py::TestMonitoringBridge::test_get_status PASSED [ 57%]
+tests/unit/test_monitoring.py::TestMonitoringBridge::test_detect_apps PASSED [ 57%]
+tests/unit/test_monitoring.py::TestMonitoringBridge::test_check_app PASSED [ 57%]
+tests/unit/test_monitoring.py::TestContextAnalyzer::test_analyze_with_apps PASSED [ 58%]
+tests/unit/test_monitoring.py::TestContextAnalyzer::test_analyze_no_apps PASSED [ 58%]
+tests/unit/test_monitoring.py::TestContextAnalyzer::test_analyze_burpsuite PASSED [ 58%]
+tests/unit/test_monitoring.py::test_bridge_close PASSED                  [ 58%]
+tests/unit/test_pc_controller.py::TestPermissionManager::test_load_default_permissions FAILED [ 59%]
+tests/unit/test_pc_controller.py::TestPermissionManager::test_is_action_allowed FAILED [ 59%]
+tests/unit/test_pc_controller.py::TestPermissionManager::test_is_action_blocked PASSED [ 59%]
+tests/unit/test_pc_controller.py::TestPermissionManager::test_log_action FAILED [ 59%]
+tests/unit/test_pc_controller.py::TestPermissionManager::test_update_permission PASSED [ 60%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_move_mouse PASSED [ 60%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_move_mouse_out_of_bounds PASSED [ 60%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_click_mouse PASSED [ 60%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_type_text PASSED [ 61%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_type_text_empty PASSED [ 61%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_type_text_too_long PASSED [ 61%]
+tests/unit/test_pc_controller.py::TestMouseKeyboardController::test_press_key PASSED [ 61%]
+tests/unit/test_pc_controller.py::TestAppLauncher::test_launch_system_app PASSED [ 62%]
+tests/unit/test_pc_controller.py::TestAppLauncher::test_launch_nonexistent_app PASSED [ 62%]
+tests/unit/test_pc_controller.py::TestAppLauncher::test_close_app PASSED [ 62%]
+tests/unit/test_pc_controller.py::TestAppLauncher::test_close_app_not_running PASSED [ 62%]
+tests/unit/test_pc_controller.py::TestAppLauncher::test_is_app_running PASSED [ 63%]
+tests/unit/test_pc_controller.py::TestAppLauncher::test_get_running_apps PASSED [ 63%]
+tests/unit/test_pc_controller.py::TestPCController::test_execute_action_allowed FAILED [ 63%]
+tests/unit/test_pc_controller.py::TestPCController::test_execute_action_blocked PASSED [ 63%]
+tests/unit/test_pc_controller.py::TestPCController::test_execute_action_needs_confirmation FAILED [ 64%]
+tests/unit/test_pc_controller.py::TestPCController::test_get_system_info PASSED [ 64%]
+tests/unit/test_personality.py::TestConversationalStyle::test_initialization PASSED [ 64%]
+tests/unit/test_personality.py::TestConversationalStyle::test_get_greeting PASSED [ 64%]
+tests/unit/test_personality.py::TestConversationalStyle::test_get_confirmation PASSED [ 65%]
+tests/unit/test_personality.py::TestConversationalStyle::test_get_contextual_response PASSED [ 65%]
+tests/unit/test_personality.py::TestConversationalStyle::test_add_emoji PASSED [ 65%]
+tests/unit/test_personality.py::TestConversationalStyle::test_hindi_english_phrases_persistence PASSED [ 65%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_initialization PASSED [ 66%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_enhance_response_friendly PASSED [ 66%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_enhance_response_professional PASSED [ 66%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_enhance_response_casual PASSED [ 66%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_enhance_with_context PASSED [ 67%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_detect_emoji_context PASSED [ 67%]
+tests/unit/test_personality.py::TestResponseEnhancer::test_no_personality_when_disabled PASSED [ 67%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_initialization PASSED [ 67%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_get_encouragement PASSED [ 68%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_get_encouragement_with_variables PASSED [ 68%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_celebrate_achievement_bug_found PASSED [ 68%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_celebrate_achievement_task_complete PASSED [ 68%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_provide_support PASSED [ 69%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_update_streak PASSED [ 69%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_track_mood PASSED [ 69%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_get_mood_based_message PASSED [ 69%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_get_progress_summary PASSED [ 70%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_progress_persistence PASSED [ 70%]
+tests/unit/test_personality.py::TestMotivationalEngine::test_no_motivation_when_disabled PASSED [ 70%]
+tests/unit/test_personality.py::TestHumorGenerator::test_initialization PASSED [ 70%]
+tests/unit/test_personality.py::TestHumorGenerator::test_get_joke PASSED [ 71%]
+tests/unit/test_personality.py::TestHumorGenerator::test_get_pun PASSED  [ 71%]
+tests/unit/test_personality.py::TestHumorGenerator::test_get_contextual_humor PASSED [ 71%]
+tests/unit/test_personality.py::TestHumorGenerator::test_add_humor_to_response PASSED [ 71%]
+tests/unit/test_personality.py::TestHumorGenerator::test_get_tech_humor_for_topic FAILED [ 72%]
+tests/unit/test_personality.py::TestHumorGenerator::test_get_timing_based_humor PASSED [ 72%]
+tests/unit/test_personality.py::TestHumorGenerator::test_joke_interval_enforcement PASSED [ 72%]
+tests/unit/test_personality.py::TestHumorGenerator::test_no_humor_when_disabled PASSED [ 72%]
+tests/unit/test_personality.py::TestHumorGenerator::test_jokes_persistence PASSED [ 73%]
+tests/unit/test_personality.py::TestIntegration::test_full_personality_pipeline PASSED [ 73%]
+tests/unit/test_personality.py::TestIntegration::test_personality_with_different_tones PASSED [ 73%]
+tests/unit/test_personality.py::TestIntegration::test_contextual_personality_application PASSED [ 73%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_generate_contextual_suggestions PASSED [ 74%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_bug_bounty_suggestion_with_burp PASSED [ 74%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_bug_bounty_suggestion_morning PASSED [ 74%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_break_suggestion_needed PASSED [ 74%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_break_suggestion_not_needed PASSED [ 75%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_get_time_of_day PASSED [ 75%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_history_management PASSED [ 75%]
+tests/unit/test_proactive.py::TestSuggestionGenerator::test_clear_history PASSED [ 75%]
+tests/unit/test_proactive.py::TestDailyPlanner::test_generate_daily_plan PASSED [ 76%]
+tests/unit/test_proactive.py::TestDailyPlanner::test_create_default_plan PASSED [ 76%]
+tests/unit/test_proactive.py::TestDailyPlanner::test_save_and_load_plan PASSED [ 76%]
+tests/unit/test_proactive.py::TestDailyPlanner::test_generate_morning_greeting PASSED [ 76%]
+tests/unit/test_proactive.py::TestDailyPlanner::test_get_current_task PASSED [ 77%]
+tests/unit/test_proactive.py::TestProactiveBrain::test_check_and_suggest PASSED [ 77%]
+tests/unit/test_proactive.py::TestProactiveBrain::test_build_context PASSED [ 77%]
+tests/unit/test_proactive.py::TestProactiveBrain::test_morning_greeting_generated PASSED [ 77%]
+tests/unit/test_proactive.py::TestProactiveBrain::test_generate_daily_plan PASSED [ 78%]
+tests/unit/test_proactive.py::TestProactiveBrain::test_get_statistics PASSED [ 78%]
+tests/unit/test_proactive.py::TestAutoExecutor::test_execute_action_requires_approval PASSED [ 78%]
+tests/unit/test_proactive.py::TestAutoExecutor::test_execute_action_skip_approval PASSED [ 78%]
+tests/unit/test_proactive.py::TestAutoExecutor::test_approve_and_execute PASSED [ 79%]
+tests/unit/test_proactive.py::TestAutoExecutor::test_reject_action PASSED [ 79%]
+tests/unit/test_proactive.py::TestAutoExecutor::test_get_pending_approvals PASSED [ 79%]
+tests/unit/test_proactive.py::TestAutoExecutor::test_action_handlers PASSED [ 79%]
+tests/unit/test_stt.py::TestSTTConfig::test_whisper_models_exist PASSED  [ 80%]
+tests/unit/test_stt.py::TestSTTConfig::test_model_properties PASSED      [ 80%]
+tests/unit/test_stt.py::TestSTTConfig::test_recommended_model_low_ram PASSED [ 80%]
+tests/unit/test_stt.py::TestSTTConfig::test_recommended_model_medium_ram PASSED [ 80%]
+tests/unit/test_stt.py::TestSTTConfig::test_recommended_model_high_ram_no_gpu PASSED [ 81%]
+tests/unit/test_stt.py::TestSTTConfig::test_recommended_model_with_gpu PASSED [ 81%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_initialization_cloud PASSED [ 81%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_initialization_cloud_no_key PASSED [ 81%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_empty_result PASSED  [ 82%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_empty_result_with_error PASSED [ 82%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_transcribe_empty_array PASSED [ 82%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_transcribe_cloud_from_file PASSED [ 82%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_get_available_models PASSED [ 83%]
+tests/unit/test_stt.py::TestSpeechToTextCloud::test_get_supported_languages PASSED [ 83%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_initialization_local PASSED [ 83%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_transcribe_local PASSED [ 83%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_calculate_confidence_with_segments PASSED [ 84%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_calculate_confidence_no_segments PASSED [ 84%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_calculate_confidence_with_no_speech_prob PASSED [ 84%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_transcribe_realtime PASSED [ 84%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_transcribe_until_silence PASSED [ 85%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_transcribe_invalid_type PASSED [ 85%]
+tests/unit/test_stt.py::TestSpeechToTextLocal::test_cleanup PASSED       [ 85%]
+tests/unit/test_stt.py::TestSpeechToTextIntegration::test_transcribe_numpy_array PASSED [ 85%]
+tests/unit/test_stt.py::TestSpeechToTextIntegration::test_transcribe_from_file PASSED [ 86%]
+tests/unit/test_stt.py::TestSpeechToTextIntegration::test_transcribe_file_not_found PASSED [ 86%]
+tests/unit/test_stt.py::TestSpeechToTextIntegration::test_language_specification PASSED [ 86%]
+tests/unit/test_stt.py::TestSpeechToTextIntegration::test_transcribe_with_custom_parameters PASSED [ 86%]
+tests/unit/test_tts.py::TestTTSConfig::test_default_config PASSED        [ 87%]
+tests/unit/test_tts.py::TestTTSConfig::test_custom_config PASSED         [ 87%]
+tests/unit/test_tts.py::TestTTSCache::test_cache_initialization PASSED   [ 87%]
+tests/unit/test_tts.py::TestTTSCache::test_cache_key_generation PASSED   [ 87%]
+tests/unit/test_tts.py::TestTTSCache::test_cache_put_and_get PASSED      [ 88%]
+tests/unit/test_tts.py::TestTTSCache::test_cache_hit_tracking PASSED     [ 88%]
+tests/unit/test_tts.py::TestTTSCache::test_cache_disabled PASSED         [ 88%]
+tests/unit/test_tts.py::TestTTSCache::test_metadata_persistence PASSED   [ 88%]
+tests/unit/test_tts.py::TestLocalTTS::test_local_tts_initialization PASSED [ 89%]
+tests/unit/test_tts.py::TestLocalTTS::test_engine_configuration PASSED   [ 89%]
+tests/unit/test_tts.py::TestLocalTTS::test_get_available_voices PASSED   [ 89%]
+tests/unit/test_tts.py::TestCloudTTS::test_cloud_tts_initialization SKIPPED [ 89%]
+tests/unit/test_tts.py::TestCloudTTS::test_cloud_synthesis PASSED        [ 90%]
+tests/unit/test_tts.py::TestCloudTTS::test_voice_mapping SKIPPED (Vo...) [ 90%]
+tests/unit/test_tts.py::TestTextToSpeech::test_tts_initialization_local PASSED [ 90%]
+tests/unit/test_tts.py::TestTextToSpeech::test_empty_text_validation PASSED [ 90%]
+tests/unit/test_tts.py::TestTextToSpeech::test_synthesis_with_cache PASSED [ 91%]
+tests/unit/test_tts.py::TestTextToSpeech::test_config_update PASSED      [ 91%]
+tests/unit/test_tts.py::TestTextToSpeech::test_cache_stats PASSED        [ 91%]
+tests/unit/test_tts.py::TestTextToSpeech::test_clear_cache PASSED        [ 91%]
+tests/unit/test_tts.py::TestTextToSpeech::test_audio_playback PASSED     [ 92%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_queue_initialization PASSED [ 92%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_queue_start_stop PASSED [ 92%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_add_request PASSED      [ 92%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_priority_ordering PASSED [ 93%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_queue_full_handling PASSED [ 93%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_queue_clear PASSED      [ 93%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_queue_stats PASSED      [ 93%]
+tests/unit/test_tts.py::TestTTSOutputQueue::test_context_manager PASSED  [ 94%]
+tests/unit/test_tts.py::TestTTSRequest::test_request_creation PASSED     [ 94%]
+tests/unit/test_tts.py::TestTTSRequest::test_request_priority_comparison PASSED [ 94%]
+tests/unit/test_tts.py::TestIntegration::test_full_tts_pipeline PASSED   [ 94%]
+tests/unit/test_tts.py::TestIntegration::test_tts_latency_target PASSED  [ 95%]
+tests/unit/test_wake_word.py::TestSimpleWakeWordDetector::test_initialization PASSED [ 95%]
+tests/unit/test_wake_word.py::TestSimpleWakeWordDetector::test_detect_high_energy_audio PASSED [ 95%]
+tests/unit/test_wake_word.py::TestSimpleWakeWordDetector::test_detect_low_energy_audio PASSED [ 95%]
+tests/unit/test_wake_word.py::TestSimpleWakeWordDetector::test_detect_short_audio PASSED [ 96%]
+tests/unit/test_wake_word.py::TestSimpleWakeWordDetector::test_custom_energy_multiplier PASSED [ 96%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_initialization_without_porcupine PASSED [ 96%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_initialization_with_custom_sensitivity PASSED [ 96%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_detect_energy_based_high_energy PASSED [ 97%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_detect_energy_based_low_energy PASSED [ 97%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_detect_from_audio_energy_based PASSED [ 97%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_stop_listening PASSED [ 97%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_cleanup PASSED  [ 98%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_get_available_keywords PASSED [ 98%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_porcupine_initialization_jarvis PASSED [ 98%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_porcupine_initialization_default PASSED [ 98%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_context_manager PASSED [ 99%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_detect_porcupine PASSED [ 99%]
+tests/unit/test_wake_word.py::TestWakeWordDetector::test_detect_porcupine_keyword_found PASSED [ 99%]
+tests/unit/test_wake_word.py::TestWakeWordIntegration::test_simple_detector_with_synthetic_wake_word PASSED [ 99%]
+tests/unit/test_wake_word.py::TestWakeWordIntegration::test_detector_fallback_to_energy FAILED [100%]
+
+================================== FAILURES ===================================
+_________________ TestAutoHunter.test_start_auto_hunt_success _________________
+
+self = <tests.unit.test_auto_hunter.TestAutoHunter object at 0x00000187B08FD3A0>
+mock_components = (<Mock spec='BurpController' id='1682324728544'>, <Mock spec='ScannerManager' id='1682324727776'>, <Mock spec='PoCGenerator' id='1682324723840'>, <Mock spec='ReportBuilder' id='1682324605168'>)
+
+    @pytest.mark.asyncio
+    async def test_start_auto_hunt_success(self, mock_components):
+        burp, scanner, poc_gen, report_builder = mock_components
+    
+        hunter = AutoHunter(
+            burp_controller=burp,
+            scanner_manager=scanner,
+            poc_generator=poc_gen,
+            report_builder=report_builder
+        )
+    
+        result = await hunter.start_auto_hunt(
+            target_url="https://example.com",
+            auto_poc=True,
+            auto_report=True
+        )
+    
+>       assert result.status == ScanStatus.COMPLETED
+E       assert <ScanStatus.FAILED: 'failed'> == <ScanStatus.COMPLETED: 'completed'>
+E        +  where <ScanStatus.FAILED: 'failed'> = AutoScanResult(scan_id='hunt_1771601658', target_url='https://example.com', status=<ScanStatus.FAILED: 'failed'>, burp_running=True, scan_started_at=None, scan_completed_at=None, vulnerabilities=[Vulnerability(id='v1', title='XSS', vuln_type=<VulnerabilityType.XSS: 'Cross-Site Scripting'>, severity=<VulnerabilitySeverity.HIGH: 'high'>, url='https://example.com', parameter=None, description='', evidence='', remediation='', confidence='Certain', cvss_score=0.0, cwe_id=None, references=[], detected_at=datetime.datetime(2026, 2, 20, 21, 4, 18, 190596), false_positive=False)], reports_generated=[<Mock name='mock.build_report()' spec='BugReport' id='1682324767952'>], total_issues_found=1, critical_count=0, high_count=1, medium_count=0, low_count=0, info_count=0, estimated_total_payout=0, error_message="Mock object has no attribute 'title'").status
+E        +  and   <ScanStatus.COMPLETED: 'completed'> = ScanStatus.COMPLETED
+
+tests\unit\test_auto_hunter.py:499: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+------------------------------ Captured log call ------------------------------
+ERROR    src.bugbounty.auto_hunter:auto_hunter.py:279 Auto hunt failed: Mock object has no attribute 'title'
+Traceback (most recent call last):
+  File "C:\Users\nandk\Aether-AI\src\bugbounty\auto_hunter.py", line 240, in start_auto_hunt
+    logger.info(f"Saved report: {report.title}")
+                                 ^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\unittest\mock.py", line 660, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'title'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nandk\Aether-AI\src\bugbounty\auto_hunter.py", line 243, in start_auto_hunt
+    logger.warning(f"Failed to save report {report.title}: {e}")
+                                            ^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\unittest\mock.py", line 660, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'title'
+_______________ TestScriptExecutor.test_execute_simple_command ________________
+
+self = <tests.unit.test_automation.TestScriptExecutor object at 0x00000187B0DA4800>
+
+    def test_execute_simple_command(self):
+        executor = ScriptExecutor(timeout=10)
+        result = executor.execute_command("echo", args=["Hello World"], shell=True)
+    
+>       assert result.success
+E       assert False
+E        +  where False = ScriptExecutionResult(success=False, exit_code=0, time=0.00s).success
+
+tests\unit\test_automation.py:29: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+---------------------------- Captured stdout call -----------------------------
+2026-02-20 21:04:21 | ERROR    | src.security.crypto:execute_command:119 | Command execution failed: ScriptExecutor._execute_subprocess() got an unexpected keyword argument 'shell'
+_______________ TestSafeScriptExecutor.test_allow_safe_command ________________
+
+self = <tests.unit.test_automation.TestSafeScriptExecutor object at 0x00000187B0DA4D10>
+
+    def test_allow_safe_command(self):
+        executor = SafeScriptExecutor(timeout=5)
+        result = executor.execute_command("echo", args=["Safe command"], shell=True)
+    
+>       assert result.success
+E       assert False
+E        +  where False = ScriptExecutionResult(success=False, exit_code=0, time=0.00s).success
+
+tests\unit\test_automation.py:88: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+---------------------------- Captured stdout call -----------------------------
+2026-02-20 21:04:21 | ERROR    | src.security.crypto:execute_command:119 | Command execution failed: ScriptExecutor._execute_subprocess() got an unexpected keyword argument 'shell'
+___________________ TestContextManager.test_initialization ____________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E28C50>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_initialization0')
+
+    def test_initialization(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B25E1400>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_initialization0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+_____________________ TestContextManager.test_add_message _____________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E29010>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_add_message0')
+
+    def test_add_message(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B25C4D10>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_add_message0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+______________ TestContextManager.test_add_message_with_metadata ______________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E293D0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_add_message_with_metadata0')
+
+    def test_add_message_with_metadata(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B25BDB50>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_add_message_with_metadata0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+______________ TestContextManager.test_invalid_role_raises_error ______________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E1BE90>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_invalid_role_raises_error0')
+
+    def test_invalid_role_raises_error(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B21E3740>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_invalid_role_raises_error0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+_____________________ TestContextManager.test_get_history _____________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E1B5C0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_history0')
+
+    def test_get_history(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B21E3B30>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_get_history0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+____________ TestContextManager.test_get_history_with_max_messages ____________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E1ABD0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_history_with_max_mess0')
+
+    def test_get_history_with_max_messages(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B22136B0>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_get_history_with_max_mess0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+____________ TestContextManager.test_get_history_without_metadata _____________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0DA7DD0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_history_without_metad0')
+
+    def test_get_history_without_metadata(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B22115B0>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_get_history_without_metad0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+_________________ TestContextManager.test_max_messages_limit __________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E29190>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_max_messages_limit0')
+
+    def test_max_messages_limit(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B21E3DA0>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_max_messages_limit0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+___________________ TestContextManager.test_token_counting ____________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E289E0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_token_counting0')
+
+    def test_token_counting(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B2210C20>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_token_counting0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+____________________ TestContextManager.test_clear_history ____________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E281A0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_clear_history0')
+
+    def test_clear_history(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B2211F40>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_clear_history0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+__________________ TestContextManager.test_get_context_stats __________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E29910>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_context_stats0')
+
+    def test_get_context_stats(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B22109E0>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_get_context_stats0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+________________ TestContextManager.test_get_messages_by_role _________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E29CD0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_messages_by_role0')
+
+    def test_get_messages_by_role(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", max_messages=10, max_tokens=1000,
+                                load_from_db=False, db_path=str(db_path))
+
+tests\unit\test_conversation_engine.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B21E2C60>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_get_messages_by_role0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+_________________ TestContextManager.test_compressed_context __________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E2A090>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_compressed_context0')
+
+    def test_compressed_context(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       temp_context = ContextManager(max_messages=50, max_tokens=5000, load_from_db=False, db_path=str(db_path))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_conversation_engine.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B2213A10>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_compressed_context0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+________________ TestContextManager.test_export_import_history ________________
+
+self = <tests.unit.test_conversation_engine.TestContextManager object at 0x00000187B0E2A450>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_export_import_history0')
+
+    def test_export_import_history(self, tmp_path):
+        db_path = tmp_path / "test_db.db"
+>       context = ContextManager(session_id="test_session", load_from_db=False, db_path=str(db_path))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_conversation_engine.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cognitive\llm\context_manager.py:22: in __init__
+    self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.cognitive.memory.conversation_history.ConversationHistory object at 0x00000187B2213020>
+db_path = 'C:\\Users\\nandk\\AppData\\Local\\Temp\\pytest-of-nandk\\pytest-50\\test_export_import_history0\\test_db.db'
+vector_store = None
+
+    def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
+        self.db_path = db_path or settings.conversation_history_db
+>       self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'str' object has no attribute 'parent'
+
+src\cognitive\memory\conversation_history.py:17: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+________________ TestSessionContextManager.test_create_session ________________
+
+self = <tests.unit.test_conversation_engine.TestSessionContextManager object at 0x00000187B0E2A870>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_create_session0')
+
+    def test_create_session(self, tmp_path):
+>       manager = SessionContextManager(db_path=str(tmp_path / "sessions.db"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: SessionContextManager.__init__() got an unexpected keyword argument 'db_path'
+
+tests\unit\test_conversation_engine.py:205: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+_____________ TestSessionContextManager.test_get_existing_session _____________
+
+self = <tests.unit.test_conversation_engine.TestSessionContextManager object at 0x00000187B0E2AC30>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_existing_session0')
+
+    def test_get_existing_session(self, tmp_path):
+>       manager = SessionContextManager(db_path=str(tmp_path / "sessions.db"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: SessionContextManager.__init__() got an unexpected keyword argument 'db_path'
+
+tests\unit\test_conversation_engine.py:211: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+___________ TestSessionContextManager.test_get_nonexistent_session ____________
+
+self = <tests.unit.test_conversation_engine.TestSessionContextManager object at 0x00000187B0E2AFF0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_get_nonexistent_session0')
+
+    def test_get_nonexistent_session(self, tmp_path):
+>       manager = SessionContextManager(db_path=str(tmp_path / "sessions.db"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: SessionContextManager.__init__() got an unexpected keyword argument 'db_path'
+
+tests\unit\test_conversation_engine.py:217: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+________________ TestSessionContextManager.test_delete_session ________________
+
+self = <tests.unit.test_conversation_engine.TestSessionContextManager object at 0x00000187B0E2B3B0>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_delete_session0')
+
+    def test_delete_session(self, tmp_path):
+>       manager = SessionContextManager(db_path=str(tmp_path / "sessions.db"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: SessionContextManager.__init__() got an unexpected keyword argument 'db_path'
+
+tests\unit\test_conversation_engine.py:222: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+________________ TestSessionContextManager.test_list_sessions _________________
+
+self = <tests.unit.test_conversation_engine.TestSessionContextManager object at 0x00000187B0E2B770>
+tmp_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_list_sessions0')
+
+    def test_list_sessions(self, tmp_path):
+>       manager = SessionContextManager(db_path=str(tmp_path / "sessions.db"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: SessionContextManager.__init__() got an unexpected keyword argument 'db_path'
+
+tests\unit\test_conversation_engine.py:228: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+____________ TestSessionContextManager.test_get_all_sessions_stats ____________
+
+self = <tests.unit.test_conversation_engine.TestSessionContextManager object at 0x00000187B0E1A7B0>
+
+    def test_get_all_sessions_stats(self):
+>       session1 = self.session_manager.get_or_create_session("session1")
+                   ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'TestSessionContextManager' object has no attribute 'session_manager'
+
+tests\unit\test_conversation_engine.py:237: AttributeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+____________________ TestVectorStore.test_search_memories _____________________
+
+self = <tests.unit.test_memory.TestVectorStore object at 0x00000187B2369DF0>
+vector_store = <src.cognitive.memory.vector_store.VectorStore object at 0x00000187B25969C0>
+
+    def test_search_memories(self, vector_store):
+        vector_store.add_memory("test_collection", "Python programming language")
+        vector_store.add_memory("test_collection", "JavaScript web development")
+        vector_store.add_memory("test_collection", "Python data science")
+    
+        results = vector_store.search_memories("test_collection", "Python", n_results=2)
+>       assert results["count"] == 2
+E       assert 0 == 2
+
+tests\unit\test_memory.py:89: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+------------------------------ Captured log call ------------------------------
+ERROR    src.cognitive.memory.vector_store:vector_store.py:412 Search failed in 'test_collection': MockEmbeddingFunction.embed_query() got an unexpected keyword argument 'input' in query.
+_____________ TestPermissionManager.test_load_default_permissions _____________
+
+self = <tests.unit.test_pc_controller.TestPermissionManager object at 0x00000187B23CFEC0>
+temp_permission_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_load_default_permissions0')
+
+    def test_load_default_permissions(self, temp_permission_path):
+        with patch('src.config.settings.pc_control_audit_log', temp_permission_path / 'audit.log'):
+            with patch('src.config.settings.pc_control_allowed_actions', 'mouse_click,keyboard_type'):
+                with patch('src.config.settings.pc_control_require_confirmation', True):
+                    manager = PermissionManager()
+    
+                    assert ActionType.MOUSE_CLICK in manager.permissions
+>                   assert manager.permissions[ActionType.MOUSE_CLICK].allowed is True
+E                   AssertionError: assert False is True
+E                    +  where False = PermissionRule(action_type='mouse_click', allowed=False, require_confirmation=True, reason='Test block').allowed
+
+tests\unit\test_pc_controller.py:39: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+________________ TestPermissionManager.test_is_action_allowed _________________
+
+self = <tests.unit.test_pc_controller.TestPermissionManager object at 0x00000187B2435040>
+temp_permission_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_is_action_allowed0')
+
+    def test_is_action_allowed(self, temp_permission_path):
+        with patch('src.config.settings.pc_control_audit_log', temp_permission_path / 'audit.log'):
+            with patch('src.config.settings.enable_pc_control', True):
+                with patch('src.config.settings.pc_control_allowed_actions', 'mouse_click'):
+                    manager = PermissionManager()
+    
+                    action = ControlAction(
+                        action_type=ActionType.MOUSE_CLICK,
+                        parameters={}
+                    )
+    
+>                   assert manager.is_action_allowed(action) is True
+E                   AssertionError: assert False is True
+E                    +  where False = is_action_allowed(ControlAction(action_type='mouse_click', parameters={}, require_confirmation=True, description=None))
+E                    +    where is_action_allowed = <src.control.permission_manager.PermissionManager object at 0x00000187B279C980>.is_action_allowed
+
+tests\unit\test_pc_controller.py:53: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+____________________ TestPermissionManager.test_log_action ____________________
+
+self = <tests.unit.test_pc_controller.TestPermissionManager object at 0x00000187B24357C0>
+temp_permission_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_log_action0')
+
+    @pytest.mark.asyncio
+    async def test_log_action(self, temp_permission_path):
+        audit_log = temp_permission_path / 'audit.log'
+    
+        with patch('src.config.settings.pc_control_audit_log', audit_log):
+            manager = PermissionManager()
+    
+            action = ControlAction(
+                action_type=ActionType.MOUSE_CLICK,
+                parameters={'x': 100, 'y': 200}
+            )
+    
+            result = ActionResult(
+                success=True,
+                action_type=ActionType.MOUSE_CLICK,
+                executed=True,
+                confirmed=True
+            )
+    
+            await manager.log_action(action, result)
+    
+>           assert audit_log.exists()
+E           AssertionError: assert False
+E            +  where False = exists()
+E            +    where exists = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_log_action0/audit.log').exists
+
+tests\unit\test_pc_controller.py:88: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+---------------------------- Captured stdout call -----------------------------
+2026-02-20 21:04:48 | ERROR    | src.security.crypto:log_action:109 | Failed to write audit log: 'str' object has no attribute 'value'
+________________ TestPCController.test_execute_action_allowed _________________
+
+self = <tests.unit.test_pc_controller.TestPCController object at 0x00000187B24503E0>
+temp_permission_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_execute_action_allowed0')
+
+    @pytest.mark.asyncio
+    async def test_execute_action_allowed(self, temp_permission_path):
+        with patch('src.config.settings.pc_control_audit_log', temp_permission_path / 'audit.log'):
+            with patch('src.config.settings.enable_pc_control', True):
+                with patch('src.config.settings.pc_control_allowed_actions', 'mouse_click'):
+                    controller = PCController()
+    
+                    with patch.object(controller.mouse_keyboard, 'click_mouse') as mock_click:
+                        mock_click.return_value = ActionResult(
+                            success=True,
+                            action_type=ActionType.MOUSE_CLICK,
+                            executed=True
+                        )
+    
+                        action = ControlAction(
+                            action_type=ActionType.MOUSE_CLICK,
+                            parameters={'button': 'left'},
+                            require_confirmation=False
+                        )
+    
+                        result = await controller.execute_action(action, auto_confirm=True)
+    
+>                       assert result.success is True
+E                       AssertionError: assert False is True
+E                        +  where False = ActionResult(success=False, action_type='mouse_click', timestamp=datetime.datetime(2026, 2, 20, 21, 4, 50, 67354), message=None, error='Action not allowed by permission rules', executed=False, confirmed=False).success
+
+tests\unit\test_pc_controller.py:297: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+---------------------------- Captured stdout call -----------------------------
+2026-02-20 21:04:50 | ERROR    | src.security.crypto:log_action:109 | Failed to write audit log: 'str' object has no attribute 'value'
+___________ TestPCController.test_execute_action_needs_confirmation ___________
+
+self = <tests.unit.test_pc_controller.TestPCController object at 0x00000187B2437A70>
+temp_permission_path = WindowsPath('C:/Users/nandk/AppData/Local/Temp/pytest-of-nandk/pytest-50/test_execute_action_needs_conf0')
+
+    @pytest.mark.asyncio
+    async def test_execute_action_needs_confirmation(self, temp_permission_path):
+        with patch('src.config.settings.pc_control_audit_log', temp_permission_path / 'audit.log'):
+            with patch('src.config.settings.enable_pc_control', True):
+                with patch('src.config.settings.pc_control_allowed_actions', 'mouse_click'):
+                    controller = PCController()
+    
+                    action = ControlAction(
+                        action_type=ActionType.MOUSE_CLICK,
+                        parameters={'button': 'left'},
+                        require_confirmation=True
+                    )
+    
+                    result = await controller.execute_action(action, auto_confirm=False)
+    
+                    assert result.success is False
+>                   assert "confirmation" in result.error.lower()
+E                   AssertionError: assert 'confirmation' in 'action not allowed by permission rules'
+E                    +  where 'action not allowed by permission rules' = <built-in method lower of str object at 0x00000187B24219D0>()
+E                    +    where <built-in method lower of str object at 0x00000187B24219D0> = 'Action not allowed by permission rules'.lower
+E                    +      where 'Action not allowed by permission rules' = ActionResult(success=False, action_type='mouse_click', timestamp=datetime.datetime(2026, 2, 20, 21, 4, 50, 434960), message=None, error='Action not allowed by permission rules', executed=False, confirmed=False).error
+
+tests\unit\test_pc_controller.py:332: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+---------------------------- Captured stdout call -----------------------------
+2026-02-20 21:04:50 | ERROR    | src.security.crypto:log_action:109 | Failed to write audit log: 'str' object has no attribute 'value'
+______________ TestHumorGenerator.test_get_tech_humor_for_topic _______________
+
+self = <tests.unit.test_personality.TestHumorGenerator object at 0x00000187B2470E60>
+humor_generator = <src.personality.humor_generator.HumorGenerator object at 0x00000187B34EBDA0>
+
+    def test_get_tech_humor_for_topic(self, humor_generator):
+        with patch.object(settings, 'personality_humor_enabled', True):
+            humor_generator.last_joke_time = None
+            humor = humor_generator.get_tech_humor_for_topic("python programming")
+            if humor:
+>               assert "python" in humor.lower() or "code" in humor.lower()
+E               assert ('python' in "ji boss, semicolon bhulne pe compiler: 'arre bhai, period lagana bhul gaye kya?' \U0001f602" or 'code' in "ji boss, semicolon bhulne pe compiler: 'arre bhai, period lagana bhul gaye kya?' \U0001f602")
+E                +  where "ji boss, semicolon bhulne pe compiler: 'arre bhai, period lagana bhul gaye kya?' \U0001f602" = <built-in method lower of str object at 0x00000187B0E4C1C0>()
+E                +    where <built-in method lower of str object at 0x00000187B0E4C1C0> = "Ji boss, semicolon bhulne pe compiler: 'Arre bhai, period lagana bhul gaye kya?' \U0001f602".lower
+E                +  and   "ji boss, semicolon bhulne pe compiler: 'arre bhai, period lagana bhul gaye kya?' \U0001f602" = <built-in method lower of str object at 0x00000187B0E4C1C0>()
+E                +    where <built-in method lower of str object at 0x00000187B0E4C1C0> = "Ji boss, semicolon bhulne pe compiler: 'Arre bhai, period lagana bhul gaye kya?' \U0001f602".lower
+
+tests\unit\test_personality.py:285: AssertionError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+__________ TestWakeWordIntegration.test_detector_fallback_to_energy ___________
+
+self = <tests.unit.test_wake_word.TestWakeWordIntegration object at 0x00000187B2511310>
+
+    def test_detector_fallback_to_energy(self):
+        with patch('src.perception.voice.wake_word.AudioInputHandler'):
+            detector = WakeWordDetector(
+                wake_word="test",
+                use_porcupine=False
+            )
+    
+            high_energy = np.random.randint(5000, 10000, 1000, dtype=np.int16)
+>           result = detector.detect_from_audio(high_energy)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_wake_word.py:200: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\perception\voice\wake_word.py:79: in detect_from_audio
+    return self._detect_energy_based(audio_data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.perception.voice.wake_word.WakeWordDetector object at 0x00000187BC49AEA0>
+audio_data = array([8001, 6332, 9754, 7279, 8532, 9437, 5052, 9103, 6569, 9915, 6358,
+       8843, 8293, 9954, 7658, 5962, 8711, 68...2, 6408, 9502, 6842, 8742, 6722,
+       5711, 9020, 8438, 7714, 7930, 9278, 5419, 8814, 9819, 9303],
+      dtype=int16)
+
+    def _detect_energy_based(self, audio_data: np.ndarray) -> bool:
+        energy = AudioInputHandler.calculate_energy(audio_data)
+    
+        energy_threshold = AudioConfig.ENERGY_THRESHOLD * 2
+    
+>       if energy > energy_threshold:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'MagicMock' and 'int'
+
+src\perception\voice\wake_word.py:106: TypeError
+---------------------------- Captured stdout setup ----------------------------
+\u26a0\ufe0f WARNING: Using auto-generated secret key for development
+============================== warnings summary ===============================
+src\cognitive\llm\providers\google_provider.py:3
+  C:\Users\nandk\Aether-AI\src\cognitive\llm\providers\google_provider.py:3: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pydantic\_internal\_config.py:323
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pydantic\_internal\_config.py:323
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pydantic\_internal\_config.py:323
+..\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pydantic\_internal\_config.py:323
+  C:\Users\nandk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pydantic\_internal\_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+tests/unit/test_memory.py: 129 warnings
+  C:\Users\nandk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\chromadb\api\collection_configuration.py:325: DeprecationWarning: legacy embedding function config: 'MockEmbeddingFunction' object has no attribute 'is_legacy'
+    return json.dumps(create_collection_configuration_to_json(config, metadata))
+
+tests/unit/test_memory.py: 24 warnings
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:39: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "created_at": datetime.utcnow().isoformat(),
+
+tests/unit/test_memory.py: 24 warnings
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:40: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "updated_at": datetime.utcnow().isoformat(),
+
+tests/unit/test_memory.py: 25 warnings
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:82: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    self.profile_data["updated_at"] = datetime.utcnow().isoformat()
+
+tests/unit/test_memory.py::TestUserProfile::test_record_activity
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:180: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    stats["last_active"] = datetime.utcnow().isoformat()
+
+tests/unit/test_memory.py::TestUserProfile::test_export_import
+tests/unit/test_memory.py::TestProfileManager::test_import_profile
+  C:\Users\nandk\Aether-AI\src\cognitive\memory\user_profile.py:201: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    profile_data["updated_at"] = datetime.utcnow().isoformat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/unit/test_auto_hunter.py::TestAutoHunter::test_start_auto_hunt_success
+FAILED tests/unit/test_automation.py::TestScriptExecutor::test_execute_simple_command
+FAILED tests/unit/test_automation.py::TestSafeScriptExecutor::test_allow_safe_command
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_initialization
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_add_message
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_add_message_with_metadata
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_invalid_role_raises_error
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_get_history
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_get_history_with_max_messages
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_get_history_without_metadata
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_max_messages_limit
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_token_counting
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_clear_history
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_get_context_stats
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_get_messages_by_role
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_compressed_context
+FAILED tests/unit/test_conversation_engine.py::TestContextManager::test_export_import_history
+FAILED tests/unit/test_conversation_engine.py::TestSessionContextManager::test_create_session
+FAILED tests/unit/test_conversation_engine.py::TestSessionContextManager::test_get_existing_session
+FAILED tests/unit/test_conversation_engine.py::TestSessionContextManager::test_get_nonexistent_session
+FAILED tests/unit/test_conversation_engine.py::TestSessionContextManager::test_delete_session
+FAILED tests/unit/test_conversation_engine.py::TestSessionContextManager::test_list_sessions
+FAILED tests/unit/test_conversation_engine.py::TestSessionContextManager::test_get_all_sessions_stats
+FAILED tests/unit/test_memory.py::TestVectorStore::test_search_memories - ass...
+FAILED tests/unit/test_pc_controller.py::TestPermissionManager::test_load_default_permissions
+FAILED tests/unit/test_pc_controller.py::TestPermissionManager::test_is_action_allowed
+FAILED tests/unit/test_pc_controller.py::TestPermissionManager::test_log_action
+FAILED tests/unit/test_pc_controller.py::TestPCController::test_execute_action_allowed
+FAILED tests/unit/test_pc_controller.py::TestPCController::test_execute_action_needs_confirmation
+FAILED tests/unit/test_personality.py::TestHumorGenerator::test_get_tech_humor_for_topic
+FAILED tests/unit/test_wake_word.py::TestWakeWordIntegration::test_detector_fallback_to_energy
+========== 31 failed, 366 passed, 3 skipped, 210 warnings in 57.51s ===========

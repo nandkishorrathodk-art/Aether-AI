@@ -26,7 +26,7 @@ try:
         print(f"Title: {data['title']}")
         print(f"URL: {data['url']}")
         print(f"Status: {data['status_code']}")
-        print(f"\nText (first 200 chars):")
+        print("\nText (first 200 chars):")
         print(data['text'][:200] + "...")
         print(f"\nLinks found: {len(data['links'])}")
         print(f"Images found: {len(data['images'])}")

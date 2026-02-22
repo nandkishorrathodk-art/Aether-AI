@@ -9,7 +9,7 @@ logger = get_logger(__name__)
 
 
 class ContextManager:
-    def __init__(self, session_id: str = "default", max_messages: int = None, max_tokens: int = 8000, load_from_db: bool = True):
+    def __init__(self, session_id: str = "default", max_messages: int = None, max_tokens: int = 8000, load_from_db: bool = True, db_path: str = None):
         self.session_id = session_id
         self.max_messages = max_messages or settings.max_context_messages
         self.max_tokens = max_tokens
@@ -19,7 +19,7 @@ class ContextManager:
         
         # Initialize Long-Term Memory
         from src.cognitive.memory.conversation_history import ConversationHistory
-        self.history_db = ConversationHistory()
+        self.history_db = ConversationHistory(db_path=db_path) if db_path else ConversationHistory()
         
         # Load recent context from DB
         if load_from_db:
@@ -217,7 +217,8 @@ Total Tokens: {self.token_count}
 
 
 class SessionContextManager:
-    def __init__(self):
+    def __init__(self, db_path: Optional[str] = None):
+        self.db_path = db_path
         self.sessions: Dict[str, ContextManager] = {}
         logger.info("Session Context Manager initialized")
 
@@ -230,7 +231,8 @@ class SessionContextManager:
         if session_id not in self.sessions:
             self.sessions[session_id] = ContextManager(
                 max_messages=max_messages,
-                max_tokens=max_tokens
+                max_tokens=max_tokens,
+                db_path=self.db_path
             )
             logger.info(f"Created new session: {session_id}")
         return self.sessions[session_id]

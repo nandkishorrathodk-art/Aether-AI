@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 """
 API routes module.
 """
@@ -53,3 +54,6 @@ __all__ = [
     'v3',
     'n8n'
 ]
+=======
+# Initialize routes package
+>>>>>>> Stashed changes

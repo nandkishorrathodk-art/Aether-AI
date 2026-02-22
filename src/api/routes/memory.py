@@ -3,14 +3,13 @@ from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 
-from src.cognitive.memory import MemoryManager, ConversationHistory, ProfileManager
+from src.cognitive.memory import ConversationHistory, ProfileManager
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 router = APIRouter(prefix="/api/v1/memory", tags=["memory"])
 
-memory_manager = MemoryManager()
 conversation_history = ConversationHistory()
 profile_manager = ProfileManager()
 
@@ -53,87 +52,19 @@ class PreferenceRequest(BaseModel):
 
 @router.post("/remember")
 async def remember(request: MemoryRequest):
-    try:
-        memory_id = memory_manager.remember(
-            request.text,
-            request.memory_type,
-            request.metadata
-        )
-        
-        return {
-            "success": True,
-            "memory_id": memory_id,
-            "message": "Memory stored successfully"
-        }
-    except Exception as e:
-        logger.error(f"Error storing memory: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to store memory: {str(e)}"
-        )
-
+    raise HTTPException(status_code=501, detail="MemoryManager is deprecated")
 
 @router.post("/recall")
 async def recall(request: MemorySearchRequest):
-    try:
-        memories = memory_manager.recall(
-            request.query,
-            request.memory_type,
-            request.n_results
-        )
-        
-        return {
-            "success": True,
-            "count": len(memories),
-            "memories": memories
-        }
-    except Exception as e:
-        logger.error(f"Error recalling memories: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to recall memories: {str(e)}"
-        )
-
+    raise HTTPException(status_code=501, detail="MemoryManager is deprecated")
 
 @router.delete("/forget/{memory_id}")
 async def forget(memory_id: str, memory_type: str = "user"):
-    try:
-        success = memory_manager.forget(memory_id, memory_type)
-        
-        if success:
-            return {
-                "success": True,
-                "message": f"Memory '{memory_id}' forgotten"
-            }
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Memory '{memory_id}' not found"
-            )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error forgetting memory: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to forget memory: {str(e)}"
-        )
-
+    raise HTTPException(status_code=501, detail="MemoryManager is deprecated")
 
 @router.get("/stats")
 async def get_memory_stats():
-    try:
-        stats = memory_manager.get_stats()
-        return {
-            "success": True,
-            "stats": stats
-        }
-    except Exception as e:
-        logger.error(f"Error getting memory stats: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get memory stats: {str(e)}"
-        )
+    raise HTTPException(status_code=501, detail="MemoryManager is deprecated")
 
 
 @router.post("/conversation/message")

@@ -117,7 +117,7 @@ class TestSpeechToTextCloud:
 class TestSpeechToTextLocal:
     @pytest.fixture
     def mock_whisper_model(self):
-        with patch('src.perception.voice.stt.whisper.load_model') as mock:
+        with patch('faster_whisper.WhisperModel') as mock:
             model = MagicMock()
             mock.return_value = model
             yield model

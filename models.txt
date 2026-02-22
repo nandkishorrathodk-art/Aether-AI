@@ -1,0 +1,16 @@
+accounts/fireworks/models/kimi-k2-instruct-0905
+accounts/fireworks/models/kimi-k2p5
+accounts/fireworks/models/flux-1-schnell-fp8
+accounts/fireworks/models/glm-5
+accounts/fireworks/models/gpt-oss-20b
+accounts/fireworks/models/deepseek-v3p1
+accounts/fireworks/models/flux-kontext-max
+accounts/fireworks/models/glm-4p7
+accounts/fireworks/models/minimax-m2p1
+accounts/fireworks/models/kimi-k2-thinking
+accounts/fireworks/models/mixtral-8x22b-instruct
+accounts/fireworks/models/flux-1-dev-fp8
+accounts/fireworks/models/flux-kontext-pro
+accounts/fireworks/models/deepseek-v3p2
+accounts/fireworks/models/gpt-oss-120b
+accounts/cogito/models/cogito-671b-v2-p1

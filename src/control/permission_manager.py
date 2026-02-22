@@ -104,7 +104,8 @@ class PermissionManager:
         try:
             async with aiofiles.open(self.audit_log_path, 'a') as f:
                 await f.write(log_string + '\n')
-            logger.info(f"Action logged: {action.action_type.value}")
+            action_name = action.action_type.value if hasattr(action.action_type, 'value') else str(action.action_type)
+            logger.info(f"Action logged: {action_name}")
         except Exception as e:
             logger.error(f"Failed to write audit log: {e}")
     

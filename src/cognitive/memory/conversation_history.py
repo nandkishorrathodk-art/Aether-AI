@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class ConversationHistory:
     def __init__(self, db_path: Optional[Path] = None, vector_store: Optional[VectorStore] = None):
-        self.db_path = db_path or settings.conversation_history_db
+        self.db_path = Path(db_path) if db_path else settings.conversation_history_db
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         
         self.vector_store = vector_store or VectorStore()

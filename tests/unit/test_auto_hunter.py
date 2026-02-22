@@ -6,6 +6,7 @@ import pytest
 import asyncio
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
 from datetime import datetime
+from pathlib import Path
 
 from src.bugbounty.models import (
     Vulnerability, VulnerabilityType, VulnerabilitySeverity,
@@ -444,6 +445,15 @@ class TestAutoHunter:
                 )
             ]
         ))
+        scanner.prioritize_vulnerabilities.return_value = [
+            Vulnerability(
+                id="v1",
+                title="XSS",
+                vuln_type=VulnerabilityType.XSS,
+                severity=VulnerabilitySeverity.HIGH,
+                url="https://example.com"
+            )
+        ]
         
         poc_gen = Mock(spec=PoCGenerator)
         poc_gen.generate_poc = AsyncMock(return_value=ProofOfConcept(
@@ -456,8 +466,10 @@ class TestAutoHunter:
         ))
         
         report_builder = Mock(spec=ReportBuilder)
-        report_builder.build_report.return_value = Mock(spec=BugReport)
-        report_builder.save_report.return_value = {}
+        mock_report = Mock(spec=BugReport)
+        mock_report.title = "Test Report"
+        report_builder.build_report.return_value = mock_report
+        report_builder.save_report.return_value = {"markdown": Path("/tmp/report.md")}
         
         return burp, scanner, poc_gen, report_builder
     
@@ -520,7 +532,19 @@ class TestAutoHunter:
             scan_completed_at=datetime.now(),
             critical_count=2,
             high_count=3,
-            medium_count=5
+            medium_count=5,
+            vulnerabilities=[
+                Vulnerability(id="v1", title="V1", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.CRITICAL, url=""),
+                Vulnerability(id="v2", title="V2", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.CRITICAL, url=""),
+                Vulnerability(id="h1", title="H1", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.HIGH, url=""),
+                Vulnerability(id="h2", title="H2", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.HIGH, url=""),
+                Vulnerability(id="h3", title="H3", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.HIGH, url=""),
+                Vulnerability(id="m1", title="M1", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.MEDIUM, url=""),
+                Vulnerability(id="m2", title="M2", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.MEDIUM, url=""),
+                Vulnerability(id="m3", title="M3", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.MEDIUM, url=""),
+                Vulnerability(id="m4", title="M4", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.MEDIUM, url=""),
+                Vulnerability(id="m5", title="M5", vuln_type=VulnerabilityType.XSS, severity=VulnerabilitySeverity.MEDIUM, url="")
+            ]
         )
         result.update_counts()
         
@@ -528,8 +552,8 @@ class TestAutoHunter:
         
         assert "Completed Successfully" in summary
         assert "https://example.com" in summary
-        assert "Critical: 2" in summary
-        assert "High: 3" in summary
+        assert "🔴 Critical: 2" in summary
+        assert "🟠 High: 3" in summary
 
 
 if __name__ == "__main__":

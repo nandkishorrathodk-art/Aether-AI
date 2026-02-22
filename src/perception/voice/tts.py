@@ -6,7 +6,7 @@ import logging
 import hashlib
 import json
 from pathlib import Path
-from typing import Optional, Literal
+from typing import Optional, Literal, Callable
 from dataclasses import dataclass
 from threading import Lock, Event
 import numpy as np
@@ -240,6 +240,7 @@ class EdgeTTS:
     
     def __init__(self, config: TTSConfig):
         self.config = config
+        self.current_voice_id: Optional[str] = None
         try:
             import edge_tts
             import nest_asyncio
@@ -249,34 +250,39 @@ class EdgeTTS:
             logger.error("edge-tts not installed. Install with: pip install edge-tts nest-asyncio")
             raise
 
-    def synthesize(self, text: str) -> bytes:
+    async def _stream_to_queue(self, text: str, voice: str, rate_str: str, chunk_callback: Optional[Callable[[bytes], None]]):
         import edge_tts
+        communicate = edge_tts.Communicate(text, voice, rate=rate_str)
+        audio_data = b""
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                if chunk_callback:
+                    chunk_callback(chunk["data"])
+                audio_data += chunk["data"]
+        return audio_data
+
+    def synthesize(self, text: str, chunk_callback: Optional[Callable[[bytes], None]] = None) -> bytes:
         import asyncio
         
+<<<<<<< Updated upstream
         # Select voice based on gender - using most natural sounding voices
         if self.config.voice == "male":
             voice = "en-GB-RyanNeural"  # British Male (Jarvis-like)
+=======
+        # Select voice based on gender or current override
+        if self.current_voice_id:
+            voice = self.current_voice_id
+        elif self.config.voice == "male":
+            voice = "en-US-BrianNeural" 
+>>>>>>> Stashed changes
         else:
             voice = "en-IN-NeerjaNeural"  # Indian English female voice - sounds very natural and human
             
-        # Calculate rate adjustment
-        # Default 160 wpm. Edge uses percentage.
-        # Approx: +30% is fast, -30% is slow.
-        # Let's map 160 -> +0%, 200 -> +25%
         rate_diff = self.config.rate - 160
         rate_pct = int((rate_diff / 160) * 100)
         rate_str = f"{rate_pct:+d}%"
         
-        async def _generate():
-            communicate = edge_tts.Communicate(text, voice, rate=rate_str)
-            audio_data = b""
-            async for chunk in communicate.stream():
-                if chunk["type"] == "audio":
-                    audio_data += chunk["data"]
-            return audio_data
-
         try:
-            # Create a new loop if needed, or use existing
             try:
                 loop = asyncio.get_event_loop()
             except RuntimeError:
@@ -284,16 +290,15 @@ class EdgeTTS:
                 asyncio.set_event_loop(loop)
                 
             if loop.is_running():
-                 # We are in async context already?
-                 # This is tricky using asyncio.run inside async loop
-                 # But tts.speak is usually called from thread or sync context
-                 return asyncio.run(_generate())
+                 # We are in thread context likely, using nest_asyncio
+                 import nest_asyncio
+                 nest_asyncio.apply()
+                 return asyncio.run(self._stream_to_queue(text, voice, rate_str, chunk_callback))
             else:
-                 return loop.run_until_complete(_generate())
+                 return loop.run_until_complete(self._stream_to_queue(text, voice, rate_str, chunk_callback))
                  
         except Exception as e:
              logger.error(f"EdgeTTS synthesis failed: {e}")
-             # distinct fallback to local if edge fails?
              raise
 
 
@@ -326,19 +331,52 @@ class TextToSpeech:
             self.engine = LocalTTS(self.config)
         
         self.audio = pyaudio.PyAudio()
+        
+        # Multi-language support
+        self.lang_manager = None
+        try:
+            from .multilang_support import MultiLanguageManager
+            self.lang_manager = MultiLanguageManager()
+        except ImportError:
+            logger.warning("MultiLanguageManager not available in this context")
+            
         logger.info(f"TextToSpeech initialized with provider: {self.config.provider}")
     
-    def synthesize(self, text: str, use_cache: bool = True) -> bytes:
-        """Synthesize text to audio with optional caching"""
+    def set_language(self, lang_code: str):
+        """Switch TTS voice based on language code"""
+        if self.lang_manager:
+            if self.lang_manager.set_language(lang_code):
+                voice_id = self.lang_manager.get_tts_voice(self.config.voice)
+                if voice_id:
+                    self.set_voice(voice_id)
+                    logger.info(f"TTS language set to: {lang_code} (Voice: {voice_id})")
+        
+    def set_voice(self, voice_id: str):
+        """Override current voice ID"""
+        if hasattr(self.engine, 'current_voice_id'):
+            self.engine.current_voice_id = voice_id
+            logger.info(f"TTS Voice ID set to: {voice_id}")
+    
+    def synthesize(self, text: str, use_cache: bool = True, chunk_callback: Optional[Callable[[bytes], None]] = None) -> bytes:
+        """Synthesize text to audio with optional caching and streaming"""
         if not text or not text.strip():
             raise ValueError("Text cannot be empty")
         
         if use_cache:
             cached_audio = self.cache.get(text, self.config)
             if cached_audio:
+                # If cached, we can't really stream it "fresh" but we can play it immediately
+                if chunk_callback:
+                    chunk_callback(cached_audio)
                 return cached_audio
         
-        audio_data = self.engine.synthesize(text)
+        # Support for streaming provider (EdgeTTS)
+        if isinstance(self.engine, EdgeTTS):
+            audio_data = self.engine.synthesize(text, chunk_callback=chunk_callback)
+        else:
+            audio_data = self.engine.synthesize(text)
+            if chunk_callback:
+                chunk_callback(audio_data)
         
         if use_cache:
             self.cache.put(text, self.config, audio_data)
@@ -346,18 +384,58 @@ class TextToSpeech:
         return audio_data
     
     def speak(self, text: str, blocking: bool = True) -> Optional[bytes]:
-        """Synthesize and play audio"""
+        """Synthesize and play audio with immediate streaming"""
         try:
             self.stop_playback.clear() # Clear stop flag before new speech
-            audio_data = self.synthesize(text)
             
+            # Setup stream for immediate playback
+            # We use a simple callback to feed PyAudio as bytes arrive
+            playback_stream = None
+            
+            def stream_chunk(chunk: bytes):
+                nonlocal playback_stream
+                if self.stop_playback.is_set():
+                    return
+                
+                if playback_stream is None:
+                    # Initialize stream on first chunk
+                    # Note: We assume standard 24kHz/16bit for EdgeTTS
+                    playback_stream = self.audio.open(
+                        format=pyaudio.paInt16,
+                        channels=1,
+                        rate=24000, # Edge-tts default
+                        output=True
+                    )
+                
+                # Apply amplification if needed
+                if self.config.amplify_playback:
+                    audio_array = np.frombuffer(chunk, dtype=np.int16)
+                    amplified = np.clip(
+                        audio_array * self.config.amplification_factor,
+                        -32768, 32767
+                    ).astype(np.int16)
+                    chunk = amplified.tobytes()
+                    
+                playback_stream.write(chunk)
+
             if blocking:
-                self._play_audio(audio_data)
+                audio_data = self.synthesize(text, chunk_callback=stream_chunk)
+                if playback_stream:
+                    playback_stream.stop_stream()
+                    playback_stream.close()
             else:
                 import threading
-                thread = threading.Thread(target=self._play_audio, args=(audio_data,))
+                def _speak_thread():
+                    nonlocal playback_stream
+                    self.synthesize(text, chunk_callback=stream_chunk)
+                    if playback_stream:
+                        playback_stream.stop_stream()
+                        playback_stream.close()
+                
+                thread = threading.Thread(target=_speak_thread)
                 thread.daemon = True
                 thread.start()
+                audio_data = b"" # Returns immediately in non-blocking
             
             return audio_data
         except Exception as e:

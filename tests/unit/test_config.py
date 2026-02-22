@@ -12,7 +12,7 @@ class TestConfigV090:
         settings = Settings()
         
         assert settings.app_name == "Aether AI"
-        assert settings.app_version == "0.9.0"
+        assert settings.app_version == "3.0.0"
         assert settings.environment == "development"
         assert settings.api_host == "127.0.0.1"
         assert settings.api_port == 8000

@@ -6,13 +6,11 @@ from .base import BaseAIProvider, AIResponse
 
 class FireworksProvider(BaseAIProvider):
     PRICING = {
-        "accounts/fireworks/models/llama-v3p1-70b-instruct": {"input": 0.0009, "output": 0.0009},
-        "accounts/fireworks/models/llama-v3p1-8b-instruct": {"input": 0.0002, "output": 0.0002},
-        "accounts/fireworks/models/llama-v3p3-70b-instruct": {"input": 0.0009, "output": 0.0009},
-        "accounts/fireworks/models/mixtral-8x7b-instruct": {"input": 0.0005, "output": 0.0005},
+        "accounts/fireworks/models/deepseek-v3p1": {"input": 0.0009, "output": 0.0009},
         "accounts/fireworks/models/mixtral-8x22b-instruct": {"input": 0.0012, "output": 0.0012},
-        "accounts/fireworks/models/qwen2p5-72b-instruct": {"input": 0.0009, "output": 0.0009},
+        "accounts/fireworks/models/llama-v3p3-70b-instruct": {"input": 0.0009, "output": 0.0009},
         "accounts/fireworks/models/glm-5": {"input": 0.0009, "output": 0.0009},
+        "accounts/fireworks/models/kimi-k2p5": {"input": 0.0009, "output": 0.0009},
     }
 
     def __init__(self, api_key: str, **kwargs):
@@ -21,7 +19,12 @@ class FireworksProvider(BaseAIProvider):
             api_key=api_key,
             base_url="https://api.fireworks.ai/inference/v1"
         )
+<<<<<<< Updated upstream
         self.default_model = "accounts/fireworks/models/llama-v3p3-70b-instruct"
+=======
+        self.default_model = "accounts/fireworks/models/deepseek-v3p1"
+        self.default_vision_model = "accounts/fireworks/models/llama-v3p2-11b-vision-instruct"
+>>>>>>> Stashed changes
 
     async def generate(
         self,
@@ -32,7 +35,16 @@ class FireworksProvider(BaseAIProvider):
         **kwargs
     ) -> AIResponse:
         start_time = time.time()
-        model = model or self.default_model
+        
+        # Determine model
+        if not model:
+            # Check if messages contain images
+            has_image = any(
+                isinstance(msg.get("content"), list) and 
+                any(isinstance(item, dict) and item.get("type") == "image_url" for item in msg["content"]) 
+                for msg in messages
+            )
+            model = self.default_vision_model if has_image else self.default_model
 
         response = await self.client.chat.completions.create(
             model=model,
@@ -66,9 +78,14 @@ class FireworksProvider(BaseAIProvider):
         model: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: int = 2048,
-        **kwargs
     ):
-        model = model or self.default_model
+        if not model:
+            has_image = any(
+                isinstance(msg.get("content"), list) and 
+                any(isinstance(item, dict) and item.get("type") == "image_url" for item in msg["content"]) 
+                for msg in messages
+            )
+            model = self.default_vision_model if has_image else self.default_model
         stream = await self.client.chat.completions.create(
             model=model,
             messages=messages,
@@ -95,7 +112,7 @@ class FireworksProvider(BaseAIProvider):
         return "fireworks"
 
     def supports_vision(self) -> bool:
-        return False
+        return True
 
     def supports_function_calling(self) -> bool:
         return True

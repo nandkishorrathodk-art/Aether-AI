@@ -23,6 +23,7 @@ from src.cognitive.llm.inference import (
     IntentType
 )
 from src.utils.logger import get_logger
+from src.monitoring.hud_broadcaster import get_hud_broadcaster
 
 logger = get_logger(__name__)
 
@@ -119,10 +120,13 @@ class VoicePipelineOrchestrator:
         self.successful_requests = 0
         self.failed_requests = 0
         
+        # HUD Broadcaster
+        self.hud = get_hud_broadcaster()
+        
         logger.info("Voice Pipeline Orchestrator initialized")
     
     def broadcast_status(self, status: str, data: Optional[Dict] = None):
-        """Broadcast status update to UI via stdout"""
+        """Broadcast status update to UI via both stdout and HUDBroadcaster"""
         message = {
             "type": "status",
             "status": status,
@@ -130,6 +134,13 @@ class VoicePipelineOrchestrator:
             "data": data or {}
         }
         print(json.dumps(message), flush=True)
+        
+        # Also update global HUD state
+        if self.hud:
+            hub_data = {"status": status}
+            if data:
+                hub_data.update(data)
+            self.hud.update(hub_data)
 
     def initialize(self):
         """Initialize all pipeline components"""
@@ -235,6 +246,11 @@ class VoicePipelineOrchestrator:
             confidence = stt_result.get("confidence", 0.0)
             detected_language = stt_result.get("language", "auto")
             
+            # Switch TTS Language based on detection
+            if detected_language and detected_language != "auto":
+                self.tts.set_language(detected_language)
+                self.broadcast_status("processing", {"language": detected_language})
+            
             # Block Turkish (Common Hallucination)
             if detected_language == "tr":
                 logger.info("Ignored background noise (TR filter)")
@@ -256,28 +272,51 @@ class VoicePipelineOrchestrator:
             logger.info(f"📝 Transcribed: '{transcribed_text}' (confidence={confidence:.2f})")
             self.broadcast_status("processing", {"phase": "llm", "text": transcribed_text})
             
-            # Step 2: LLM Processing
-            logger.info("Generating AI response...")
+            # Step 2 & 3: LLM Processing & Streaming TTS (Tier 6 Upgrade)
+            logger.info("Generating AI response (Streaming Mode)...")
             conversation_request = ConversationRequest(
                 user_input=transcribed_text,
                 session_id=session_id
             )
             
-            conversation_response = await conversation_engine.process_conversation(
-                conversation_request
-            )
+            self.broadcast_status("speaking", {"text": "..."})
             
-            ai_response = conversation_response.content
-            logger.info(f"💬 AI Response: '{ai_response[:100]}...'")
+            # Start streaming response
+            import re
+            current_sentence = ""
+            full_response = ""
             
-            # Step 3: Queue TTS response
-            self.response_queue.put({
-                "text": ai_response,
-                "session_id": session_id
-            })
+            async for chunk in conversation_engine.stream_conversation(conversation_request):
+                current_sentence += chunk
+                full_response += chunk
+                
+                # If we hit a sentence boundary, speak it immediately!
+                if re.search(r'[.!?।]\s', current_sentence):
+                    sentence_to_speak = current_sentence.strip()
+                    if sentence_to_speak:
+                        self.response_queue.put({
+                            "text": sentence_to_speak,
+                            "session_id": session_id
+                        })
+                    current_sentence = ""
             
-            self.broadcast_status("speaking", {"text": ai_response})
+            # Speak whatever is left
+            if current_sentence.strip():
+                self.response_queue.put({
+                    "text": current_sentence.strip(),
+                    "session_id": session_id
+                })
+                
+            logger.info(f"💬 Full AI Response Streamed: '{full_response[:100]}...'")
             
+            # Execute actions after streaming (stream_conversation doesn't auto-execute actions like process_conversation does, we need to handle God Mode actions)
+            try:
+                # Fire God Mode actions natively here since stream_conversation just streams text
+                logger.info("Checking for delayed God Mode actions...")
+                await conversation_engine._execute_detected_actions(full_response)
+            except Exception as e:
+                logger.debug(f"Action execution after stream failed: {e}")
+
             # Update session stats
             processing_time = time.time() - start_time
             session.update_activity()
@@ -363,6 +402,51 @@ class VoicePipelineOrchestrator:
         
         logger.info("TTS worker stopped")
     
+    def narrate(self, text: str):
+        """
+        Narrate a task step in real-time - Jarvis-style running commentary.
+        Call this for every action step (e.g., 'Opening BurpSuite, sir...')
+        This puts a message directly into the TTS queue.
+        """
+        if not text:
+            return
+        logger.info(f"📣 NARRATION: {text}")
+        self.response_queue.put({
+            "text": text,
+            "session_id": "narration",
+            "priority": "high"
+        })
+        self.broadcast_status("narrating", {"text": text})
+
+    def speak_immediate(self, text: str):
+        """
+        Speak text immediately (blocking) - bypasses queue.
+        Use for urgent/instant confirmations.
+        """
+        if not text or not self.tts:
+            return
+        logger.info(f"🔊 IMMEDIATE: {text}")
+        try:
+            self.tts.speak(text, blocking=True)
+        except Exception as e:
+            logger.error(f"Immediate speech failed: {e}")
+
+    def announce_thinking(self):
+        """
+        Speak a thinking sound while LLM is generating.
+        Makes Aether feel alive even during processing delays.
+        """
+        import random
+        thinking_phrases = [
+            "Hmm... soch raha hoon, sir...",
+            "Dekho... plan ban raha hai...",
+            "Ek second, sir...",
+            "Processing...",
+            "Achha... samajh gaya, karta hoon...",
+        ]
+        phrase = random.choice(thinking_phrases)
+        self.broadcast_status("thinking", {"narration": phrase})
+
     def _wake_word_callback(self):
         """Callback when wake word is detected"""
         logger.info("Wake word detected! Listening for command...")
@@ -510,6 +594,7 @@ class VoicePipelineOrchestrator:
     
     def _is_hallucination(self, text: str) -> bool:
         """Check if text is a common Whisper hallucination"""
+<<<<<<< Updated upstream
         hallucinations = [
             "This is a casual conversation",
             "casual conversation in Hinglish",
@@ -525,6 +610,9 @@ class VoicePipelineOrchestrator:
             "izlediğiniz için",
             "teşekkürler"
         ]
+=======
+        hallucinations = []
+>>>>>>> Stashed changes
         text_lower = text.lower()
         
         # Check known phrases

@@ -94,6 +94,11 @@ class Vulnerability:
     detected_at: datetime = field(default_factory=datetime.now)
     false_positive: bool = False
     
+    @property
+    def type(self) -> VulnerabilityType:
+        """Alias for vuln_type for compatibility"""
+        return self.vuln_type
+    
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary"""
         data = asdict(self)

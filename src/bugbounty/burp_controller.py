@@ -114,9 +114,25 @@ class BurpController:
         max_crawl_time: int
     ) -> str:
         """Internal sync scan start"""
+        if isinstance(scan_type, str):
+            # Handle variations like "CrawlAndAudit", "crawl_and_audit", "CRAWLANDAUDIT"
+            normalized_type = scan_type.upper().replace(' ', '_')
+            if normalized_type == "CRAWLANDAUDIT":
+                enum_key = "CRAWL_AND_AUDIT"
+            else:
+                enum_key = normalized_type
+            
+            try:
+                type_enum = ScanType[enum_key]
+            except KeyError:
+                logger.warning(f"Unknown scan type: {scan_type}, falling back to default")
+                type_enum = ScanType.CRAWL_AND_AUDIT
+        else:
+            type_enum = scan_type
+
         config = ScanConfig(
             urls=urls,
-            scan_type=ScanType[scan_type.upper()] if isinstance(scan_type, str) else scan_type,
+            scan_type=type_enum,
             crawl_depth=crawl_depth,
             max_crawl_time=max_crawl_time
         )

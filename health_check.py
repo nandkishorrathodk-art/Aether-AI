@@ -42,7 +42,7 @@ class AetherHealthChecker:
         """Run all health checks"""
         print("=" * 70)
         print("🏥 AETHER-AI HEALTH CHECK")
-        print(f"Target Device: Acer Swift Neo (16GB RAM, Intel NPU)")
+        print("Target Device: Acer Swift Neo (16GB RAM, Intel NPU)")
         print(f"Threshold: <{self.threshold_ms}ms for all checks")
         print("=" * 70)
         print()
@@ -203,7 +203,7 @@ class AetherHealthChecker:
                 try:
                     from openai import OpenAI
                     client = OpenAI(api_key=openai_key, timeout=2.0)
-                    models = client.models.list()
+                    _models = client.models.list()
                     providers_status["OpenAI"] = "✅ Connected"
                 except Exception as e:
                     providers_status["OpenAI"] = f"❌ Error: {str(e)[:30]}"

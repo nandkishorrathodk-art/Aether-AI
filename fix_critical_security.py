@@ -119,7 +119,6 @@ def fix_weak_password():
         
         # Replace weak password default
         old_pattern = r'os\.getenv\("AETHER_MASTER_PASSWORD",\s*"changeme"\)'
-        new_code = '''os.getenv("AETHER_MASTER_PASSWORD") or (() if True else (_ for _ in ()).throw(ValueError("AETHER_MASTER_PASSWORD must be set!")))()'''
         
         if re.search(old_pattern, content):
             new_content = re.sub(
@@ -150,10 +149,10 @@ def create_secure_env_template():
 # COPY THIS TO .env AND FILL IN YOUR VALUES
 
 # REQUIRED: Strong API key (32+ characters recommended)
-AETHER_API_KEY=CHANGE_ME_TO_RANDOM_STRING_32_CHARS_OR_MORE
+AETHER_API_KEY=YOUR_SECURE_API_KEY_HERE
 
 # REQUIRED: Strong master password (16+ characters)
-AETHER_MASTER_PASSWORD=CHANGE_ME_TO_STRONG_PASSWORD_16_CHARS_MIN
+AETHER_MASTER_PASSWORD=YOUR_SECURE_MASTER_PASSWORD_HERE
 
 # Environment (use 'production' for deployed instances)
 AETHER_ENV=production
