@@ -156,7 +156,8 @@ pygetwindow==0.0.9
 PyQt6==6.8.0
 PyQt6-Qt6==6.8.1
 PyQt6-sip==13.9.0
-=======
+
+# Desktop Automation
 mss==9.0.1
 pynput==1.7.6
 schedule==1.2.0
@@ -179,7 +180,7 @@ opentelemetry-instrumentation-fastapi==0.43b0
 opentelemetry-exporter-jaeger==1.22.0  # Jaeger exporter
 sentry-sdk[fastapi]==1.40.0  # Error tracking
 
-# Security & CVE Database
+# Security & CVE Database (Phase 6)
 nvdlib==0.7.4  # NIST NVD CVE database
 python-nmap==0.7.1  # Nmap integration
 scapy==2.5.0  # Packet manipulation
@@ -197,4 +198,3 @@ cachetools==5.3.2  # Caching utilities
 # Database ORM & Migration
 alembic==1.13.1  # Database migrations
 sqlmodel==0.0.14  # SQLModel (combines SQLAlchemy + Pydantic)
->>>>>>> Stashed changes

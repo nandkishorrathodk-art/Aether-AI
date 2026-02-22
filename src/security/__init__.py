@@ -1,39 +1,19 @@
 """
-Aether AI Security Module
-Comprehensive security testing and bug bounty hunting toolkit
+Security module for Aether AI
+Provides bug bounty hunting tools and vulnerability scanning
 """
-
-from .vulnerability_database import VulnerabilityDatabase, CVEEntry
-from .tool_integrations import (
-    MetasploitIntegration,
-    NessusIntegration,
-    ZAPIntegration,
-    NucleiIntegration,
-    SecurityToolOrchestrator,
-    ScanTool,
-    ScanResult
-)
-from .ai_scanner import AIVulnerabilityScanner, AIDetection
-from .threat_intelligence import ThreatIntelligencePlatform, ThreatIndicator
-from .report_generator import SecurityReportGenerator
-from .cloud_scanner import CloudSecurityScanner, CloudPlatform, CloudFinding
+from src.security.cve_database import get_cve_database, CVEDatabase
+from src.security.nuclei_scanner import get_nuclei_scanner, NucleiScanner
+from src.security.ai_vulnerability_scanner import get_ai_vulnerability_scanner, AIVulnerabilityScanner
+from src.security.report_generator import get_report_generator, ReportGenerator
 
 __all__ = [
-    "VulnerabilityDatabase",
-    "CVEEntry",
-    "MetasploitIntegration",
-    "NessusIntegration",
-    "ZAPIntegration",
-    "NucleiIntegration",
-    "SecurityToolOrchestrator",
-    "ScanTool",
-    "ScanResult",
+    "get_cve_database",
+    "CVEDatabase",
+    "get_nuclei_scanner",
+    "NucleiScanner",
+    "get_ai_vulnerability_scanner",
     "AIVulnerabilityScanner",
-    "AIDetection",
-    "ThreatIntelligencePlatform",
-    "ThreatIndicator",
-    "SecurityReportGenerator",
-    "CloudSecurityScanner",
-    "CloudPlatform",
-    "CloudFinding"
+    "get_report_generator",
+    "ReportGenerator",
 ]

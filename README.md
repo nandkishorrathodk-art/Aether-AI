@@ -106,6 +106,10 @@
 - ✅ **Bug Bounty Mode**: Authorized security testing with BurpSuite, Nmap, vulnerability scanning
 - ✅ **Autonomous Agent**: Self-directed desktop automation with multi-step workflow execution
 - ✅ **n8n Integration**: Advanced workflow orchestration for complex automation tasks
+- ✅ **CVE Database** (NEW): 200k+ vulnerabilities from NIST NVD with smart search
+- ✅ **Nuclei Scanner** (NEW): 5000+ vulnerability templates with parallel scanning
+- ✅ **AI Vulnerability Scanner** (NEW): LLM-powered HTTP traffic analysis + pattern matching
+- ✅ **Professional Reports** (NEW): HTML/Markdown/JSON reports with CVSS scoring
 
 </div>
 
